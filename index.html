@@ -5,12 +5,34 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://wa.me https://www.google.com https://*.supabase.co; frame-src https://www.google.com" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://wa.me https://www.google.com https://www.google-analytics.com https://*.supabase.co; frame-src https://www.google.com" />
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
     <meta http-equiv="X-Frame-Options" content="SAMEORIGIN" />
     <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
-    <title>Lavender Villa - Luxury Homestay in Melaka</title>
+    
+    <!-- SEO Meta Tags -->
+    <title>Lavender Villa - Luxury Homestay in Melaka | Villa Bemban</title>
+    <meta name="description" content="Tempat penginapan keluarga terbaik di villa Bemban, Melaka. Nikmati kemewahan dan kenyamanan di Lavender Villa dengan harga terjangkau." />
+    <meta name="keywords" content="villa melaka, homestay melaka, villa bemban, penginapan melaka, luxury villa, family villa" />
+    <meta name="author" content="Lavender Villa" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://lavender-villa.vercel.app/" />
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Lavender Villa - Luxury Homestay in Melaka" />
+    <meta property="og:description" content="Tempat penginapan keluarga terbaik di villa Bemban, Melaka" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://lavender-villa.vercel.app/" />
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
   </head>
   <body>
     <div id="root"></div>
