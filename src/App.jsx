@@ -1338,40 +1338,113 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
         </div>
       )}
 
-      {/* SEO Content Section */}
-      <section className="bg-slate-50 py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">Villa Melaka Terbaik untuk Keluarga</h2>
-            <p className="text-lg text-slate-600 max-w-3xl mx-auto">
+      {/* Beautiful SEO Section */}
+      <section className="relative py-20 overflow-hidden">
+        {/* Gradient Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-50 via-white to-purple-100"></div>
+        
+        {/* Decorative Elements */}
+        <div className="absolute top-0 left-0 w-72 h-72 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse"></div>
+        <div className="absolute bottom-0 right-0 w-72 h-72 bg-pink-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse delay-1000"></div>
+        
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center px-4 py-2 bg-purple-100 rounded-full text-purple-700 text-sm font-medium mb-6">
+              <Sparkles className="w-4 h-4 mr-2" />
+              Villa Melaka Terbaik untuk Keluarga
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 to-purple-800 bg-clip-text text-transparent mb-6">
+              Pengalaman Menginap yang Tak Terlupakan
+            </h2>
+            <p className="text-xl text-slate-600 max-w-4xl mx-auto leading-relaxed">
               Lavender Villa adalah pilihan homestay terbaik di Bemban, Melaka untuk percutian keluarga yang tidak dapat dilupakan. 
               Villa mewah kami dilengkapi dengan kolam renang peribadi, kawasan BBQ, dan kemudahan lengkap untuk keselesaan anda.
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            <div>
-              <h3 className="text-xl font-semibold text-slate-900 mb-3">Lokasi Strategik</h3>
-              <p className="text-slate-600">
-                Terletak di Bemban, Melaka dengan akses mudah ke tarikan utama seperti Jonker Street, 
-                A Famosa, dan Pantai Klebang. Sesuai untuk staycation dan cuti keluarga.
-              </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Location Card */}
+            <div className="group relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-purple-600 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-300"></div>
+              <div className="relative bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-purple-600 rounded-xl flex items-center justify-center mb-6">
+                  <MapPin className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-slate-900 mb-4">Lokasi Strategik</h3>
+                <p className="text-slate-600 leading-relaxed">
+                  Terletak di Bemban, Melaka dengan akses mudah ke tarikan utama seperti Jonker Street, 
+                  A Famosa, dan Pantai Klebang. Sesuai untuk staycation dan cuti keluarga.
+                </p>
+                <div className="mt-6 flex items-center text-purple-600 font-medium">
+                  <span>Jelajahi Lokasi</span>
+                  <svg className="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </div>
             </div>
-            
-            <div>
-              <h3 className="text-xl font-semibold text-slate-900 mb-3">Kemudahan Lengkap</h3>
-              <p className="text-slate-600">
-                Villa dengan kolam renang, dapur lengkap, WiFi percuma, penyaman udara, 
-                dan kawasan BBQ. Sesuai untuk 8 orang dengan 4 bilik tidur yang selesa.
-              </p>
+
+            {/* Amenities Card */}
+            <div className="group relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-600 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-300"></div>
+              <div className="relative bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center mb-6">
+                  <Wifi className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-slate-900 mb-4">Kemudahan Lengkap</h3>
+                <p className="text-slate-600 leading-relaxed">
+                  Villa dengan kolam renang, dapur lengkap, WiFi percuma, penyaman udara, 
+                  dan kawasan BBQ. Sesuai untuk 8 orang dengan 4 bilik tidur yang selesa.
+                </p>
+                <div className="mt-6 flex items-center text-purple-600 font-medium">
+                  <span>Lihat Kemudahan</span>
+                  <svg className="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </div>
             </div>
-            
-            <div>
-              <h3 className="text-xl font-semibold text-slate-900 mb-3">Harga Berpatutan</h3>
-              <p className="text-slate-600">
-                Harga kompetitif dari RM1,500/malam (weekday) dan RM1,800/malam (weekend). 
-                Nilai terbaik untuk villa mewah di Melaka dengan kemudahan premium.
-              </p>
+
+            {/* Pricing Card */}
+            <div className="group relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-pink-400 to-purple-600 rounded-2xl blur opacity-25 group-hover:opacity-40 transition duration-300"></div>
+              <div className="relative bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                <div className="w-16 h-16 bg-gradient-to-r from-pink-500 to-purple-600 rounded-xl flex items-center justify-center mb-6">
+                  <Star className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-2xl font-bold text-slate-900 mb-4">Harga Berpatutan</h3>
+                <p className="text-slate-600 leading-relaxed">
+                  Harga kompetitif dari RM1,500/malam (weekday) dan RM1,800/malam (weekend). 
+                  Nilai terbaik untuk villa mewah di Melaka dengan kemudahan premium.
+                </p>
+                <div className="mt-6 flex items-center text-purple-600 font-medium">
+                  <span>Tempah Sekarang</span>
+                  <svg className="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Call to Action */}
+          <div className="text-center mt-16">
+            <div className="inline-flex items-center space-x-4">
+              <div className="flex -space-x-2">
+                <div className="w-10 h-10 bg-gradient-to-r from-purple-400 to-purple-600 rounded-full border-2 border-white flex items-center justify-center">
+                  <Star className="w-5 h-5 text-white" />
+                </div>
+                <div className="w-10 h-10 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full border-2 border-white flex items-center justify-center">
+                  <Star className="w-5 h-5 text-white" />
+                </div>
+                <div className="w-10 h-10 bg-gradient-to-r from-pink-400 to-pink-600 rounded-full border-2 border-white flex items-center justify-center">
+                  <Star className="w-5 h-5 text-white" />
+                </div>
+              </div>
+              <div className="text-left">
+                <div className="text-2xl font-bold text-slate-900">5.0 Rating</div>
+                <div className="text-slate-600">50+ Happy Families</div>
+              </div>
             </div>
           </div>
         </div>
