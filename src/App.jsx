@@ -543,7 +543,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
 
         <div className="absolute inset-0 flex flex-col items-center justify-center text-white px-4 sm:px-6">
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-3 sm:mb-4 text-center tracking-tight">Lavender Villa Melaka</h1>
-          <p className="text-base sm:text-lg md:text-xl mb-8 sm:mb-12 text-center max-w-3xl text-slate-100">Tempat penginapan keluarga terbaik di villa Bemban, Melaka</p>
+          <p className="text-base sm:text-lg md:text-xl mb-8 sm:mb-12 text-center max-w-3xl text-slate-100">Villa Mewah di Bemban, Melaka | Homestay Keluarga dengan Kolam Renang | Penginapan Terbaik untuk Cuti Keluarga</p>
           
           <div className="flex flex-col sm:flex-row gap-4 mb-16">
             <button onClick={() => handleScrollTo('booking')} className="bg-white text-slate-900 px-8 py-4 rounded-full font-bold hover:bg-slate-50 transition shadow-xl">Tempah Penginapan Anda</button>
@@ -1337,6 +1337,45 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
           </div>
         </div>
       )}
+
+      {/* SEO Content Section */}
+      <section className="bg-slate-50 py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-slate-900 mb-4">Villa Melaka Terbaik untuk Keluarga</h2>
+            <p className="text-lg text-slate-600 max-w-3xl mx-auto">
+              Lavender Villa adalah pilihan homestay terbaik di Bemban, Melaka untuk percutian keluarga yang tidak dapat dilupakan. 
+              Villa mewah kami dilengkapi dengan kolam renang peribadi, kawasan BBQ, dan kemudahan lengkap untuk keselesaan anda.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+            <div>
+              <h3 className="text-xl font-semibold text-slate-900 mb-3">Lokasi Strategik</h3>
+              <p className="text-slate-600">
+                Terletak di Bemban, Melaka dengan akses mudah ke tarikan utama seperti Jonker Street, 
+                A Famosa, dan Pantai Klebang. Sesuai untuk staycation dan cuti keluarga.
+              </p>
+            </div>
+            
+            <div>
+              <h3 className="text-xl font-semibold text-slate-900 mb-3">Kemudahan Lengkap</h3>
+              <p className="text-slate-600">
+                Villa dengan kolam renang, dapur lengkap, WiFi percuma, penyaman udara, 
+                dan kawasan BBQ. Sesuai untuk 8 orang dengan 4 bilik tidur yang selesa.
+              </p>
+            </div>
+            
+            <div>
+              <h3 className="text-xl font-semibold text-slate-900 mb-3">Harga Berpatutan</h3>
+              <p className="text-slate-600">
+                Harga kompetitif dari RM1,500/malam (weekday) dan RM1,800/malam (weekend). 
+                Nilai terbaik untuk villa mewah di Melaka dengan kemudahan premium.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Footer */}
       <footer className="bg-slate-900 text-white py-12 sm:py-16">
