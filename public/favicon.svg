@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <rect width="100" height="100" fill="#a855f7" rx="20"/>
+  <g transform="translate(50, 50)">
+    <!-- Lavender flower -->
+    <circle cx="0" cy="-15" r="4" fill="#e9d5ff"/>
+    <circle cx="10" cy="-10" r="4" fill="#e9d5ff"/>
+    <circle cx="-10" cy="-10" r="4" fill="#e9d5ff"/>
+    <circle cx="12" cy="0" r="4" fill="#e9d5ff"/>
+    <circle cx="-12" cy="0" r="4" fill="#e9d5ff"/>
+    <circle cx="10" cy="10" r="4" fill="#e9d5ff"/>
+    <circle cx="-10" cy="10" r="4" fill="#e9d5ff"/>
+    <circle cx="0" cy="15" r="4" fill="#e9d5ff"/>
+    <!-- Stem -->
+    <line x1="0" y1="15" x2="0" y2="25" stroke="#e9d5ff" stroke-width="2"/>
+  </g>
+</svg>
