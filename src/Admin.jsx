@@ -122,6 +122,52 @@ export default function Admin() {
     { id: 'anjung', name: 'Villa Anjung Cemara', location: 'Selandar', address: 'Lot 6789, Jalan Selandar, 77500 Selandar, Melaka', code: 'VAC' }
   ];
 
+  // Public holidays 2025-2026 (National + Melaka)
+  const publicHolidays = {
+    '2025-01-01': 'Tahun Baru',
+    '2025-01-29': 'Tahun Baru Cina',
+    '2025-01-30': 'Tahun Baru Cina',
+    '2025-03-31': 'Hari Raya Aidilfitri',
+    '2025-04-01': 'Hari Raya Aidilfitri',
+    '2025-05-01': 'Hari Pekerja',
+    '2025-05-12': 'Hari Wesak',
+    '2025-06-02': 'Hari Keputeraan Agong',
+    '2025-06-07': 'Hari Raya Aidiladha',
+    '2025-06-27': 'Awal Muharram',
+    '2025-08-31': 'Hari Merdeka',
+    '2025-09-05': 'Maulidur Rasul',
+    '2025-09-16': 'Hari Malaysia',
+    '2025-10-15': 'Hari Jadi TYT Melaka',
+    '2025-10-20': 'Deepavali',
+    '2025-12-25': 'Hari Krismas',
+    '2026-01-01': 'Tahun Baru',
+    '2026-02-17': 'Tahun Baru Cina',
+    '2026-02-18': 'Tahun Baru Cina',
+    '2026-02-20': 'Hari Kemerdekaan Melaka',
+    '2026-03-21': 'Hari Raya Aidilfitri',
+    '2026-03-22': 'Hari Raya Aidilfitri',
+    '2026-05-01': 'Hari Pekerja',
+    '2026-05-27': 'Hari Raya Haji',
+    '2026-05-31': 'Hari Wesak',
+    '2026-06-01': 'Hari Keputeraan Agong',
+    '2026-06-17': 'Awal Muharram',
+    '2026-08-24': 'Hari Jadi TYT Melaka',
+    '2026-08-25': 'Maulidur Rasul',
+    '2026-08-31': 'Hari Merdeka',
+    '2026-09-16': 'Hari Malaysia',
+    '2026-11-08': 'Deepavali',
+    '2026-12-25': 'Hari Krismas'
+  };
+
+  // Check if date is public holiday
+  const isPublicHoliday = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const dateStr = `${year}-${month}-${day}`;
+    return publicHolidays[dateStr] || null;
+  };
+
   // Generate PDF Receipt - Professional black & white format
   const generateReceipt = (booking) => {
     const property = properties.find(p => p.id === booking.property) || properties[0];
@@ -1724,19 +1770,26 @@ export default function Admin() {
                 const isBooked = isDateBooked(date);
                 const isPaidBooking = isFromPaidBooking(date);
                 const isManual = isManuallyBlocked(date);
+                const holidayName = isPublicHoliday(date);
                 days.push(
                   <button
                     key={day}
                     onClick={() => toggleDate(date)}
-                    className={`p-2 sm:p-4 text-xs sm:text-sm rounded-lg sm:rounded-xl transition font-medium ${
+                    title={holidayName || ''}
+                    className={`p-2 sm:p-4 text-xs sm:text-sm rounded-lg sm:rounded-xl transition font-medium relative ${
                       isPaidBooking 
                         ? 'bg-green-500 text-white' 
                         : isManual
                         ? 'bg-orange-500 text-white'
+                        : holidayName
+                        ? 'bg-purple-100 text-purple-700 border-2 border-purple-300'
                         : 'bg-slate-50 text-slate-700 hover:bg-orange-100'
                     }`}
                   >
                     {day}
+                    {holidayName && !isPaidBooking && !isManual && (
+                      <span className="absolute -top-1 -right-1 w-2 h-2 bg-purple-500 rounded-full"></span>
+                    )}
                   </button>
                 );
               }
@@ -1757,6 +1810,12 @@ export default function Admin() {
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 bg-orange-500 rounded"></div>
               <span className="text-xs sm:text-sm text-slate-600">Cuti / Tutup</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 bg-purple-100 rounded border-2 border-purple-300 relative">
+                <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-purple-500 rounded-full"></span>
+              </div>
+              <span className="text-xs sm:text-sm text-slate-600">Cuti Umum</span>
             </div>
           </div>
         </div>
@@ -1796,6 +1855,7 @@ export default function Admin() {
               <p className="text-slate-600 text-xs text-center">
                 <span className="text-green-600 font-medium">Hijau</span> = Telah Bayar | 
                 <span className="text-orange-600 font-medium"> Oren</span> = Cuti/Tutup | 
+                <span className="text-purple-600 font-medium"> Ungu</span> = Cuti Umum | 
                 Klik tarikh untuk tutup/buka
               </p>
             </div>
