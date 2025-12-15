@@ -527,12 +527,13 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
     } else {
       // For check-out: must be after check-in and no blocked dates in between (including checkout date)
       if (dateStr > selectedDates.checkIn) {
-        // Check if any dates between check-in and checkout (inclusive) are booked
+        // Check if any dates between check-in and checkout are booked
         const start = new Date(selectedDates.checkIn + 'T00:00:00');
         const end = new Date(dateStr + 'T00:00:00');
         let hasBlockedInBetween = false;
         
-        // Check dates from check-in up to (but not including) checkout
+        // Check dates from check-in up to (but NOT including) checkout
+        // Checkout date CAN be booked (someone checking in at 3pm, you checkout at 12pm)
         for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
           if (bookedDates.includes(formatDateToLocal(d))) {
             hasBlockedInBetween = true;
@@ -540,11 +541,8 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
           }
         }
         
-        // Also check if checkout date itself is blocked (fully blocked, no checkout allowed)
-        const isCheckoutBlocked = bookedDates.includes(dateStr);
-        
-        if (hasBlockedInBetween || isCheckoutBlocked) {
-          // Can't book - blocked dates in range or checkout date is blocked
+        if (hasBlockedInBetween) {
+          // Can't book - blocked dates in range
           setClickedBookedDate(dateStr);
           setShowAlternatives(true);
           setShowCalendar(null);
