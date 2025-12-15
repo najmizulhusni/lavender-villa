@@ -35,11 +35,11 @@ export default function FAQ() {
     },
     {
       q: 'Berapa harga penginapan?',
-      a: 'RM1,500 untuk malam minggu (Isnin-Khamis) dan RM1,800 untuk malam hujung minggu (Jumaat-Ahad). Harga ini untuk keseluruhan villa.'
+      a: 'Weekday: 2H1M RM1,300 | 3H2M RM2,400. Weekend/Cuti Umum: 2H1M RM1,590 | 3H2M RM2,990. Musim Perayaan (Hari Raya, CNY, Deepavali, Christmas): 2H1M RM1,700 | 3H2M RM3,200. Harga ini untuk keseluruhan villa.'
     },
     {
       q: 'Berapa bilik tidur ada?',
-      a: 'Villa mempunyai 5 bilik tidur yang luas dengan 4 bilik air. Ia boleh menampung hingga 20 tetamu.'
+      a: 'Villa mempunyai 5 bilik tidur yang luas dengan 4 bilik air. Selesa untuk 15 orang, maksimum 20 orang termasuk kanak-kanak berusia 5 tahun ke atas.'
     },
     {
       q: 'Adakah kolam renang?',

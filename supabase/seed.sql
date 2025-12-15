@@ -4,17 +4,22 @@
 -- =============================================
 
 -- 1. INSERT LAVENDER VILLA PROPERTY
-INSERT INTO properties (name, slug, description, address, weekday_price, weekend_price, max_guests, bedrooms, bathrooms, whatsapp_number)
+INSERT INTO properties (name, slug, description, address, weekday_price_2h1m, weekday_price_3h2m, weekend_price_2h1m, weekend_price_3h2m, festive_price_2h1m, festive_price_3h2m, max_guests, comfortable_guests, bedrooms, bathrooms, whatsapp_number)
 VALUES (
   'Lavender Villa Melaka',
   'lavender',
-  'Tempat penginapan keluarga terbaik di villa Bemban, Melaka. Dilengkapi kolam renang, BBQ, karaoke, dan kemudahan premium.',
+  'Villa mewah di Bemban, Melaka. 5 bilik tidur, 4 bilik air. Selesa untuk 15 orang, maksimum 20 orang. Dilengkapi kolam renang, BBQ, karaoke, dan kemudahan premium.',
   'Bemban, Melaka',
-  1500.00,
-  1800.00,
-  20,
-  5,
-  4,
+  1300.00,  -- weekday 2H1M
+  2400.00,  -- weekday 3H2M
+  1590.00,  -- weekend/PH 2H1M
+  2990.00,  -- weekend/PH 3H2M
+  1700.00,  -- festive 2H1M
+  3200.00,  -- festive 3H2M
+  20,       -- max guests
+  15,       -- comfortable guests
+  5,        -- bedrooms
+  4,        -- bathrooms
   '60193345686'
 ) ON CONFLICT (slug) DO NOTHING;
 
