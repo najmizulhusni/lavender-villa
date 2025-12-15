@@ -360,36 +360,90 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
     '2026-08-31', '2026-09-16', '2026-11-08', '2026-12-25'
   ];
 
-  const isPublicHoliday = (date) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const dateStr = `${year}-${month}-${day}`;
-    // Use database holidays if loaded, otherwise fallback
-    const holidays = publicHolidaysList.length > 0 ? publicHolidaysList : fallbackHolidays;
-    return holidays.includes(dateStr);
-  };
-
-  const calculateTotal = () => {
-    if (!selectedDates.checkIn || !selectedDates.checkOut) return 0;
-    const start = new Date(selectedDates.checkIn);
-    const end = new Date(selectedDates.checkOut);
-    let total = 0;
-    for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
-      const dayOfWeek = d.getDay();
-      const isWeekend = dayOfWeek === 0 || dayOfWeek === 6; // Saturday & Sunday
-      const isHoliday = isPublicHoliday(d);
-      total += (isWeekend || isHoliday) ? 1800 : 1500;
-    }
-    return total;
-  };
-
   // Helper function to format date to YYYY-MM-DD in local timezone (avoid UTC shift)
   const formatDateToLocal = (date) => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
+  };
+
+  const isPublicHoliday = (date) => {
+    const dateStr = formatDateToLocal(date);
+    // Use database holidays if loaded, otherwise fallback
+    const holidays = publicHolidaysList.length > 0 ? publicHolidaysList : fallbackHolidays;
+    return holidays.includes(dateStr);
+  };
+
+  // Festive season dates (Hari Raya, CNY, Deepavali, Christmas periods)
+  const festiveDates = [
+    // Hari Raya Aidilfitri 2025 (around March 30-31)
+    '2025-03-28', '2025-03-29', '2025-03-30', '2025-03-31', '2025-04-01', '2025-04-02', '2025-04-03',
+    // Hari Raya Aidiladha 2025 (around June 6-7)
+    '2025-06-05', '2025-06-06', '2025-06-07', '2025-06-08', '2025-06-09',
+    // Deepavali 2025 (around October 20)
+    '2025-10-18', '2025-10-19', '2025-10-20', '2025-10-21', '2025-10-22',
+    // Christmas 2025
+    '2025-12-23', '2025-12-24', '2025-12-25', '2025-12-26', '2025-12-27',
+    // CNY 2026 (around January 29)
+    '2026-01-27', '2026-01-28', '2026-01-29', '2026-01-30', '2026-01-31', '2026-02-01', '2026-02-02',
+    // Hari Raya Aidilfitri 2026 (around March 20)
+    '2026-03-18', '2026-03-19', '2026-03-20', '2026-03-21', '2026-03-22', '2026-03-23', '2026-03-24',
+    // Deepavali 2026 (around November 8)
+    '2026-11-06', '2026-11-07', '2026-11-08', '2026-11-09', '2026-11-10',
+    // Christmas 2026
+    '2026-12-23', '2026-12-24', '2026-12-25', '2026-12-26', '2026-12-27'
+  ];
+
+  const isFestiveSeason = (date) => {
+    const dateStr = formatDateToLocal(date);
+    return festiveDates.includes(dateStr);
+  };
+
+  const calculateTotal = () => {
+    if (!selectedDates.checkIn || !selectedDates.checkOut) return 0;
+    const start = new Date(selectedDates.checkIn);
+    const end = new Date(selectedDates.checkOut);
+    
+    // Calculate number of nights
+    const nights = Math.round((end - start) / (1000 * 60 * 60 * 24));
+    
+    // Check if any date in the range is festive, weekend, or public holiday
+    let hasFestive = false;
+    let hasWeekendOrHoliday = false;
+    
+    for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
+      if (isFestiveSeason(d)) {
+        hasFestive = true;
+        break;
+      }
+      const dayOfWeek = d.getDay();
+      const isWeekend = dayOfWeek === 0 || dayOfWeek === 6; // Saturday & Sunday
+      const isHoliday = isPublicHoliday(d);
+      if (isWeekend || isHoliday) {
+        hasWeekendOrHoliday = true;
+      }
+    }
+    
+    // Pricing based on package type
+    // Festive Season pricing
+    if (hasFestive) {
+      if (nights === 1) return 1700;  // 2H1M
+      if (nights === 2) return 3200;  // 3H2M
+      return 1700 + ((nights - 1) * 1500); // Additional nights
+    }
+    
+    // Weekend/SH/PH pricing
+    if (hasWeekendOrHoliday) {
+      if (nights === 1) return 1590;  // 2H1M
+      if (nights === 2) return 2990;  // 3H2M
+      return 1590 + ((nights - 1) * 1400); // Additional nights
+    }
+    
+    // Weekday pricing
+    if (nights === 1) return 1300;  // 2H1M
+    if (nights === 2) return 2400;  // 3H2M
+    return 1300 + ((nights - 1) * 1100); // Additional nights
   };
 
   const checkAvailability = () => {
@@ -1232,10 +1286,27 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
             )}
 
             {/* Info Text */}
-            <div className="mt-6 text-center">
-              <p className="text-slate-500 text-sm">Weekday 2H1M: RM1,300 • 3H2M: RM2,400</p>
-              <p className="text-slate-500 text-sm">Weekend/SH/PH 2H1M: RM1,590 • 3H2M: RM2,990</p>
-              <p className="text-slate-500 text-sm">Festive Season 2H1M: RM1,700 • 3H2M: RM3,200</p>
+            <div className="mt-6 text-center space-y-1">
+              <div className="bg-slate-50 rounded-lg p-3">
+                <p className="text-slate-700 text-xs font-semibold mb-2">Harga Pakej</p>
+                <div className="grid grid-cols-3 gap-2 text-xs">
+                  <div className="text-center">
+                    <p className="text-slate-500 font-medium">Weekday</p>
+                    <p className="text-slate-700">2H1M: RM1,300</p>
+                    <p className="text-slate-700">3H2M: RM2,400</p>
+                  </div>
+                  <div className="text-center border-x border-slate-200">
+                    <p className="text-slate-500 font-medium">Weekend/PH</p>
+                    <p className="text-slate-700">2H1M: RM1,590</p>
+                    <p className="text-slate-700">3H2M: RM2,990</p>
+                  </div>
+                  <div className="text-center">
+                    <p className="text-slate-500 font-medium">Festive</p>
+                    <p className="text-slate-700">2H1M: RM1,700</p>
+                    <p className="text-slate-700">3H2M: RM3,200</p>
+                  </div>
+                </div>
+              </div>
               <p className="text-slate-400 text-xs mt-2">Pengesahan tempahan akan dihantar melalui WhatsApp</p>
             </div>
           </div>
@@ -1375,7 +1446,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
               </div>
               <h3 className="text-xl font-bold mb-2 text-slate-900">Harga Berpatutan</h3>
               <p className="text-slate-600 text-sm leading-relaxed">
-                Dari RM1,500/malam dengan kemudahan lengkap termasuk kolam renang, BBQ, dan WiFi percuma
+                Pakej bermula dari RM1,300 (2H1M) dengan kemudahan lengkap termasuk kolam renang, BBQ, dan WiFi percuma
               </p>
             </div>
           </div>
