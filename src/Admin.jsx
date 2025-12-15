@@ -628,7 +628,7 @@ export default function Admin() {
     property: 'lavender',
     checkIn: '',
     checkOut: '',
-    guests: 8,
+    guests: 15,
     total: 0,
     message: '',
     status: 'pending'
@@ -695,7 +695,7 @@ export default function Admin() {
       property: 'lavender',
       checkIn: '',
       checkOut: '',
-      guests: 8,
+      guests: 15,
       total: 0,
       message: '',
       status: 'pending'
@@ -2282,7 +2282,7 @@ export default function Admin() {
                       min="0"
                       value={newBooking.total}
                       onChange={(e) => setNewBooking({...newBooking, total: parseInt(e.target.value) || 0})}
-                      placeholder="1500"
+                      placeholder="1300"
                       className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 placeholder-slate-300 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition text-sm text-center"
                     />
                   </div>
