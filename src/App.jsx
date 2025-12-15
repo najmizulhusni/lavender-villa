@@ -377,22 +377,22 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
 
   // Festive season dates (Hari Raya, CNY, Deepavali, Christmas periods)
   const festiveDates = [
-    // Hari Raya Aidilfitri 2025 (around March 30-31)
-    '2025-03-28', '2025-03-29', '2025-03-30', '2025-03-31', '2025-04-01', '2025-04-02', '2025-04-03',
-    // Hari Raya Aidiladha 2025 (around June 6-7)
-    '2025-06-05', '2025-06-06', '2025-06-07', '2025-06-08', '2025-06-09',
-    // Deepavali 2025 (around October 20)
-    '2025-10-18', '2025-10-19', '2025-10-20', '2025-10-21', '2025-10-22',
-    // Christmas 2025
-    '2025-12-23', '2025-12-24', '2025-12-25', '2025-12-26', '2025-12-27',
-    // CNY 2026 (around January 29)
-    '2026-01-27', '2026-01-28', '2026-01-29', '2026-01-30', '2026-01-31', '2026-02-01', '2026-02-02',
-    // Hari Raya Aidilfitri 2026 (around March 20)
-    '2026-03-18', '2026-03-19', '2026-03-20', '2026-03-21', '2026-03-22', '2026-03-23', '2026-03-24',
-    // Deepavali 2026 (around November 8)
-    '2026-11-06', '2026-11-07', '2026-11-08', '2026-11-09', '2026-11-10',
-    // Christmas 2026
-    '2026-12-23', '2026-12-24', '2026-12-25', '2026-12-26', '2026-12-27'
+    // Hari Raya Aidilfitri 2025 (March 30-31 + cuti)
+    '2025-03-30', '2025-03-31', '2025-04-01',
+    // Hari Raya Aidiladha 2025 (June 6-7)
+    '2025-06-06', '2025-06-07',
+    // Deepavali 2025 (October 20)
+    '2025-10-20',
+    // Christmas 2025 (Dec 24-25)
+    '2025-12-24', '2025-12-25',
+    // CNY 2026 (January 29-30)
+    '2026-01-29', '2026-01-30',
+    // Hari Raya Aidilfitri 2026 (March 20-22)
+    '2026-03-20', '2026-03-21', '2026-03-22',
+    // Deepavali 2026 (November 8)
+    '2026-11-08',
+    // Christmas 2026 (Dec 24-25)
+    '2026-12-24', '2026-12-25'
   ];
 
   const isFestiveSeason = (date) => {
