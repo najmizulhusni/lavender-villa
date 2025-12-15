@@ -415,7 +415,6 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
     for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
       if (isFestiveSeason(d)) {
         hasFestive = true;
-        break;
       }
       const dayOfWeek = d.getDay();
       const isWeekend = dayOfWeek === 0 || dayOfWeek === 6; // Saturday & Sunday
@@ -425,25 +424,28 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
       }
     }
     
-    // Pricing based on package type
-    // Festive Season pricing
+    // Package pricing based on highest tier in the booking
+    // Festive Season pricing (highest priority)
     if (hasFestive) {
       if (nights === 1) return 1700;  // 2H1M
       if (nights === 2) return 3200;  // 3H2M
-      return 1700 + ((nights - 1) * 1500); // Additional nights
+      // For 3+ nights: 3H2M price + extra nights at festive rate
+      return 3200 + ((nights - 2) * 1700);
     }
     
     // Weekend/SH/PH pricing
     if (hasWeekendOrHoliday) {
       if (nights === 1) return 1590;  // 2H1M
       if (nights === 2) return 2990;  // 3H2M
-      return 1590 + ((nights - 1) * 1400); // Additional nights
+      // For 3+ nights: 3H2M price + extra nights at weekend rate
+      return 2990 + ((nights - 2) * 1590);
     }
     
     // Weekday pricing
     if (nights === 1) return 1300;  // 2H1M
     if (nights === 2) return 2400;  // 3H2M
-    return 1300 + ((nights - 1) * 1100); // Additional nights
+    // For 3+ nights: 3H2M price + extra nights at weekday rate
+    return 2400 + ((nights - 2) * 1300);
   };
 
   const checkAvailability = () => {
