@@ -545,7 +545,13 @@ export default function Admin() {
       }
     });
     
+    // Update state
     setBookedDates(newBookedDates);
+    
+    // Also update localStorage for each property
+    Object.keys(newBookedDates).forEach(key => {
+      localStorage.setItem(`bookedDates_${key}`, JSON.stringify(newBookedDates[key]));
+    });
   };
 
   // Helper: Format date to YYYY-MM-DD string (timezone safe)
