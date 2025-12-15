@@ -652,6 +652,18 @@ export default function Admin() {
       setBookings(updatedBookings);
       localStorage.setItem('bookings', JSON.stringify(updatedBookings));
       syncBookedDates(updatedBookings);
+      
+      // Reload booked dates from Supabase to ensure sync
+      try {
+        const lavenderDates = await getBookedDates('lavender');
+        setBookedDates(prev => ({
+          ...prev,
+          lavender: lavenderDates
+        }));
+        localStorage.setItem('bookedDates_lavender', JSON.stringify(lavenderDates));
+      } catch (error) {
+        console.error('Error reloading booked dates:', error);
+      }
     }
   };
 
