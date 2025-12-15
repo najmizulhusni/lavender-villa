@@ -56,9 +56,18 @@ Password: lavendervilla2025
 ## 💰 Pricing Management
 
 **Current Rates:**
-- Weekday: RM 1,500/night
-- Weekend: RM 1,800/night
-- Public Holidays: RM 1,800/night
+
+Weekdays:
+- 2H1M: RM 1,300
+- 3H2M: RM 2,400
+
+Weekend / Special Holiday / Public Holiday:
+- 2H1M: RM 1,590
+- 3H2M: RM 2,990
+
+Festive Season (Hari Raya, CNY, Deepavali, Christmas):
+- 2H1M: RM 1,700
+- 3H2M: RM 3,200
 
 To change pricing, contact developer to update in code.
 

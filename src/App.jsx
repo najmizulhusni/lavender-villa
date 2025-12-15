@@ -6,7 +6,7 @@ export default function HomestayExperience() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [selectedDates, setSelectedDates] = useState({ checkIn: '', checkOut: '' });
-  const [guests, setGuests] = useState(8);
+  const [guests, setGuests] = useState(15);
   const [scrollY, setScrollY] = useState(0);
   const [activeStory, setActiveStory] = useState(0);
   const [message, setMessage] = useState('');
@@ -336,7 +336,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
     setCustomerName('');
     setCustomerPhone('');
     setMessage('');
-    setGuests(8);
+    setGuests(15);
   };
 
   const calculateNights = () => {
@@ -1233,7 +1233,9 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
 
             {/* Info Text */}
             <div className="mt-6 text-center">
-              <p className="text-slate-500 text-sm">Hari Minggu: RM1,500/malam • Hujung Minggu: RM1,800/malam</p>
+              <p className="text-slate-500 text-sm">Weekday 2H1M: RM1,300 • 3H2M: RM2,400</p>
+              <p className="text-slate-500 text-sm">Weekend/SH/PH 2H1M: RM1,590 • 3H2M: RM2,990</p>
+              <p className="text-slate-500 text-sm">Festive Season 2H1M: RM1,700 • 3H2M: RM3,200</p>
               <p className="text-slate-400 text-xs mt-2">Pengesahan tempahan akan dihantar melalui WhatsApp</p>
             </div>
           </div>
@@ -1363,7 +1365,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
               </div>
               <h3 className="text-xl font-bold mb-2 text-slate-900">Sesuai untuk Keluarga</h3>
               <p className="text-slate-600 text-sm leading-relaxed">
-                4 bilik tidur yang selesa untuk 8 orang dengan kolam renang dan kawasan permainan kanak-kanak
+                5 bilik tidur dengan 4 bilik air yang selesa untuk 15 orang, maksimum 20 orang termasuk kanak-kanak berusia 5 tahun ke atas
               </p>
             </div>
             

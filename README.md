@@ -152,9 +152,17 @@ lavender-villa/
 
 ## 💰 Pricing Structure
 
-- **Weekday (Mon-Fri):** RM 1,500/night
-- **Weekend (Sat-Sun):** RM 1,800/night
-- **Public Holidays:** RM 1,800/night
+**Weekdays:**
+- 2H1M: RM 1,300
+- 3H2M: RM 2,400
+
+**Weekend / Special Holiday / Public Holiday:**
+- 2H1M: RM 1,590
+- 3H2M: RM 2,990
+
+**Festive Season (Hari Raya, CNY, Deepavali, Christmas):**
+- 2H1M: RM 1,700
+- 3H2M: RM 3,200
 
 ---
 
@@ -201,9 +209,10 @@ lavender-villa/
 
 **Check-in:** 3:00 PM
 **Check-out:** 12:00 PM
-**Capacity:** 8 guests
-**Bedrooms:** 4
-**Amenities:** Swimming pool, BBQ area, WiFi, Kitchen, Air conditioning
+**Capacity:** 15 guests (comfortable), maximum 20 guests (including children aged 5 and above)
+**Bedrooms:** 5
+**Bathrooms:** 4
+**Amenities:** Swimming pool, BBQ area, WiFi, Kitchen, Air conditioning, Children's play area
 
 ---
 
