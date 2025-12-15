@@ -1077,11 +1077,13 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                           // For checkout: must be AFTER check-in date (not same day or before)
                           const isBeforeOrSameAsCheckIn = selectedDates.checkIn && dateStr <= selectedDates.checkIn;
                           const isHoliday = isPublicHoliday(date);
-                          // Check if there are blocked dates between check-in and this date
+                          // Check if there are blocked dates between check-in and this date (exclusive of checkout date)
+                          // Checkout date CAN be booked - someone else checking in at 3pm, you checkout at 12pm
                           let hasBlockedBetween = false;
                           if (selectedDates.checkIn && dateStr > selectedDates.checkIn) {
                             const start = new Date(selectedDates.checkIn + 'T00:00:00');
                             const end = new Date(dateStr + 'T00:00:00');
+                            // Only check dates BETWEEN check-in and checkout (not including checkout)
                             for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
                               if (bookedDates.includes(formatDateToLocal(d))) {
                                 hasBlockedBetween = true;
@@ -1089,8 +1091,9 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                               }
                             }
                           }
-                          // Blocked dates are NOT available for checkout (fully blocked)
-                          const isBlocked = isBooked || hasBlockedBetween;
+                          // For checkout: only blocked if there are blocked dates IN BETWEEN
+                          // The checkout date itself can be booked (same-day turnover allowed)
+                          const isBlocked = hasBlockedBetween;
                           days.push(
                             <button
                               key={day}
@@ -1101,11 +1104,16 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                                 isInRange ? 'bg-purple-100 text-purple-700' :
                                 isBlocked ? 'bg-red-100 text-red-400 cursor-not-allowed' :
                                 isPast || isBeforeOrSameAsCheckIn ? 'text-slate-300 cursor-not-allowed' :
+                                isBooked ? 'bg-green-50 text-green-600 hover:bg-green-100 font-medium' :
                                 isHoliday ? 'bg-orange-50 text-orange-600 hover:bg-orange-100 font-medium' :
                                 'hover:bg-purple-100 text-slate-700'
                               }`}
+                              title={isBooked && !isBlocked ? 'Tersedia untuk checkout (turnover hari sama)' : ''}
                             >
                               {day}
+                              {isBooked && !isBlocked && !isPast && !isBeforeOrSameAsCheckIn && (
+                                <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-green-400 rounded-full"></span>
+                              )}
                               {isHoliday && !isBooked && !isPast && !isBeforeOrSameAsCheckIn && (
                                 <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-orange-400 rounded-full"></span>
                               )}
@@ -1116,10 +1124,16 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                       })()}
                     </div>
                     {/* Legend */}
-                    <div className="mt-3 pt-2 border-t border-slate-100 flex items-center justify-center gap-4 text-xs">
+                    <div className="mt-3 pt-2 border-t border-slate-100 flex flex-wrap items-center justify-center gap-3 text-xs">
                       <div className="flex items-center gap-1.5">
                         <span className="w-4 h-4 bg-red-100 rounded"></span>
                         <span className="text-slate-600">Tidak Tersedia</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-4 h-4 bg-green-50 rounded relative">
+                          <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-green-400 rounded-full"></span>
+                        </span>
+                        <span className="text-slate-600">Checkout OK</span>
                       </div>
                       <div className="flex items-center gap-1.5">
                         <span className="w-4 h-4 bg-orange-50 rounded relative">
