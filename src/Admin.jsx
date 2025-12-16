@@ -753,8 +753,12 @@ export default function Admin() {
     '2026-12-24', '2026-12-25' // Christmas 2026
   ];
 
-  // Calculate price for add booking
-  const calculateAddBookingPrice = (checkIn, checkOut) => {
+  // Calculate price for add booking - ONLY for Lavender Villa
+  // Other villas require manual price input
+  const calculateAddBookingPrice = (checkIn, checkOut, propertyId) => {
+    // Only auto-calculate for Lavender Villa
+    if (propertyId !== 'lavender') return 0;
+    
     if (!checkIn || !checkOut) return 0;
     const start = new Date(checkIn);
     const end = new Date(checkOut);
@@ -2467,7 +2471,6 @@ export default function Admin() {
                                   type="button"
                                   disabled={isPast || isBooked}
                                   onClick={() => {
-                                    const price = calculateAddBookingPrice(dateStr, newBooking.checkOut);
                                     setNewBooking({...newBooking, checkIn: dateStr, checkOut: '', total: 0});
                                     setAddBookingCalendar('checkOut');
                                   }}
@@ -2545,7 +2548,7 @@ export default function Admin() {
                                   type="button"
                                   disabled={isBeforeCheckIn || hasBlockedBetween}
                                   onClick={() => {
-                                    const price = calculateAddBookingPrice(newBooking.checkIn, dateStr);
+                                    const price = calculateAddBookingPrice(newBooking.checkIn, dateStr, newBooking.property);
                                     setNewBooking({...newBooking, checkOut: dateStr, total: price});
                                     setAddBookingCalendar(null);
                                   }}
