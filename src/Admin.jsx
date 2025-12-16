@@ -27,28 +27,65 @@ export default function Admin() {
   // Check if already logged in
   useEffect(() => {
     const session = sessionStorage.getItem('adminLoggedIn');
-    if (session === 'true') {
-      setIsLoggedIn(true);
+    const sessionTime = sessionStorage.getItem('adminSessionTime');
+    const now = Date.now();
+    
+    // Session timeout: 30 minutes
+    if (session === 'true' && sessionTime) {
+      const elapsed = now - parseInt(sessionTime);
+      if (elapsed > 30 * 60 * 1000) {
+        // Session expired
+        sessionStorage.removeItem('adminLoggedIn');
+        sessionStorage.removeItem('adminSessionTime');
+        sessionStorage.removeItem('adminUser');
+        setIsLoggedIn(false);
+      } else {
+        setIsLoggedIn(true);
+      }
     }
   }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    
+    // Rate limiting: max 5 attempts per 15 minutes
+    const loginAttempts = JSON.parse(localStorage.getItem('adminLoginAttempts') || '[]');
+    const now = Date.now();
+    const recentAttempts = loginAttempts.filter(time => now - time < 15 * 60 * 1000);
+    
+    if (recentAttempts.length >= 5) {
+      setLoginError('Terlalu banyak percubaan login. Sila cuba lagi dalam 15 minit');
+      return;
+    }
+    
     try {
       const admin = await adminLogin(username, password);
       setIsLoggedIn(true);
       sessionStorage.setItem('adminLoggedIn', 'true');
+      sessionStorage.setItem('adminSessionTime', Date.now().toString());
       sessionStorage.setItem('adminUser', JSON.stringify(admin));
       setLoginError('');
+      setUsername('');
+      setPassword('');
+      // Clear login attempts on successful login
+      localStorage.removeItem('adminLoginAttempts');
     } catch (error) {
       // Fallback to localStorage if Supabase fails
       const storedPassword = localStorage.getItem('adminPassword') || 'lavendervilla2025';
       if (username === 'admin' && password === storedPassword) {
         setIsLoggedIn(true);
         sessionStorage.setItem('adminLoggedIn', 'true');
+        sessionStorage.setItem('adminSessionTime', Date.now().toString());
         setLoginError('');
+        setUsername('');
+        setPassword('');
+        // Clear login attempts on successful login
+        localStorage.removeItem('adminLoginAttempts');
       } else {
-        setLoginError(error.message || 'Nama pengguna atau kata laluan salah');
+        // Record failed attempt
+        recentAttempts.push(now);
+        localStorage.setItem('adminLoginAttempts', JSON.stringify(recentAttempts));
+        setLoginError('Nama pengguna atau kata laluan salah');
       }
     }
   };
@@ -110,6 +147,10 @@ export default function Admin() {
   const handleLogout = () => {
     setIsLoggedIn(false);
     sessionStorage.removeItem('adminLoggedIn');
+    sessionStorage.removeItem('adminSessionTime');
+    sessionStorage.removeItem('adminUser');
+    setUsername('');
+    setPassword('');
   };
   
   const properties = [

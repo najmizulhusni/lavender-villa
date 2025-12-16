@@ -1485,7 +1485,6 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                 <li><button onClick={() => handleScrollTo('spaces')} className="hover:text-purple-400 transition">Ruang</button></li>
                 <li><button onClick={() => handleScrollTo('booking')} className="hover:text-purple-400 transition">Tempah Sekarang</button></li>
                 <li><a href="/faq" className="hover:text-purple-400 transition">FAQ</a></li>
-                <li><a href="/admin" className="hover:text-purple-400 transition">Admin</a></li>
               </ul>
             </div>
 
