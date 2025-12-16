@@ -158,7 +158,6 @@ export default function FAQ() {
                 <li><a href="/" className="hover:text-purple-400 transition">Ruang</a></li>
                 <li><a href="/" className="hover:text-purple-400 transition">Tempah Sekarang</a></li>
                 <li><a href="/faq" className="hover:text-purple-400 transition">FAQ</a></li>
-                <li><a href="/admin" className="hover:text-purple-400 transition">Admin</a></li>
               </ul>
             </div>
 
