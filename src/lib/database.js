@@ -128,6 +128,25 @@ export async function getBookedDates(propertySlug = 'lavender') {
   return Array.from(bookedDates).sort();
 }
 
+// Get only manually blocked dates (Cuti/Tutup) - these block both check-in AND check-out
+export async function getManuallyBlockedDates(propertySlug = 'lavender') {
+  const { data: property } = await supabase
+    .from('properties')
+    .select('id')
+    .eq('slug', propertySlug)
+    .single();
+
+  if (!property) return [];
+
+  const { data: blocked, error } = await supabase
+    .from('blocked_dates')
+    .select('blocked_date')
+    .eq('property_id', property.id);
+
+  if (error) throw error;
+  return blocked?.map(b => b.blocked_date) || [];
+}
+
 // ==================== BLOCKED DATES ====================
 
 export async function addBlockedDate(propertySlug, date, reason = '') {

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Wifi, Coffee, Tv, Wind, MapPin, Star, X, Play, Phone, CheckCircle, Users, Sparkles, Moon, Sun, Cloud, Instagram, Mic, ChevronLeft, ChevronRight, Calendar } from 'lucide-react';
-import { getBookedDates, getPublicHolidays, createBooking, getProperty } from './lib/database';
+import { getBookedDates, getPublicHolidays, createBooking, getProperty, getManuallyBlockedDates } from './lib/database';
 
 export default function HomestayExperience() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -14,6 +14,7 @@ export default function HomestayExperience() {
   const [showCalendar, setShowCalendar] = useState(null);
   const [calendarMonth, setCalendarMonth] = useState(new Date());
   const [bookedDates, setBookedDates] = useState([]);
+  const [manuallyBlockedDates, setManuallyBlockedDates] = useState([]); // Cuti/Tutup dates - fully blocked
   const [customerName, setCustomerName] = useState('');
   const [customerPhone, setCustomerPhone] = useState('');
   const [showAlternatives, setShowAlternatives] = useState(false);
@@ -32,6 +33,10 @@ export default function HomestayExperience() {
         const dates = await getBookedDates('lavender');
         setBookedDates(dates);
         
+        // Load manually blocked dates (Cuti/Tutup) - these block both check-in AND check-out
+        const manualBlocked = await getManuallyBlockedDates('lavender');
+        setManuallyBlockedDates(manualBlocked);
+        
         // Load public holidays from Supabase
         const holidays = await getPublicHolidays();
         setPublicHolidaysList(holidays);
@@ -46,7 +51,11 @@ export default function HomestayExperience() {
         const manualBlocked = localStorage.getItem('manualBlocked_lavender');
         let allBlockedDates = [];
         if (savedDates) allBlockedDates = [...JSON.parse(savedDates)];
-        if (manualBlocked) allBlockedDates = [...new Set([...allBlockedDates, ...JSON.parse(manualBlocked)])];
+        if (manualBlocked) {
+          const manualBlockedArr = JSON.parse(manualBlocked);
+          allBlockedDates = [...new Set([...allBlockedDates, ...manualBlockedArr])];
+          setManuallyBlockedDates(manualBlockedArr);
+        }
         setBookedDates(allBlockedDates.sort());
       }
     };
@@ -1084,8 +1093,11 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                           // For checkout: must be AFTER check-in date (not same day or before)
                           const isBeforeOrSameAsCheckIn = selectedDates.checkIn && dateStr <= selectedDates.checkIn;
                           const isHoliday = isPublicHoliday(date);
+                          // Check if this date is manually blocked (Cuti/Tutup) - NO checkout allowed
+                          const isManuallyBlocked = manuallyBlockedDates.includes(dateStr);
                           // Check if there are blocked dates between check-in and this date (exclusive of checkout date)
-                          // Checkout date CAN be booked - someone else checking in at 3pm, you checkout at 12pm
+                          // Checkout date CAN be booked (from paid bookings) - someone else checking in at 3pm, you checkout at 12pm
+                          // BUT manually blocked dates (Cuti/Tutup) block BOTH check-in AND check-out
                           let hasBlockedBetween = false;
                           if (selectedDates.checkIn && dateStr > selectedDates.checkIn) {
                             const start = new Date(selectedDates.checkIn + 'T00:00:00');
@@ -1098,9 +1110,9 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                               }
                             }
                           }
-                          // For checkout: only blocked if there are blocked dates IN BETWEEN
-                          // The checkout date itself can be booked (same-day turnover allowed)
-                          const isBlocked = hasBlockedBetween;
+                          // For checkout: blocked if manually blocked OR has blocked dates in between
+                          // Manually blocked = Cuti/Tutup (fully blocked, no check-in or check-out)
+                          const isBlocked = isManuallyBlocked || hasBlockedBetween;
                           days.push(
                             <button
                               key={day}
@@ -1109,16 +1121,17 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                               className={`p-2 text-sm rounded-lg transition relative group/day ${
                                 isSelected ? 'bg-purple-500 text-white font-bold' :
                                 isInRange ? 'bg-purple-100 text-purple-700' :
+                                isManuallyBlocked ? 'bg-red-100 text-red-400 cursor-not-allowed' :
                                 isBlocked ? 'bg-red-100 text-red-400 cursor-not-allowed' :
                                 isPast || isBeforeOrSameAsCheckIn ? 'text-slate-300 cursor-not-allowed' :
                                 isBooked ? 'bg-green-50 text-green-600 hover:bg-green-100 font-medium' :
                                 isHoliday ? 'bg-orange-50 text-orange-600 hover:bg-orange-100 font-medium' :
                                 'hover:bg-purple-100 text-slate-700'
                               }`}
-                              title={isBooked && !isBlocked ? 'Boleh checkout hari ini' : ''}
+                              title={isManuallyBlocked ? 'Cuti/Tutup - tidak boleh checkout' : (isBooked && !isBlocked ? 'Boleh checkout hari ini' : '')}
                             >
                               {day}
-                              {isBooked && !isBlocked && !isPast && !isBeforeOrSameAsCheckIn && (
+                              {isBooked && !isBlocked && !isManuallyBlocked && !isPast && !isBeforeOrSameAsCheckIn && (
                                 <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-green-400 rounded-full"></span>
                               )}
                               {isHoliday && !isBooked && !isPast && !isBeforeOrSameAsCheckIn && (
