@@ -1108,7 +1108,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                                 isHoliday ? 'bg-orange-50 text-orange-600 hover:bg-orange-100 font-medium' :
                                 'hover:bg-purple-100 text-slate-700'
                               }`}
-                              title={isBooked && !isBlocked ? 'Tersedia untuk checkout (turnover hari sama)' : ''}
+                              title={isBooked && !isBlocked ? 'Boleh checkout hari ini' : ''}
                             >
                               {day}
                               {isBooked && !isBlocked && !isPast && !isBeforeOrSameAsCheckIn && (
@@ -1133,7 +1133,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                         <span className="w-4 h-4 bg-green-50 rounded relative">
                           <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-green-400 rounded-full"></span>
                         </span>
-                        <span className="text-slate-600">Checkout OK</span>
+                        <span className="text-slate-600">Boleh Checkout</span>
                       </div>
                       <div className="flex items-center gap-1.5">
                         <span className="w-4 h-4 bg-orange-50 rounded relative">
