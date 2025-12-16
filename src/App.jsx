@@ -1337,6 +1337,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
             <div className="mt-6 text-center space-y-1">
               <div className="bg-slate-50 rounded-lg p-3">
                 <p className="text-slate-700 text-xs font-semibold mb-2">Harga Pakej</p>
+                <p className="text-purple-600 text-xs mb-2 font-medium">Min 3H2M untuk Weekend & Cuti Sekolah</p>
                 <div className="grid grid-cols-3 gap-2 text-xs">
                   <div className="text-center">
                     <p className="text-slate-500 font-medium">Weekday</p>
