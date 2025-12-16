@@ -22,6 +22,7 @@ export default function HomestayExperience() {
   const [property, setProperty] = useState(null);
   const [showBookingSuccess, setShowBookingSuccess] = useState(false);
   const [bookingDetails, setBookingDetails] = useState(null);
+  const [honeypot, setHoneypot] = useState(''); // Anti-bot honeypot field
 
   // Load data from Supabase
   useEffect(() => {
@@ -150,6 +151,12 @@ export default function HomestayExperience() {
   );
 
   const handleBooking = async () => {
+    // Honeypot check - if filled, it's a bot
+    if (honeypot) {
+      console.log('Bot detected via honeypot');
+      return;
+    }
+
     // Rate limiting - prevent spam (max 3 bookings per hour)
     const lastBookingTime = localStorage.getItem('lastBookingTime');
     const bookingCount = localStorage.getItem('bookingCount') || '0';
@@ -1183,6 +1190,20 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                   </div>
                 )}
               </div>
+            </div>
+
+            {/* Honeypot field - hidden from real users, bots will fill it */}
+            <div className="absolute -left-[9999px] opacity-0 h-0 overflow-hidden" aria-hidden="true">
+              <label htmlFor="website">Website</label>
+              <input 
+                type="text"
+                id="website"
+                name="website"
+                value={honeypot}
+                onChange={(e) => setHoneypot(e.target.value)}
+                tabIndex={-1}
+                autoComplete="off"
+              />
             </div>
 
             {/* Name and Phone */}
