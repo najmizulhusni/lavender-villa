@@ -1754,20 +1754,31 @@ export default function Admin() {
             {/* Filter Panel */}
             <div className="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-sm mb-6">
               <div className="flex flex-col sm:flex-row sm:items-end gap-4">
-                {/* Villa Dropdown */}
-                <div className="flex-1">
-                  <label className="block text-slate-500 text-xs mb-2 font-medium">Pilih Villa / Homestay</label>
-                  <select
-                    value={activeTab}
-                    onChange={(e) => setActiveTab(e.target.value)}
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-sm font-semibold focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition"
+                {/* Villa Dropdown - Custom styled like dashboard/bookings */}
+                <div className="flex-1 relative">
+                  <label className="block text-slate-500 text-xs mb-1.5 font-medium">Villa / Homestay</label>
+                  <button
+                    onClick={() => setShowVillaDropdown(showVillaDropdown === 'calendar' ? null : 'calendar')}
+                    className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-base font-medium focus:outline-none focus:border-purple-400 transition text-left flex items-center justify-between"
                   >
-                    {properties.map(p => (
-                      <option key={p.id} value={p.id}>
-                        {p.name}
-                      </option>
-                    ))}
-                  </select>
+                    <span>{properties.find(p => p.id === activeTab)?.name || 'Pilih Villa'}</span>
+                    <ChevronRight className={`w-4 h-4 text-slate-400 transition-transform ${showVillaDropdown === 'calendar' ? 'rotate-90' : ''}`} />
+                  </button>
+                  
+                  {/* Custom Dropdown */}
+                  {showVillaDropdown === 'calendar' && (
+                    <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-slate-200 p-2 z-50 max-h-64 overflow-y-auto">
+                      {properties.map(p => (
+                        <button
+                          key={p.id}
+                          onClick={() => { setActiveTab(p.id); setShowVillaDropdown(null); }}
+                          className={`w-full px-3 py-2.5 rounded-lg text-left text-sm font-medium transition ${activeTab === p.id ? 'bg-purple-100 text-purple-700' : 'hover:bg-slate-50 text-slate-700'}`}
+                        >
+                          {p.name}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
                 
                 {/* Property Info */}
