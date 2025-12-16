@@ -59,7 +59,7 @@ export default function FAQ() {
     },
     {
       q: 'Apakah waktu check-in dan check-out?',
-      a: 'Check-in: 3 petang | Check-out: 11 pagi. Waktu lain boleh disesuaikan dengan menghubungi kami.'
+      a: 'Check-in: 3 petang | Check-out: 12 tengah hari. Waktu lain boleh disesuaikan dengan menghubungi kami.'
     },
 
     {
