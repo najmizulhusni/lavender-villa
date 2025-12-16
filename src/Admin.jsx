@@ -727,6 +727,8 @@ export default function Admin() {
   
   // Add booking modal state
   const [showAddBooking, setShowAddBooking] = useState(false);
+  const [addBookingCalendar, setAddBookingCalendar] = useState(null); // 'checkIn' or 'checkOut'
+  const [addBookingMonth, setAddBookingMonth] = useState(new Date());
   const [newBooking, setNewBooking] = useState({
     name: '',
     phone: '',
@@ -738,6 +740,57 @@ export default function Admin() {
     message: '',
     status: 'pending'
   });
+
+  // Festive dates for pricing
+  const festiveDates = [
+    '2025-03-30', '2025-03-31', '2025-04-01', // Hari Raya 2025
+    '2025-06-06', '2025-06-07', // Hari Raya Haji 2025
+    '2025-10-20', // Deepavali 2025
+    '2025-12-24', '2025-12-25', // Christmas 2025
+    '2026-01-29', '2026-01-30', // CNY 2026
+    '2026-03-20', '2026-03-21', '2026-03-22', // Hari Raya 2026
+    '2026-11-08', // Deepavali 2026
+    '2026-12-24', '2026-12-25' // Christmas 2026
+  ];
+
+  // Calculate price for add booking
+  const calculateAddBookingPrice = (checkIn, checkOut) => {
+    if (!checkIn || !checkOut) return 0;
+    const start = new Date(checkIn);
+    const end = new Date(checkOut);
+    const nights = Math.round((end - start) / (1000 * 60 * 60 * 24));
+    if (nights <= 0) return 0;
+
+    let hasFestive = false;
+    let hasWeekendOrHoliday = false;
+
+    for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
+      const dateStr = formatDateStr(d);
+      if (festiveDates.includes(dateStr)) hasFestive = true;
+      const dayOfWeek = d.getDay();
+      if (dayOfWeek === 0 || dayOfWeek === 6 || publicHolidays[dateStr]) hasWeekendOrHoliday = true;
+    }
+
+    if (hasFestive) {
+      if (nights === 1) return 1700;
+      if (nights === 2) return 3200;
+      return 3200 + ((nights - 2) * 1700);
+    }
+    if (hasWeekendOrHoliday) {
+      if (nights === 1) return 1590;
+      if (nights === 2) return 2990;
+      return 2990 + ((nights - 2) * 1590);
+    }
+    if (nights === 1) return 1300;
+    if (nights === 2) return 2400;
+    return 2400 + ((nights - 2) * 1300);
+  };
+
+  // Check if date is booked for add booking modal
+  const isDateBookedForAdd = (date, propertyId) => {
+    const dateStr = formatDateStr(date);
+    return (bookedDates[propertyId] || []).includes(dateStr);
+  };
 
   // Add new booking
   const handleAddBooking = () => {
@@ -2374,32 +2427,167 @@ export default function Admin() {
                   <CalendarDays className="w-4 h-4 text-purple-500" /> Butiran Tempahan
                 </h3>
                 <div className="grid grid-cols-2 gap-3 mb-3">
-                  <div>
+                  {/* Check In with Calendar */}
+                  <div className="relative">
                     <label className="block text-slate-500 text-xs mb-1">Daftar Masuk</label>
-                    <input
-                      type="date"
-                      value={newBooking.checkIn}
-                      onChange={(e) => setNewBooking({...newBooking, checkIn: e.target.value})}
-                      className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition text-sm"
-                    />
+                    <button
+                      type="button"
+                      onClick={() => setAddBookingCalendar(addBookingCalendar === 'checkIn' ? null : 'checkIn')}
+                      className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-left focus:outline-none focus:border-purple-400 transition text-sm flex items-center justify-between"
+                    >
+                      <span className={newBooking.checkIn ? 'text-slate-900' : 'text-slate-400'}>
+                        {newBooking.checkIn ? new Date(newBooking.checkIn + 'T00:00:00').toLocaleDateString('ms-MY', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Pilih tarikh'}
+                      </span>
+                      <CalendarDays className="w-4 h-4 text-slate-400" />
+                    </button>
+                    {addBookingCalendar === 'checkIn' && (
+                      <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-slate-200 p-3 z-50">
+                        <div className="flex items-center justify-between mb-3">
+                          <button onClick={() => setAddBookingMonth(new Date(addBookingMonth.getFullYear(), addBookingMonth.getMonth() - 1))} className="p-1 hover:bg-slate-100 rounded-lg"><ChevronLeft className="w-4 h-4" /></button>
+                          <span className="font-semibold text-sm">{addBookingMonth.toLocaleDateString('ms-MY', { month: 'long', year: 'numeric' })}</span>
+                          <button onClick={() => setAddBookingMonth(new Date(addBookingMonth.getFullYear(), addBookingMonth.getMonth() + 1))} className="p-1 hover:bg-slate-100 rounded-lg"><ChevronRight className="w-4 h-4" /></button>
+                        </div>
+                        <div className="grid grid-cols-7 gap-1 mb-1">
+                          {['A', 'I', 'S', 'R', 'K', 'J', 'S'].map(d => <div key={d} className="text-center text-xs text-slate-400 py-1">{d}</div>)}
+                        </div>
+                        <div className="grid grid-cols-7 gap-1">
+                          {(() => {
+                            const { daysInMonth, startingDay } = getDaysInMonth(addBookingMonth);
+                            const days = [];
+                            for (let i = 0; i < startingDay; i++) days.push(<div key={`e-${i}`} />);
+                            for (let day = 1; day <= daysInMonth; day++) {
+                              const date = new Date(addBookingMonth.getFullYear(), addBookingMonth.getMonth(), day);
+                              const dateStr = formatDateStr(date);
+                              const isPast = date < new Date(new Date().setHours(0,0,0,0));
+                              const isBooked = isDateBookedForAdd(date, newBooking.property);
+                              const holidayName = isPublicHoliday(date);
+                              days.push(
+                                <button
+                                  key={day}
+                                  type="button"
+                                  disabled={isPast || isBooked}
+                                  onClick={() => {
+                                    const price = calculateAddBookingPrice(dateStr, newBooking.checkOut);
+                                    setNewBooking({...newBooking, checkIn: dateStr, checkOut: '', total: 0});
+                                    setAddBookingCalendar('checkOut');
+                                  }}
+                                  className={`p-1.5 text-xs rounded-lg transition relative ${
+                                    newBooking.checkIn === dateStr ? 'bg-purple-500 text-white font-bold' :
+                                    isBooked ? 'bg-red-100 text-red-400 cursor-not-allowed' :
+                                    isPast ? 'text-slate-300 cursor-not-allowed' :
+                                    holidayName ? 'bg-purple-50 text-purple-600' :
+                                    'hover:bg-purple-100 text-slate-700'
+                                  }`}
+                                  title={holidayName || ''}
+                                >
+                                  {day}
+                                  {holidayName && !isBooked && <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-purple-500 rounded-full"></span>}
+                                </button>
+                              );
+                            }
+                            return days;
+                          })()}
+                        </div>
+                        <div className="mt-2 pt-2 border-t flex gap-2 text-xs">
+                          <span className="flex items-center gap-1"><span className="w-3 h-3 bg-red-100 rounded"></span>Ditempah</span>
+                          <span className="flex items-center gap-1"><span className="w-3 h-3 bg-purple-50 rounded border border-purple-200"></span>Cuti Umum</span>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                  <div>
+                  {/* Check Out with Calendar */}
+                  <div className="relative">
                     <label className="block text-slate-500 text-xs mb-1">Daftar Keluar</label>
-                    <input
-                      type="date"
-                      value={newBooking.checkOut}
-                      onChange={(e) => setNewBooking({...newBooking, checkOut: e.target.value})}
-                      className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition text-sm"
-                    />
+                    <button
+                      type="button"
+                      onClick={() => newBooking.checkIn && setAddBookingCalendar(addBookingCalendar === 'checkOut' ? null : 'checkOut')}
+                      className={`w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-left focus:outline-none focus:border-purple-400 transition text-sm flex items-center justify-between ${!newBooking.checkIn ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    >
+                      <span className={newBooking.checkOut ? 'text-slate-900' : 'text-slate-400'}>
+                        {newBooking.checkOut ? new Date(newBooking.checkOut + 'T00:00:00').toLocaleDateString('ms-MY', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Pilih tarikh'}
+                      </span>
+                      <CalendarDays className="w-4 h-4 text-slate-400" />
+                    </button>
+                    {addBookingCalendar === 'checkOut' && newBooking.checkIn && (
+                      <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-slate-200 p-3 z-50">
+                        <div className="flex items-center justify-between mb-3">
+                          <button onClick={() => setAddBookingMonth(new Date(addBookingMonth.getFullYear(), addBookingMonth.getMonth() - 1))} className="p-1 hover:bg-slate-100 rounded-lg"><ChevronLeft className="w-4 h-4" /></button>
+                          <span className="font-semibold text-sm">{addBookingMonth.toLocaleDateString('ms-MY', { month: 'long', year: 'numeric' })}</span>
+                          <button onClick={() => setAddBookingMonth(new Date(addBookingMonth.getFullYear(), addBookingMonth.getMonth() + 1))} className="p-1 hover:bg-slate-100 rounded-lg"><ChevronRight className="w-4 h-4" /></button>
+                        </div>
+                        <div className="grid grid-cols-7 gap-1 mb-1">
+                          {['A', 'I', 'S', 'R', 'K', 'J', 'S'].map(d => <div key={d} className="text-center text-xs text-slate-400 py-1">{d}</div>)}
+                        </div>
+                        <div className="grid grid-cols-7 gap-1">
+                          {(() => {
+                            const { daysInMonth, startingDay } = getDaysInMonth(addBookingMonth);
+                            const days = [];
+                            for (let i = 0; i < startingDay; i++) days.push(<div key={`e-${i}`} />);
+                            for (let day = 1; day <= daysInMonth; day++) {
+                              const date = new Date(addBookingMonth.getFullYear(), addBookingMonth.getMonth(), day);
+                              const dateStr = formatDateStr(date);
+                              const isBeforeCheckIn = dateStr <= newBooking.checkIn;
+                              let hasBlockedBetween = false;
+                              if (dateStr > newBooking.checkIn) {
+                                const start = new Date(newBooking.checkIn + 'T00:00:00');
+                                const end = new Date(dateStr + 'T00:00:00');
+                                for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
+                                  if ((bookedDates[newBooking.property] || []).includes(formatDateStr(d))) {
+                                    hasBlockedBetween = true;
+                                    break;
+                                  }
+                                }
+                              }
+                              const holidayName = isPublicHoliday(date);
+                              days.push(
+                                <button
+                                  key={day}
+                                  type="button"
+                                  disabled={isBeforeCheckIn || hasBlockedBetween}
+                                  onClick={() => {
+                                    const price = calculateAddBookingPrice(newBooking.checkIn, dateStr);
+                                    setNewBooking({...newBooking, checkOut: dateStr, total: price});
+                                    setAddBookingCalendar(null);
+                                  }}
+                                  className={`p-1.5 text-xs rounded-lg transition relative ${
+                                    newBooking.checkOut === dateStr ? 'bg-purple-500 text-white font-bold' :
+                                    hasBlockedBetween ? 'bg-red-100 text-red-400 cursor-not-allowed' :
+                                    isBeforeCheckIn ? 'text-slate-300 cursor-not-allowed' :
+                                    holidayName ? 'bg-purple-50 text-purple-600' :
+                                    'hover:bg-purple-100 text-slate-700'
+                                  }`}
+                                  title={holidayName || ''}
+                                >
+                                  {day}
+                                  {holidayName && !hasBlockedBetween && !isBeforeCheckIn && <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-purple-500 rounded-full"></span>}
+                                </button>
+                              );
+                            }
+                            return days;
+                          })()}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
+                {/* Price Summary */}
+                {newBooking.checkIn && newBooking.checkOut && (
+                  <div className="bg-purple-50 rounded-xl p-3 mb-3 border border-purple-200">
+                    <div className="flex justify-between items-center">
+                      <span className="text-purple-700 text-sm">
+                        {Math.round((new Date(newBooking.checkOut) - new Date(newBooking.checkIn)) / (1000 * 60 * 60 * 24))} malam
+                      </span>
+                      <span className="text-purple-700 font-bold">RM {newBooking.total.toLocaleString()}</span>
+                    </div>
+                  </div>
+                )}
                 <div className="grid grid-cols-3 gap-3">
                   <div>
                     <label className="block text-slate-500 text-xs mb-1">Tetamu</label>
                     <input
                       type="number"
                       min="1"
-                      max="30"
+                      max="20"
                       value={newBooking.guests}
                       onChange={(e) => setNewBooking({...newBooking, guests: parseInt(e.target.value) || 1})}
                       className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition text-sm text-center"
@@ -2412,7 +2600,7 @@ export default function Admin() {
                       min="0"
                       value={newBooking.total}
                       onChange={(e) => setNewBooking({...newBooking, total: parseInt(e.target.value) || 0})}
-                      placeholder="1300"
+                      placeholder="Auto"
                       className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 placeholder-slate-300 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition text-sm text-center"
                     />
                   </div>

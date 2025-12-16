@@ -1,220 +1,266 @@
-# Lavender Villa Melaka - Technical Documentation
+# LAVENDER VILLA MELAKA - PROJECT DOCUMENTATION
 
 ## Project Overview
-Lavender Villa Melaka is a luxury homestay booking website built with modern web technologies. The platform provides a seamless booking experience for families, corporate groups, and special events in Bemban, Melaka.
+
+**Project Name:** Lavender Villa Melaka Website & Booking System
+**Developer:** Muhammad Najmi Zulhusni Bin Mohd Sapuan
+**Development Period:** December 2025
+**Status:** Production Ready
 
 ---
 
-## Technical Stack
+## Project Summary
 
-### Frontend
-- **React 18.2.0** - UI library for building interactive components
-- **React Router DOM 6.14.0** - Client-side routing for multi-page navigation
-- **Tailwind CSS 3.3.0** - Utility-first CSS framework for responsive design
-- **Lucide React 0.263.1** - Icon library for UI elements
-- **Vite 7.2.7** - Fast build tool and development server
-
-### Development Tools
-- **PostCSS 8.4.24** - CSS transformation tool
-- **Autoprefixer 10.4.14** - Automatic vendor prefixing
-- **Node.js** - JavaScript runtime
-
-### Deployment & Hosting
-- **Vite Build** - Optimized production build
-- **Static hosting** - Can be deployed to Vercel, Netlify, or any static host
+A complete villa booking website developed for Lavender Villa Melaka, a premium homestay located in Bemban, Melaka. The system includes a public-facing website for customers to view property details and make booking inquiries, plus a comprehensive admin dashboard for property management.
 
 ---
 
-## Project Structure
+## Technology Stack
+
+| Category | Technology |
+|----------|------------|
+| Frontend Framework | React 18 with Vite |
+| Styling | Tailwind CSS |
+| Icons | Lucide React |
+| Database | Supabase (PostgreSQL) |
+| Hosting | Vercel |
+| Analytics | Google Analytics (G-6SZSRTK181) |
+| Performance | Vercel Speed Insights |
+
+---
+
+## Features Developed
+
+### Public Website
+
+1. **Homepage**
+   - Hero section with image carousel
+   - Property information and amenities
+   - Guest reviews section
+   - Location with Google Maps integration
+   - Interactive booking form with calendar
+   - WhatsApp integration for booking inquiries
+   - Floating WhatsApp button
+
+2. **Booking System**
+   - Date selection with availability calendar
+   - Dynamic pricing (Weekday/Weekend/Festive)
+   - Guest count selection
+   - Real-time availability checking
+   - WhatsApp booking submission
+   - Booking confirmation modal
+
+3. **FAQ Page**
+   - Expandable FAQ sections
+   - Location map
+   - Contact information
+
+### Admin Dashboard
+
+1. **Authentication**
+   - Secure login system
+   - Session management (30-minute timeout)
+   - Password reset functionality
+   - Rate limiting (5 attempts per 15 minutes)
+
+2. **Dashboard View**
+   - Booking statistics overview
+   - Revenue analytics
+   - Monthly booking chart
+   - Quick status indicators
+
+3. **Calendar Management**
+   - Visual calendar with booking status
+   - Manual date blocking (Cuti/Tutup)
+   - Public holiday display
+   - Multi-property support (7 villas)
+
+4. **Booking Management**
+   - View all bookings
+   - Filter by status/property/date
+   - Update booking status
+   - Generate PDF receipts
+   - WhatsApp message templates
+   - Add manual bookings
+
+---
+
+## Pricing Structure Implemented
+
+| Package | Weekday | Weekend/PH | Festive |
+|---------|---------|------------|---------|
+| 2H1M (2 Hari 1 Malam) | RM 1,300 | RM 1,590 | RM 1,700 |
+| 3H2M (3 Hari 2 Malam) | RM 2,400 | RM 2,990 | RM 3,200 |
+
+**Festive Dates:** Hari Raya, CNY, Deepavali, Christmas (actual days only)
+
+---
+
+## Security Features
+
+1. **Frontend Security**
+   - Content Security Policy (CSP)
+   - X-Frame-Options protection
+   - XSS Protection headers
+   - Input validation and sanitization
+   - Honeypot anti-bot protection
+   - Rate limiting on bookings
+
+2. **Admin Security**
+   - Hidden admin access (no public link)
+   - Login rate limiting
+   - Session timeout (30 minutes)
+   - Password reset with verification code
+   - Secure session management
+
+3. **Database Security**
+   - Row Level Security (RLS) enabled
+   - Anon key with limited permissions
+   - Secure API endpoints
+
+---
+
+## SEO Optimization
+
+- Meta tags for search engines
+- Open Graph tags for social sharing
+- Twitter Card support
+- Structured data (Schema.org)
+- XML Sitemap
+- Robots.txt configuration
+- Canonical URLs
+- Malay language keywords
+- Geo-location meta tags
+
+---
+
+## Property Details
+
+**Lavender Villa Melaka**
+- Location: 47, Jalan Anjung Lavender 1, Taman Anjung Gapam, 77200 Bemban, Melaka
+- Capacity: 15 comfortable, 20 maximum (including children 5+)
+- Bedrooms: 5
+- Bathrooms: 4
+- Check-in: 3:00 PM
+- Check-out: 12:00 PM
+- Contact: +60 19 334 5686
+
+**Amenities:**
+- Private swimming pool (30x12x4 feet)
+- BBQ area
+- Full kitchen
+- WiFi 300Mbps
+- Smart TV 65" with Astro/Netflix/Disney+
+- Karaoke system
+- Children's play area
+- Parking for 3 cars
+
+---
+
+## Database Schema
+
+**Tables Created:**
+1. properties - Villa/homestay information
+2. bookings - Customer booking records
+3. blocked_dates - Manual date blocks
+4. public_holidays - Malaysian public holidays
+5. admin_users - Admin authentication
+6. whatsapp_templates - Message templates
+7. activity_logs - Admin activity tracking
+
+---
+
+## File Structure
 
 ```
 lavender-villa/
+├── public/
+│   ├── favicon.svg
+│   ├── sitemap.xml
+│   └── robots.txt
 ├── src/
-│   ├── App.jsx              # Main application component
-│   ├── FAQ.jsx              # FAQ page component
-│   ├── main.jsx             # React entry point with routing
-│   └── index.css            # Global styles
-├── index.html               # HTML entry point with security headers
-├── package.json             # Dependencies and scripts
-├── vite.config.js           # Vite configuration
-└── tailwind.config.js       # Tailwind CSS configuration
+│   ├── App.jsx          # Main website
+│   ├── Admin.jsx        # Admin dashboard
+│   ├── FAQ.jsx          # FAQ page
+│   ├── main.jsx         # App entry point
+│   ├── index.css        # Global styles
+│   └── lib/
+│       ├── supabase.js  # Supabase client
+│       └── database.js  # Database functions
+├── supabase/
+│   ├── schema.sql       # Database schema
+│   ├── seed.sql         # Initial data
+│   └── rls-security.sql # Security policies
+├── scripts/
+│   └── update-domain.sh # Domain update script
+├── index.html           # HTML entry point
+├── vite.config.js       # Vite configuration
+├── vercel.json          # Vercel configuration
+├── tailwind.config.js   # Tailwind configuration
+├── package.json         # Dependencies
+├── README.md            # Project readme
+├── QUICK_START.md       # User guide
+├── SECURITY.md          # Security documentation
+└── PROJECT_DOCUMENTATION.md # This file
 ```
 
 ---
 
-## Key Features Implemented
+## Deployment Information
 
-### 1. Responsive Design
-- Mobile-first approach with Tailwind CSS breakpoints
-- Fully responsive on all devices (mobile, tablet, desktop)
-- Optimized touch targets for mobile users
+**Live URL:** https://lavender-villa.vercel.app/
+**Admin URL:** https://lavender-villa.vercel.app/admin
+**Repository:** https://github.com/najmizulhusni/lavender-villa
 
-### 2. Booking System
-- Date picker for check-in and check-out
-- Guest count selector (1-20 guests)
-- Real-time pricing calculation
-- Special request/message field
-- WhatsApp integration for booking confirmation
-- Rate limiting (max 3 bookings per hour)
-- Form validation with user-friendly error messages
+**Hosting:** Vercel (Free Tier)
+- Automatic deployments from GitHub
+- Global CDN
+- Free SSL certificate
+- Edge caching
 
-### 3. Security Features
-- Content Security Policy (CSP) headers
-- XSS protection headers
-- Clickjacking prevention (X-Frame-Options)
-- Input sanitization and validation
-- Rate limiting on booking form
-- No known vulnerabilities (npm audit: 0 vulnerabilities)
-
-### 4. Multi-Language Support
-- Fully translated to Malay
-- Consistent terminology throughout
-- Malay error messages and validations
-
-### 5. Navigation & Routing
-- Floating navigation bar with liquid glass effect
-- Smooth scrolling between sections
-- FAQ page with expandable Q&A
-- Google Maps integration for location
-
-### 6. Performance Optimizations
-- Lazy loading for images
-- Optimized bundle size with Vite
-- Efficient React rendering
-- CSS-in-JS with Tailwind (no runtime overhead)
+**Database:** Supabase (Free Tier)
+- PostgreSQL database
+- Real-time subscriptions
+- Row Level Security
+- Auto backups
 
 ---
 
-## Future Enhancements
+## Admin Credentials
 
-### Phase 2 - Backend Integration
-- **Supabase PostgreSQL Database**
-  - Store booking requests
-  - Manage availability calendar
-  - Track guest information
-  - Analytics and reporting
+**Username:** admin
+**Default Password:** lavendervilla2025
+**Reset Code:** lavender2025
 
-### Phase 3 - Advanced Features
-- **Authentication System**
-  - User accounts for repeat bookers
-  - Booking history
-  - Saved preferences
-
-- **Payment Integration**
-  - Stripe or Xendit for online payments
-  - Automated invoice generation
-  - Payment confirmation emails
-
-- **Admin Dashboard**
-  - Booking management
-  - Availability calendar
-  - Guest communication
-  - Revenue analytics
-
-### Phase 4 - Marketing & Analytics
-- **Google Analytics Integration**
-  - Track user behavior
-  - Conversion tracking
-  - Traffic analysis
-
-- **Email Marketing**
-  - Booking confirmations
-  - Follow-up emails
-  - Special offers
-
-- **SEO Optimization**
-  - Meta tags optimization
-  - Structured data (Schema.org)
-  - Sitemap generation
+*Note: Password should be changed after first login*
 
 ---
 
-## Development Workflow
+## Future Enhancements (Recommended)
 
-### Local Development
-```bash
-npm install
-npm run dev
-```
-
-### Production Build
-```bash
-npm run build
-npm run preview
-```
-
-### Security Audit
-```bash
-npm audit
-npm audit fix --force
-```
+1. Add OG image for social media sharing
+2. Implement email notifications
+3. Add payment gateway integration
+4. Create mobile app version
+5. Add multi-language support
+6. Implement customer reviews system
 
 ---
 
-## Security Measures
+## Support & Maintenance
 
-### Implemented
-- ✅ Content Security Policy headers
-- ✅ XSS protection
-- ✅ CSRF token validation ready
-- ✅ Input sanitization
-- ✅ Rate limiting
-- ✅ HTTPS ready
-- ✅ No vulnerable dependencies
-
-### Recommended for Production
-- Enable HTTPS on hosting
-- Configure server-side CSP headers
-- Set up monitoring and logging
-- Regular security audits
-- Backup strategy
+For technical support or modifications:
+- Developer: Muhammad Najmi Zulhusni
+- Contact: [Your contact information]
 
 ---
 
-## Performance Metrics
+## Version History
 
-- **Bundle Size**: ~150KB (gzipped)
-- **First Contentful Paint**: <1s
-- **Time to Interactive**: <2s
-- **Lighthouse Score**: 90+
-
----
-
-## Browser Support
-
-- Chrome/Edge 90+
-- Firefox 88+
-- Safari 14+
-- Mobile browsers (iOS Safari, Chrome Mobile)
+| Version | Date | Changes |
+|---------|------|---------|
+| 1.0.0 | Dec 2025 | Initial release |
 
 ---
 
-## Contact & Support
-
-- **Phone**: +60 19 334 5686
-- **WhatsApp**: https://wa.me/60193345686
-- **Instagram**: @lavendervillamelaka
-- **Location**: Bemban, Melaka, Malaysia
-
----
-
-## Project Timeline
-
-- **Phase 1 (Completed)**: Frontend development and deployment
-- **Phase 2 (Q1 2026)**: Backend integration with Supabase
-- **Phase 3 (Q2 2026)**: Payment integration and admin dashboard
-- **Phase 4 (Q3 2026)**: Marketing and analytics
-
----
-
-## Team & Credits
-
-- **Frontend Development**: React, Tailwind CSS, Vite
-- **Design**: Responsive UI/UX with modern design patterns
-- **Security**: Industry best practices and OWASP guidelines
-- **Deployment**: Static hosting ready
-
----
-
-Generated: December 8, 2025
-Last Updated: December 8, 2025
+*Document Last Updated: December 2025*
