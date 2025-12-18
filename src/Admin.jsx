@@ -1925,18 +1925,18 @@ export default function Admin() {
                     key={day}
                     onClick={() => toggleDate(date)}
                     title={holidayName ? `${holidayName}${schoolHolidayName ? ' + ' + schoolHolidayName : ''}` : (schoolHolidayName || '')}
-                    className={`p-2 sm:p-4 text-xs sm:text-sm rounded-lg sm:rounded-xl transition font-medium relative ${
+                    className={`p-2 sm:p-4 text-xs sm:text-sm rounded-lg sm:rounded-xl transition-all duration-200 font-medium relative hover:scale-110 hover:shadow-lg hover:z-10 ${
                       isPaidBooking 
-                        ? 'bg-emerald-500 text-white' 
+                        ? 'bg-emerald-500 text-white hover:bg-emerald-600' 
                         : isManual
-                        ? 'bg-red-500 text-white'
+                        ? 'bg-red-500 text-white hover:bg-red-600'
                         : hasPublicAndSchool
-                        ? 'bg-gradient-to-br from-purple-100 to-sky-100 text-slate-700 border-2 border-purple-300'
+                        ? 'bg-gradient-to-br from-purple-100 to-sky-100 text-slate-700 border-2 border-purple-300 hover:from-purple-200 hover:to-sky-200 hover:border-purple-400'
                         : holidayName
-                        ? 'bg-purple-100 text-purple-700 border-2 border-purple-300'
+                        ? 'bg-purple-100 text-purple-700 border-2 border-purple-300 hover:bg-purple-200 hover:border-purple-400'
                         : schoolHolidayName
-                        ? 'bg-sky-100 text-sky-700 border-2 border-sky-300'
-                        : 'bg-slate-50 text-slate-700 hover:bg-slate-100'
+                        ? 'bg-sky-100 text-sky-700 border-2 border-sky-300 hover:bg-sky-200 hover:border-sky-400'
+                        : 'bg-slate-50 text-slate-700 hover:bg-red-100 hover:text-red-700 hover:border-2 hover:border-red-300'
                     }`}
                   >
                     {day}
