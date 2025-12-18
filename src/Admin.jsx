@@ -2071,6 +2071,12 @@ export default function Admin() {
                     })}
                   </div>
                 </div>
+                <div className="px-4 py-2 bg-purple-50 border-t border-purple-100">
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="w-3 h-3 bg-purple-100 rounded border-2 border-purple-300"></div>
+                    <p className="text-xs text-purple-600">Harga Weekend/PH dikenakan pada tarikh ini</p>
+                  </div>
+                </div>
               </div>
 
               {/* School Holidays */}
