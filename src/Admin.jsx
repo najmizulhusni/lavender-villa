@@ -2023,74 +2023,49 @@ export default function Admin() {
                     <Users className="w-4 h-4" />
                     Cuti Sekolah 2025/2026
                   </h3>
-                  <p className="text-orange-100 text-xs mt-0.5">Kumpulan B (Melaka)</p>
                 </div>
                 <div className="p-4 max-h-80 overflow-y-auto">
-                  <div className="space-y-3">
-                    {/* 2025 School Holidays */}
-                    <div className="mb-3">
-                      <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Sesi 2025/2026</p>
-                      <div className="space-y-2">
-                        <div className="bg-orange-50 rounded-lg p-2.5 border border-orange-100">
-                          <p className="text-sm font-medium text-slate-700">Cuti Penggal 1</p>
-                          <p className="text-xs text-orange-600">29 Mei - 9 Jun 2025</p>
-                        </div>
-                        <div className="bg-orange-50 rounded-lg p-2.5 border border-orange-100">
-                          <p className="text-sm font-medium text-slate-700">Cuti Penggal 2</p>
-                          <p className="text-xs text-orange-600">13 Sep - 21 Sep 2025</p>
-                        </div>
-                        <div className="bg-orange-50 rounded-lg p-2.5 border border-orange-100">
-                          <p className="text-sm font-medium text-slate-700">Cuti Akhir Tahun</p>
-                          <p className="text-xs text-orange-600">20 Dis 2025 - 11 Jan 2026</p>
-                        </div>
-                      </div>
+                  <div className="space-y-2">
+                    <div className="bg-orange-50 rounded-lg p-2.5 border border-orange-100">
+                      <p className="text-sm font-medium text-slate-700">Cuti Penggal 1</p>
+                      <p className="text-xs text-orange-600">29 Mei - 9 Jun 2025</p>
                     </div>
-                    
-                    {/* 2026 School Holidays */}
-                    <div className="mb-3">
-                      <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Sesi 2026</p>
-                      <div className="space-y-2">
-                        <div className="bg-orange-50 rounded-lg p-2.5 border border-orange-100">
-                          <p className="text-sm font-medium text-slate-700">Cuti Penggal 1</p>
-                          <p className="text-xs text-orange-600">21 Mac - 29 Mac 2026</p>
-                        </div>
-                        <div className="bg-orange-50 rounded-lg p-2.5 border border-orange-100">
-                          <p className="text-sm font-medium text-slate-700">Cuti Pertengahan Tahun</p>
-                          <p className="text-xs text-orange-600">23 Mei - 7 Jun 2026</p>
-                        </div>
-                        <div className="bg-orange-50 rounded-lg p-2.5 border border-orange-100">
-                          <p className="text-sm font-medium text-slate-700">Cuti Penggal 2</p>
-                          <p className="text-xs text-orange-600">29 Ogos - 6 Sep 2026</p>
-                        </div>
-                        <div className="bg-orange-50 rounded-lg p-2.5 border border-orange-100">
-                          <p className="text-sm font-medium text-slate-700">Cuti Akhir Tahun</p>
-                          <p className="text-xs text-orange-600">5 Dis - 31 Dis 2026</p>
-                        </div>
-                      </div>
+                    <div className="bg-orange-50 rounded-lg p-2.5 border border-orange-100">
+                      <p className="text-sm font-medium text-slate-700">Cuti Penggal 2</p>
+                      <p className="text-xs text-orange-600">13 Sep - 21 Sep 2025</p>
                     </div>
-
-                    {/* Festival School Holidays 2026 */}
-                    <div>
-                      <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Cuti Perayaan 2026</p>
-                      <div className="space-y-2">
-                        <div className="bg-red-50 rounded-lg p-2.5 border border-red-100">
-                          <p className="text-sm font-medium text-slate-700">Tahun Baru Cina</p>
-                          <p className="text-xs text-red-600">16 Feb - 20 Feb 2026</p>
-                        </div>
-                        <div className="bg-green-50 rounded-lg p-2.5 border border-green-100">
-                          <p className="text-sm font-medium text-slate-700">Hari Raya Aidilfitri</p>
-                          <p className="text-xs text-green-600">19 Mac - 22 Mac 2026</p>
-                        </div>
-                        <div className="bg-yellow-50 rounded-lg p-2.5 border border-yellow-100">
-                          <p className="text-sm font-medium text-slate-700">Deepavali</p>
-                          <p className="text-xs text-yellow-600">8 Nov - 10 Nov 2026</p>
-                        </div>
-                      </div>
+                    <div className="bg-orange-50 rounded-lg p-2.5 border border-orange-100">
+                      <p className="text-sm font-medium text-slate-700">Cuti Akhir Tahun</p>
+                      <p className="text-xs text-orange-600">20 Dis 2025 - 11 Jan 2026</p>
+                    </div>
+                    <div className="bg-orange-50 rounded-lg p-2.5 border border-orange-100">
+                      <p className="text-sm font-medium text-slate-700">Cuti Tahun Baru Cina</p>
+                      <p className="text-xs text-orange-600">16 Feb - 20 Feb 2026</p>
+                    </div>
+                    <div className="bg-orange-50 rounded-lg p-2.5 border border-orange-100">
+                      <p className="text-sm font-medium text-slate-700">Cuti Hari Raya / Penggal 1</p>
+                      <p className="text-xs text-orange-600">19 Mac - 29 Mac 2026</p>
+                    </div>
+                    <div className="bg-orange-50 rounded-lg p-2.5 border border-orange-100">
+                      <p className="text-sm font-medium text-slate-700">Cuti Pertengahan Tahun</p>
+                      <p className="text-xs text-orange-600">23 Mei - 7 Jun 2026</p>
+                    </div>
+                    <div className="bg-orange-50 rounded-lg p-2.5 border border-orange-100">
+                      <p className="text-sm font-medium text-slate-700">Cuti Penggal 2</p>
+                      <p className="text-xs text-orange-600">29 Ogos - 6 Sep 2026</p>
+                    </div>
+                    <div className="bg-orange-50 rounded-lg p-2.5 border border-orange-100">
+                      <p className="text-sm font-medium text-slate-700">Cuti Deepavali</p>
+                      <p className="text-xs text-orange-600">8 Nov - 10 Nov 2026</p>
+                    </div>
+                    <div className="bg-orange-50 rounded-lg p-2.5 border border-orange-100">
+                      <p className="text-sm font-medium text-slate-700">Cuti Akhir Tahun</p>
+                      <p className="text-xs text-orange-600">5 Dis - 31 Dis 2026</p>
                     </div>
                   </div>
                 </div>
                 <div className="px-4 py-2 bg-slate-50 border-t border-slate-100">
-                  <p className="text-xs text-slate-400 text-center">Sumber: moe.gov.my</p>
+                  <p className="text-xs text-slate-400 text-center">Sumber: moe.gov.my | Tarikh untuk negeri Melaka</p>
                 </div>
               </div>
             </div>
