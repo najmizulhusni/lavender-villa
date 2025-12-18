@@ -2002,7 +2002,7 @@ export default function Admin() {
                 const schoolHolidayName = isSchoolHoliday(date);
                 const promo = getPromoForDate(date, activeTab);
                 // Priority: Paid > Manual > Promo > Public+School > Public > School > Normal
-                // Colors: Green=Paid, Red=Blocked, Pink=Promo, Purple=Public Holiday, Blue=School Holiday
+                // Colors: Green=Paid, Red=Blocked, Orange=Promo, Purple=Public Holiday, Blue=School Holiday
                 const hasPublicAndSchool = holidayName && schoolHolidayName;
                 days.push(
                   <div key={day} className="relative group">
@@ -2014,7 +2014,7 @@ export default function Admin() {
                           : isManual
                           ? 'bg-red-500 text-white'
                           : promo
-                          ? 'bg-gradient-to-br from-pink-100 to-pink-200 text-pink-700 border-2 border-pink-400'
+                          ? 'bg-gradient-to-br from-orange-100 to-amber-100 text-orange-700 border-2 border-orange-400'
                           : hasPublicAndSchool
                           ? 'bg-gradient-to-br from-purple-100 to-sky-100 text-slate-700 border-2 border-purple-300'
                           : holidayName
@@ -2026,7 +2026,7 @@ export default function Admin() {
                     >
                       {day}
                       {promo && !isPaidBooking && !isManual && (
-                        <span className="absolute -top-1 -right-1 w-2 h-2 bg-pink-500 rounded-full"></span>
+                        <span className="absolute -top-1 -right-1 w-2 h-2 bg-orange-500 rounded-full"></span>
                       )}
                       {holidayName && !promo && !isPaidBooking && !isManual && (
                         <span className="absolute -top-1 -right-1 w-2 h-2 bg-purple-500 rounded-full"></span>
@@ -2040,9 +2040,9 @@ export default function Admin() {
                       <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
                         <div className="bg-slate-900 text-white text-xs px-3 py-2 rounded-lg shadow-lg whitespace-nowrap">
                           {promo && (
-                            <div className="flex items-center gap-1.5 text-pink-300 font-medium">
-                              <span className="w-2 h-2 bg-pink-400 rounded-full"></span>
-                              <span>🏷️ {promo.name} - RM{promo.price.toLocaleString()}</span>
+                            <div className="flex items-center gap-1.5 text-orange-300 font-medium">
+                              <span className="w-2 h-2 bg-orange-400 rounded-full"></span>
+                              <span>{promo.name} - RM{promo.price.toLocaleString()}</span>
                             </div>
                           )}
                           {holidayName && (
@@ -2083,7 +2083,7 @@ export default function Admin() {
               <span className="text-xs text-slate-600">Ditutup</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <div className="w-4 h-4 bg-pink-100 rounded border-2 border-pink-400"></div>
+              <div className="w-4 h-4 bg-orange-100 rounded border-2 border-orange-400"></div>
               <span className="text-xs text-slate-600">Promo</span>
             </div>
             <div className="flex items-center gap-1.5">
@@ -2255,14 +2255,14 @@ export default function Admin() {
 
             {/* Promo Management Section */}
             <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mt-6">
-              <div className="bg-gradient-to-r from-pink-500 to-pink-600 px-4 py-3">
+              <div className="bg-gradient-to-r from-orange-500 to-amber-500 px-4 py-3">
                 <div className="flex items-center justify-between">
                   <div>
                     <h3 className="text-white font-bold flex items-center gap-2">
-                      <Heart className="w-4 h-4" />
+                      <TrendingUp className="w-4 h-4" />
                       Promosi & Diskaun
                     </h3>
-                    <p className="text-pink-100 text-xs mt-0.5">Tetapkan harga istimewa untuk tarikh tertentu</p>
+                    <p className="text-orange-100 text-xs mt-0.5">Tetapkan harga istimewa untuk tarikh tertentu</p>
                   </div>
                   <button
                     onClick={() => setShowAddPromo(true)}
@@ -2277,11 +2277,11 @@ export default function Admin() {
               <div className="p-4">
                 {promos.filter(p => p.property === activeTab).length === 0 ? (
                   <div className="text-center py-8">
-                    <Heart className="w-10 h-10 text-slate-200 mx-auto mb-3" />
+                    <TrendingUp className="w-10 h-10 text-slate-200 mx-auto mb-3" />
                     <p className="text-slate-400 text-sm">Tiada promo aktif untuk villa ini</p>
                     <button
                       onClick={() => setShowAddPromo(true)}
-                      className="mt-3 text-pink-500 hover:text-pink-600 text-sm font-medium"
+                      className="mt-3 text-orange-500 hover:text-orange-600 text-sm font-medium"
                     >
                       + Tambah promo pertama
                     </button>
@@ -2306,7 +2306,7 @@ export default function Admin() {
                               : isExpired
                               ? 'bg-slate-50 border-slate-200 opacity-60'
                               : isActive
-                              ? 'bg-pink-50 border-pink-300'
+                              ? 'bg-orange-50 border-orange-300'
                               : 'bg-amber-50 border-amber-300'
                           }`}
                         >
@@ -2315,7 +2315,7 @@ export default function Admin() {
                               <div className="flex items-center gap-2 mb-1">
                                 <h4 className="font-bold text-slate-800">{promo.name}</h4>
                                 {isActive && (
-                                  <span className="px-2 py-0.5 bg-pink-500 text-white text-xs rounded-full font-medium">Aktif</span>
+                                  <span className="px-2 py-0.5 bg-orange-500 text-white text-xs rounded-full font-medium">Aktif</span>
                                 )}
                                 {isUpcoming && promo.isActive && (
                                   <span className="px-2 py-0.5 bg-amber-500 text-white text-xs rounded-full font-medium">Akan Datang</span>
@@ -2334,7 +2334,7 @@ export default function Admin() {
                                     {startDate.toLocaleDateString('ms-MY', { day: 'numeric', month: 'short' })} - {endDate.toLocaleDateString('ms-MY', { day: 'numeric', month: 'short', year: 'numeric' })}
                                   </span>
                                 </div>
-                                <div className="font-bold text-pink-600 text-lg">
+                                <div className="font-bold text-orange-600 text-lg">
                                   RM {promo.price.toLocaleString()}
                                 </div>
                               </div>
@@ -2344,7 +2344,7 @@ export default function Admin() {
                                 onClick={() => togglePromoActive(promo.id)}
                                 className={`p-2 rounded-lg transition ${
                                   promo.isActive 
-                                    ? 'bg-pink-100 text-pink-600 hover:bg-pink-200' 
+                                    ? 'bg-orange-100 text-orange-600 hover:bg-orange-200' 
                                     : 'bg-slate-100 text-slate-400 hover:bg-slate-200'
                                 }`}
                                 title={promo.isActive ? 'Nyahaktifkan' : 'Aktifkan'}
@@ -2367,8 +2367,8 @@ export default function Admin() {
                 )}
               </div>
               
-              <div className="px-4 py-2 bg-pink-50 border-t border-pink-100">
-                <p className="text-xs text-pink-600 text-center">💡 Promo akan dipaparkan di kalendar dengan warna pink</p>
+              <div className="px-4 py-2 bg-orange-50 border-t border-orange-100">
+                <p className="text-xs text-orange-600 text-center">Promo akan dipaparkan di kalendar dengan warna oren</p>
               </div>
             </div>
 
@@ -2376,10 +2376,10 @@ export default function Admin() {
             {showAddPromo && (
               <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
                 <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl">
-                  <div className="bg-gradient-to-r from-pink-500 to-pink-600 p-4 rounded-t-2xl">
+                  <div className="bg-gradient-to-r from-orange-500 to-amber-500 p-4 rounded-t-2xl">
                     <div className="flex items-center justify-between">
                       <h3 className="text-white font-bold flex items-center gap-2">
-                        <Heart className="w-5 h-5" />
+                        <TrendingUp className="w-5 h-5" />
                         Tambah Promo Baru
                       </h3>
                       <button onClick={() => setShowAddPromo(false)} className="text-white/80 hover:text-white">
@@ -2396,7 +2396,7 @@ export default function Admin() {
                         value={newPromo.name}
                         onChange={(e) => setNewPromo({ ...newPromo, name: e.target.value })}
                         placeholder="cth: Last Minute Deal, Promo Raya"
-                        className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-pink-400 transition text-sm"
+                        className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-orange-400 transition text-sm"
                       />
                     </div>
                     
@@ -2407,7 +2407,7 @@ export default function Admin() {
                           type="date"
                           value={newPromo.startDate}
                           onChange={(e) => setNewPromo({ ...newPromo, startDate: e.target.value })}
-                          className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-pink-400 transition text-sm"
+                          className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-orange-400 transition text-sm"
                         />
                       </div>
                       <div>
@@ -2416,7 +2416,7 @@ export default function Admin() {
                           type="date"
                           value={newPromo.endDate}
                           onChange={(e) => setNewPromo({ ...newPromo, endDate: e.target.value })}
-                          className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-pink-400 transition text-sm"
+                          className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-orange-400 transition text-sm"
                         />
                       </div>
                     </div>
@@ -2428,7 +2428,7 @@ export default function Admin() {
                         value={newPromo.price}
                         onChange={(e) => setNewPromo({ ...newPromo, price: e.target.value })}
                         placeholder="cth: 999"
-                        className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-pink-400 transition text-sm"
+                        className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-orange-400 transition text-sm"
                       />
                       <p className="text-xs text-slate-400 mt-1">Harga tetap untuk setiap malam dalam tempoh promo</p>
                     </div>
@@ -2438,7 +2438,7 @@ export default function Admin() {
                       <select
                         value={newPromo.property}
                         onChange={(e) => setNewPromo({ ...newPromo, property: e.target.value })}
-                        className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-pink-400 transition text-sm"
+                        className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-orange-400 transition text-sm"
                       >
                         {properties.map(p => (
                           <option key={p.id} value={p.id}>{p.name}</option>
@@ -2456,7 +2456,7 @@ export default function Admin() {
                     </button>
                     <button
                       onClick={handleAddPromo}
-                      className="flex-1 px-4 py-2.5 bg-gradient-to-r from-pink-500 to-pink-600 text-white rounded-xl font-medium hover:from-pink-600 hover:to-pink-700 transition text-sm"
+                      className="flex-1 px-4 py-2.5 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-xl font-medium hover:from-orange-600 hover:to-amber-600 transition text-sm"
                     >
                       Simpan Promo
                     </button>
