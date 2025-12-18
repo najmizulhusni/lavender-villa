@@ -1917,7 +1917,8 @@ export default function Admin() {
                 const isManual = isManuallyBlocked(date);
                 const holidayName = isPublicHoliday(date);
                 const schoolHolidayName = isSchoolHoliday(date);
-                // Priority: Paid > Manual > Public Holiday + School > School Only > Public Holiday Only > Normal
+                // Priority: Paid > Manual > Public+School > Public > School > Normal
+                // Colors: Green=Paid, Red=Blocked, Purple=Public Holiday, Blue=School Holiday
                 const hasPublicAndSchool = holidayName && schoolHolidayName;
                 days.push(
                   <button
@@ -1926,16 +1927,16 @@ export default function Admin() {
                     title={holidayName ? `${holidayName}${schoolHolidayName ? ' + ' + schoolHolidayName : ''}` : (schoolHolidayName || '')}
                     className={`p-2 sm:p-4 text-xs sm:text-sm rounded-lg sm:rounded-xl transition font-medium relative ${
                       isPaidBooking 
-                        ? 'bg-green-500 text-white' 
+                        ? 'bg-emerald-500 text-white' 
                         : isManual
-                        ? 'bg-orange-500 text-white'
+                        ? 'bg-red-500 text-white'
                         : hasPublicAndSchool
-                        ? 'bg-gradient-to-br from-purple-200 to-amber-200 text-slate-700 border-2 border-purple-300'
+                        ? 'bg-gradient-to-br from-purple-100 to-sky-100 text-slate-700 border-2 border-purple-300'
                         : holidayName
                         ? 'bg-purple-100 text-purple-700 border-2 border-purple-300'
                         : schoolHolidayName
-                        ? 'bg-amber-100 text-amber-700 border-2 border-amber-300'
-                        : 'bg-slate-50 text-slate-700 hover:bg-orange-100'
+                        ? 'bg-sky-100 text-sky-700 border-2 border-sky-300'
+                        : 'bg-slate-50 text-slate-700 hover:bg-slate-100'
                     }`}
                   >
                     {day}
@@ -1943,7 +1944,7 @@ export default function Admin() {
                       <span className="absolute -top-1 -right-1 w-2 h-2 bg-purple-500 rounded-full"></span>
                     )}
                     {schoolHolidayName && !holidayName && !isPaidBooking && !isManual && (
-                      <span className="absolute -top-1 -right-1 w-2 h-2 bg-amber-500 rounded-full"></span>
+                      <span className="absolute -top-1 -right-1 w-2 h-2 bg-sky-500 rounded-full"></span>
                     )}
                   </button>
                 );
@@ -1959,19 +1960,19 @@ export default function Admin() {
               <span className="text-xs text-slate-600">Tersedia</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <div className="w-4 h-4 bg-green-500 rounded"></div>
+              <div className="w-4 h-4 bg-emerald-500 rounded"></div>
               <span className="text-xs text-slate-600">Telah Bayar</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <div className="w-4 h-4 bg-orange-500 rounded"></div>
-              <span className="text-xs text-slate-600">Cuti/Tutup</span>
+              <div className="w-4 h-4 bg-red-500 rounded"></div>
+              <span className="text-xs text-slate-600">Ditutup</span>
             </div>
             <div className="flex items-center gap-1.5">
               <div className="w-4 h-4 bg-purple-100 rounded border-2 border-purple-300"></div>
               <span className="text-xs text-slate-600">Cuti Umum</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <div className="w-4 h-4 bg-amber-100 rounded border-2 border-amber-300"></div>
+              <div className="w-4 h-4 bg-sky-100 rounded border-2 border-sky-300"></div>
               <span className="text-xs text-slate-600">Cuti Sekolah</span>
             </div>
           </div>
@@ -1979,10 +1980,10 @@ export default function Admin() {
 
         {/* Manual Blocked Dates List */}
         {(manualBlockedDates[activeTab] || []).length > 0 && (
-          <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-2xl p-5 mt-6 border border-orange-200 shadow-sm">
+          <div className="bg-gradient-to-br from-red-50 to-red-100 rounded-2xl p-5 mt-6 border border-red-200 shadow-sm">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
+                <div className="w-8 h-8 bg-red-500 rounded-lg flex items-center justify-center">
                   <X className="w-4 h-4 text-white" />
                 </div>
                 <div>
@@ -1996,7 +1997,7 @@ export default function Admin() {
                     setManualBlockedDates(prev => ({ ...prev, [activeTab]: [] }));
                   }
                 }}
-                className="text-xs text-orange-600 hover:text-orange-700 font-medium"
+                className="text-xs text-red-600 hover:text-red-700 font-medium"
               >
                 Padam Semua
               </button>
@@ -2009,7 +2010,7 @@ export default function Admin() {
                 return (
                   <div 
                     key={dateStr}
-                    className="group bg-white px-3 py-2 rounded-xl border border-orange-200 hover:border-orange-400 transition shadow-sm"
+                    className="group bg-white px-3 py-2 rounded-xl border border-red-200 hover:border-red-400 transition shadow-sm"
                   >
                     <div className="flex items-center justify-between">
                       <div>
@@ -2035,10 +2036,10 @@ export default function Admin() {
             {/* Note */}
             <div className="mt-6 p-3 sm:p-4 bg-slate-50 rounded-xl border border-slate-200">
               <p className="text-slate-600 text-xs text-center">
-                <span className="text-green-600 font-medium">Hijau</span> = Telah Bayar | 
-                <span className="text-orange-600 font-medium"> Oren</span> = Cuti/Tutup | 
+                <span className="text-emerald-600 font-medium">Hijau</span> = Telah Bayar | 
+                <span className="text-red-600 font-medium"> Merah</span> = Ditutup | 
                 <span className="text-purple-600 font-medium"> Ungu</span> = Cuti Umum | 
-                <span className="text-amber-600 font-medium"> Kuning</span> = Cuti Sekolah | 
+                <span className="text-sky-600 font-medium"> Biru</span> = Cuti Sekolah | 
                 Klik tarikh untuk tutup/buka
               </p>
             </div>
@@ -2074,50 +2075,50 @@ export default function Admin() {
 
               {/* School Holidays */}
               <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-                <div className="bg-gradient-to-r from-amber-500 to-amber-600 px-4 py-3">
+                <div className="bg-gradient-to-r from-sky-500 to-sky-600 px-4 py-3">
                   <h3 className="text-white font-bold flex items-center gap-2">
                     <Users className="w-4 h-4" />
                     Cuti Sekolah 2025/2026
                   </h3>
-                  <p className="text-amber-100 text-xs mt-0.5">Melaka</p>
+                  <p className="text-sky-100 text-xs mt-0.5">Melaka</p>
                 </div>
                 <div className="p-4 max-h-80 overflow-y-auto">
                   <div className="space-y-2">
-                    <div className="bg-amber-50 rounded-lg p-2.5 border border-amber-200">
+                    <div className="bg-sky-50 rounded-lg p-2.5 border border-sky-200">
                       <p className="text-sm font-medium text-slate-700">Cuti Penggal 1</p>
-                      <p className="text-xs text-amber-600">29 Mei - 9 Jun 2025</p>
+                      <p className="text-xs text-sky-600">29 Mei - 9 Jun 2025</p>
                     </div>
-                    <div className="bg-amber-50 rounded-lg p-2.5 border border-amber-200">
+                    <div className="bg-sky-50 rounded-lg p-2.5 border border-sky-200">
                       <p className="text-sm font-medium text-slate-700">Cuti Penggal 2</p>
-                      <p className="text-xs text-amber-600">13 Sep - 21 Sep 2025</p>
+                      <p className="text-xs text-sky-600">13 Sep - 21 Sep 2025</p>
                     </div>
-                    <div className="bg-amber-50 rounded-lg p-2.5 border border-amber-200">
+                    <div className="bg-sky-50 rounded-lg p-2.5 border border-sky-200">
                       <p className="text-sm font-medium text-slate-700">Cuti Akhir Tahun</p>
-                      <p className="text-xs text-amber-600">20 Dis 2025 - 11 Jan 2026</p>
+                      <p className="text-xs text-sky-600">20 Dis 2025 - 11 Jan 2026</p>
                     </div>
-                    <div className="bg-amber-50 rounded-lg p-2.5 border border-amber-200">
+                    <div className="bg-sky-50 rounded-lg p-2.5 border border-sky-200">
                       <p className="text-sm font-medium text-slate-700">Cuti Tahun Baru Cina</p>
-                      <p className="text-xs text-amber-600">16 Feb - 20 Feb 2026</p>
+                      <p className="text-xs text-sky-600">16 Feb - 20 Feb 2026</p>
                     </div>
-                    <div className="bg-amber-50 rounded-lg p-2.5 border border-amber-200">
+                    <div className="bg-sky-50 rounded-lg p-2.5 border border-sky-200">
                       <p className="text-sm font-medium text-slate-700">Cuti Hari Raya / Penggal 1</p>
-                      <p className="text-xs text-amber-600">19 Mac - 29 Mac 2026</p>
+                      <p className="text-xs text-sky-600">19 Mac - 29 Mac 2026</p>
                     </div>
-                    <div className="bg-amber-50 rounded-lg p-2.5 border border-amber-200">
+                    <div className="bg-sky-50 rounded-lg p-2.5 border border-sky-200">
                       <p className="text-sm font-medium text-slate-700">Cuti Pertengahan Tahun</p>
-                      <p className="text-xs text-amber-600">23 Mei - 7 Jun 2026</p>
+                      <p className="text-xs text-sky-600">23 Mei - 7 Jun 2026</p>
                     </div>
-                    <div className="bg-amber-50 rounded-lg p-2.5 border border-amber-200">
+                    <div className="bg-sky-50 rounded-lg p-2.5 border border-sky-200">
                       <p className="text-sm font-medium text-slate-700">Cuti Penggal 2</p>
-                      <p className="text-xs text-amber-600">29 Ogos - 6 Sep 2026</p>
+                      <p className="text-xs text-sky-600">29 Ogos - 6 Sep 2026</p>
                     </div>
-                    <div className="bg-amber-50 rounded-lg p-2.5 border border-amber-200">
+                    <div className="bg-sky-50 rounded-lg p-2.5 border border-sky-200">
                       <p className="text-sm font-medium text-slate-700">Cuti Deepavali</p>
-                      <p className="text-xs text-amber-600">8 Nov - 10 Nov 2026</p>
+                      <p className="text-xs text-sky-600">8 Nov - 10 Nov 2026</p>
                     </div>
-                    <div className="bg-amber-50 rounded-lg p-2.5 border border-amber-200">
+                    <div className="bg-sky-50 rounded-lg p-2.5 border border-sky-200">
                       <p className="text-sm font-medium text-slate-700">Cuti Akhir Tahun</p>
-                      <p className="text-xs text-amber-600">5 Dis - 31 Dis 2026</p>
+                      <p className="text-xs text-sky-600">5 Dis - 31 Dis 2026</p>
                     </div>
                   </div>
                 </div>
