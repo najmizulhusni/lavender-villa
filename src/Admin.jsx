@@ -1986,6 +1986,114 @@ export default function Admin() {
                 Klik tarikh untuk tutup/buka
               </p>
             </div>
+
+            {/* Holidays Reference Section */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+              {/* Public Holidays */}
+              <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div className="bg-gradient-to-r from-purple-500 to-purple-600 px-4 py-3">
+                  <h3 className="text-white font-bold flex items-center gap-2">
+                    <CalendarDays className="w-4 h-4" />
+                    Cuti Umum 2025/2026
+                  </h3>
+                  <p className="text-purple-100 text-xs mt-0.5">Kebangsaan & Melaka</p>
+                </div>
+                <div className="p-4 max-h-80 overflow-y-auto">
+                  <div className="space-y-1.5">
+                    {Object.entries(publicHolidays).map(([date, name]) => {
+                      const [year, month, day] = date.split('-').map(Number);
+                      const d = new Date(year, month - 1, day);
+                      const dayName = d.toLocaleDateString('ms-MY', { weekday: 'short' });
+                      const displayDate = d.toLocaleDateString('ms-MY', { day: 'numeric', month: 'short', year: 'numeric' });
+                      return (
+                        <div key={date} className="flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-purple-50 transition text-sm">
+                          <span className="text-slate-700">{name}</span>
+                          <span className="text-purple-600 text-xs font-medium">{dayName}, {displayDate}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+
+              {/* School Holidays */}
+              <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div className="bg-gradient-to-r from-orange-500 to-orange-600 px-4 py-3">
+                  <h3 className="text-white font-bold flex items-center gap-2">
+                    <Users className="w-4 h-4" />
+                    Cuti Sekolah 2025/2026
+                  </h3>
+                  <p className="text-orange-100 text-xs mt-0.5">Kumpulan B (Melaka)</p>
+                </div>
+                <div className="p-4 max-h-80 overflow-y-auto">
+                  <div className="space-y-3">
+                    {/* 2025 School Holidays */}
+                    <div className="mb-3">
+                      <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Sesi 2025/2026</p>
+                      <div className="space-y-2">
+                        <div className="bg-orange-50 rounded-lg p-2.5 border border-orange-100">
+                          <p className="text-sm font-medium text-slate-700">Cuti Penggal 1</p>
+                          <p className="text-xs text-orange-600">29 Mei - 9 Jun 2025</p>
+                        </div>
+                        <div className="bg-orange-50 rounded-lg p-2.5 border border-orange-100">
+                          <p className="text-sm font-medium text-slate-700">Cuti Penggal 2</p>
+                          <p className="text-xs text-orange-600">13 Sep - 21 Sep 2025</p>
+                        </div>
+                        <div className="bg-orange-50 rounded-lg p-2.5 border border-orange-100">
+                          <p className="text-sm font-medium text-slate-700">Cuti Akhir Tahun</p>
+                          <p className="text-xs text-orange-600">20 Dis 2025 - 11 Jan 2026</p>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* 2026 School Holidays */}
+                    <div className="mb-3">
+                      <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Sesi 2026</p>
+                      <div className="space-y-2">
+                        <div className="bg-orange-50 rounded-lg p-2.5 border border-orange-100">
+                          <p className="text-sm font-medium text-slate-700">Cuti Penggal 1</p>
+                          <p className="text-xs text-orange-600">21 Mac - 29 Mac 2026</p>
+                        </div>
+                        <div className="bg-orange-50 rounded-lg p-2.5 border border-orange-100">
+                          <p className="text-sm font-medium text-slate-700">Cuti Pertengahan Tahun</p>
+                          <p className="text-xs text-orange-600">23 Mei - 7 Jun 2026</p>
+                        </div>
+                        <div className="bg-orange-50 rounded-lg p-2.5 border border-orange-100">
+                          <p className="text-sm font-medium text-slate-700">Cuti Penggal 2</p>
+                          <p className="text-xs text-orange-600">29 Ogos - 6 Sep 2026</p>
+                        </div>
+                        <div className="bg-orange-50 rounded-lg p-2.5 border border-orange-100">
+                          <p className="text-sm font-medium text-slate-700">Cuti Akhir Tahun</p>
+                          <p className="text-xs text-orange-600">5 Dis - 31 Dis 2026</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Festival School Holidays 2026 */}
+                    <div>
+                      <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Cuti Perayaan 2026</p>
+                      <div className="space-y-2">
+                        <div className="bg-red-50 rounded-lg p-2.5 border border-red-100">
+                          <p className="text-sm font-medium text-slate-700">Tahun Baru Cina</p>
+                          <p className="text-xs text-red-600">16 Feb - 20 Feb 2026</p>
+                        </div>
+                        <div className="bg-green-50 rounded-lg p-2.5 border border-green-100">
+                          <p className="text-sm font-medium text-slate-700">Hari Raya Aidilfitri</p>
+                          <p className="text-xs text-green-600">19 Mac - 22 Mac 2026</p>
+                        </div>
+                        <div className="bg-yellow-50 rounded-lg p-2.5 border border-yellow-100">
+                          <p className="text-sm font-medium text-slate-700">Deepavali</p>
+                          <p className="text-xs text-yellow-600">8 Nov - 10 Nov 2026</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="px-4 py-2 bg-slate-50 border-t border-slate-100">
+                  <p className="text-xs text-slate-400 text-center">Sumber: moe.gov.my</p>
+                </div>
+              </div>
+            </div>
           </>
         )}
 
