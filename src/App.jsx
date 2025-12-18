@@ -1270,7 +1270,6 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                   </div>
                 </div>
                 <div className="pt-4 border-t border-slate-100 text-xs text-slate-400">
-                  <div className="mb-2">Isnin - Jumaat: RM 1,500/malam • Sabtu - Ahad & Cuti Umum: RM 1,800/malam</div>
                   <div className="flex items-center justify-center gap-4 flex-wrap">
                     <div className="flex items-center gap-1.5">
                       <div className="w-3 h-3 bg-red-100 border border-red-200 rounded"></div>
