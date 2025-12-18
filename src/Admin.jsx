@@ -1921,32 +1921,52 @@ export default function Admin() {
                 // Colors: Green=Paid, Red=Blocked, Purple=Public Holiday, Blue=School Holiday
                 const hasPublicAndSchool = holidayName && schoolHolidayName;
                 days.push(
-                  <button
-                    key={day}
-                    onClick={() => toggleDate(date)}
-                    title={holidayName ? `${holidayName}${schoolHolidayName ? ' + ' + schoolHolidayName : ''}` : (schoolHolidayName || '')}
-                    className={`p-2 sm:p-4 text-xs sm:text-sm rounded-lg sm:rounded-xl transition-all duration-200 font-medium relative hover:scale-110 hover:shadow-lg hover:z-10 ${
-                      isPaidBooking 
-                        ? 'bg-emerald-500 text-white hover:bg-emerald-600' 
-                        : isManual
-                        ? 'bg-red-500 text-white hover:bg-red-600'
-                        : hasPublicAndSchool
-                        ? 'bg-gradient-to-br from-purple-100 to-sky-100 text-slate-700 border-2 border-purple-300 hover:from-purple-200 hover:to-sky-200 hover:border-purple-400'
-                        : holidayName
-                        ? 'bg-purple-100 text-purple-700 border-2 border-purple-300 hover:bg-purple-200 hover:border-purple-400'
-                        : schoolHolidayName
-                        ? 'bg-sky-100 text-sky-700 border-2 border-sky-300 hover:bg-sky-200 hover:border-sky-400'
-                        : 'bg-slate-50 text-slate-700 hover:bg-red-100 hover:text-red-700 hover:border-2 hover:border-red-300'
-                    }`}
-                  >
-                    {day}
-                    {holidayName && !isPaidBooking && !isManual && (
-                      <span className="absolute -top-1 -right-1 w-2 h-2 bg-purple-500 rounded-full"></span>
+                  <div key={day} className="relative group">
+                    <button
+                      onClick={() => toggleDate(date)}
+                      className={`w-full p-2 sm:p-4 text-xs sm:text-sm rounded-lg sm:rounded-xl transition font-medium relative ${
+                        isPaidBooking 
+                          ? 'bg-emerald-500 text-white' 
+                          : isManual
+                          ? 'bg-red-500 text-white'
+                          : hasPublicAndSchool
+                          ? 'bg-gradient-to-br from-purple-100 to-sky-100 text-slate-700 border-2 border-purple-300'
+                          : holidayName
+                          ? 'bg-purple-100 text-purple-700 border-2 border-purple-300'
+                          : schoolHolidayName
+                          ? 'bg-sky-100 text-sky-700 border-2 border-sky-300'
+                          : 'bg-slate-50 text-slate-700 hover:bg-slate-100'
+                      }`}
+                    >
+                      {day}
+                      {holidayName && !isPaidBooking && !isManual && (
+                        <span className="absolute -top-1 -right-1 w-2 h-2 bg-purple-500 rounded-full"></span>
+                      )}
+                      {schoolHolidayName && !holidayName && !isPaidBooking && !isManual && (
+                        <span className="absolute -top-1 -right-1 w-2 h-2 bg-sky-500 rounded-full"></span>
+                      )}
+                    </button>
+                    {/* Tooltip for holidays */}
+                    {(holidayName || schoolHolidayName) && !isPaidBooking && !isManual && (
+                      <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
+                        <div className="bg-slate-900 text-white text-xs px-3 py-2 rounded-lg shadow-lg whitespace-nowrap">
+                          {holidayName && (
+                            <div className="flex items-center gap-1.5">
+                              <span className="w-2 h-2 bg-purple-400 rounded-full"></span>
+                              <span>{holidayName}</span>
+                            </div>
+                          )}
+                          {schoolHolidayName && (
+                            <div className="flex items-center gap-1.5 mt-1">
+                              <span className="w-2 h-2 bg-sky-400 rounded-full"></span>
+                              <span>{schoolHolidayName}</span>
+                            </div>
+                          )}
+                        </div>
+                        <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-slate-900"></div>
+                      </div>
                     )}
-                    {schoolHolidayName && !holidayName && !isPaidBooking && !isManual && (
-                      <span className="absolute -top-1 -right-1 w-2 h-2 bg-sky-500 rounded-full"></span>
-                    )}
-                  </button>
+                  </div>
                 );
               }
               return days;
