@@ -1426,30 +1426,16 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
               </button>
             )}
 
-            {/* Info Text */}
-            <div className="mt-6 text-center space-y-1">
-              <div className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl p-4 border border-slate-200">
-                <p className="text-slate-800 text-sm font-bold mb-3">Harga Pakej</p>
-                <div className="grid grid-cols-3 gap-3 text-xs">
-                  <div className="bg-white rounded-lg p-3 shadow-sm">
-                    <p className="text-slate-600 font-semibold mb-2">Weekday</p>
-                    <p className="text-slate-800 font-medium">2H1M: <span className="text-purple-600">RM1,300</span></p>
-                    <p className="text-slate-800 font-medium">3H2M: <span className="text-purple-600">RM2,400</span></p>
-                  </div>
-                  <div className="bg-white rounded-lg p-3 shadow-sm border-2 border-purple-200">
-                    <p className="text-purple-600 font-semibold mb-2">Weekend/PH</p>
-                    <p className="text-slate-800 font-medium">2H1M: <span className="text-purple-600">RM1,590</span></p>
-                    <p className="text-slate-800 font-medium">3H2M: <span className="text-purple-600">RM2,990</span></p>
-                  </div>
-                  <div className="bg-white rounded-lg p-3 shadow-sm">
-                    <p className="text-amber-600 font-semibold mb-2">Festive</p>
-                    <p className="text-slate-800 font-medium">2H1M: <span className="text-purple-600">RM1,700</span></p>
-                    <p className="text-slate-800 font-medium">3H2M: <span className="text-purple-600">RM3,200</span></p>
-                  </div>
-                </div>
-                <p className="text-amber-600 text-xs mt-3 font-medium">Weekend & Cuti Sekolah: Min 3H2M</p>
+            {/* Pricing Info - Clean inline design */}
+            <div className="mt-6 pt-6 border-t border-slate-200">
+              <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm">
+                <span className="text-slate-500">Weekday <span className="font-semibold text-slate-700">RM1,300</span></span>
+                <span className="text-slate-300">|</span>
+                <span className="text-slate-500">Weekend/PH <span className="font-semibold text-purple-600">RM1,590</span></span>
+                <span className="text-slate-300">|</span>
+                <span className="text-slate-500">Festive <span className="font-semibold text-amber-600">RM1,700</span></span>
               </div>
-              <p className="text-slate-400 text-xs mt-2">Pengesahan tempahan akan dihantar melalui WhatsApp</p>
+              <p className="text-slate-400 text-xs text-center mt-3">Weekend & Cuti Sekolah: Min 3H2M • Pengesahan melalui WhatsApp</p>
             </div>
           </div>
         </div>

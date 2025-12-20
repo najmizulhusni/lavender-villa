@@ -2015,7 +2015,6 @@ export default function Admin() {
                   <div key={day} className="relative group">
                     <button
                       onClick={() => toggleDate(date)}
-                      onDoubleClick={() => activeTab === 'lavender' && openPriceModal(date)}
                       className={`w-full p-1 sm:p-2 text-xs sm:text-sm rounded-lg sm:rounded-xl transition font-medium relative flex flex-col items-center justify-center min-h-[50px] sm:min-h-[60px] ${
                         isPaidBooking 
                           ? 'bg-emerald-500 text-white' 
@@ -2054,6 +2053,16 @@ export default function Admin() {
                         <span className="absolute -top-1 -right-1 w-2 h-2 bg-sky-500 rounded-full"></span>
                       )}
                     </button>
+                    {/* Edit price button - appears on hover for Lavender Villa */}
+                    {activeTab === 'lavender' && !isPaidBooking && !isManual && (
+                      <button
+                        onClick={(e) => { e.stopPropagation(); openPriceModal(date); }}
+                        className="absolute -bottom-1 -right-1 w-5 h-5 bg-purple-500 hover:bg-purple-600 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity shadow-sm flex items-center justify-center z-10"
+                        title="Tukar harga"
+                      >
+                        <TrendingUp className="w-3 h-3" />
+                      </button>
+                    )}
                     {/* Tooltip for holidays and price */}
                     {(holidayName || schoolHolidayName || priceInfo.isCustom || needsMinStay) && !isPaidBooking && !isManual && (
                       <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
@@ -2084,7 +2093,7 @@ export default function Admin() {
                           )}
                           {activeTab === 'lavender' && (
                             <div className="text-slate-400 text-[10px] mt-1 border-t border-slate-700 pt-1">
-                              Klik 2x untuk tukar harga
+                              Klik ikon untuk tukar harga
                             </div>
                           )}
                         </div>
@@ -2134,7 +2143,7 @@ export default function Admin() {
           {activeTab === 'lavender' && (
             <div className="mt-4 p-3 bg-slate-50 rounded-xl border border-slate-200">
               <p className="text-xs text-slate-500 text-center">
-                Klik 2x pada tarikh untuk tukar harga • Harga asal: Isnin-Jumaat RM1,300 | Sabtu-Ahad & Cuti RM1,590 | Perayaan RM1,700
+                Hover tarikh untuk tukar harga • Weekday RM1,300 | Weekend/PH RM1,590 | Festive RM1,700
               </p>
               <p className="text-xs text-amber-600 text-center mt-1">
                 Weekend & Cuti Sekolah: Min 3H2M
