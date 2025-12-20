@@ -102,6 +102,40 @@ export default function HomestayExperience() {
     },
   ];
 
+  // School holidays date ranges (Kumpulan B - Melaka)
+  const schoolHolidayRanges = [
+    { start: '2025-05-29', end: '2025-06-09', name: 'Cuti Penggal 1' },
+    { start: '2025-09-13', end: '2025-09-21', name: 'Cuti Penggal 2' },
+    { start: '2025-12-20', end: '2026-01-11', name: 'Cuti Akhir Tahun' },
+    { start: '2026-02-16', end: '2026-02-20', name: 'Cuti Tahun Baru Cina' },
+    { start: '2026-03-19', end: '2026-03-29', name: 'Cuti Hari Raya' },
+    { start: '2026-05-23', end: '2026-06-07', name: 'Cuti Pertengahan Tahun' },
+    { start: '2026-08-29', end: '2026-09-06', name: 'Cuti Penggal 2' },
+    { start: '2026-11-08', end: '2026-11-10', name: 'Cuti Deepavali' },
+    { start: '2026-12-05', end: '2026-12-31', name: 'Cuti Akhir Tahun' }
+  ];
+
+  // Check if date is during school holiday
+  const isSchoolHoliday = (dateStr) => {
+    for (const range of schoolHolidayRanges) {
+      if (dateStr >= range.start && dateStr <= range.end) {
+        return range.name;
+      }
+    }
+    return null;
+  };
+
+  // Check if booking requires minimum 2 nights (weekend during school holiday)
+  const requiresMinStay = (checkInDateStr) => {
+    const checkInDate = new Date(checkInDateStr + 'T00:00:00');
+    const dayOfWeek = checkInDate.getDay();
+    const isSaturday = dayOfWeek === 6;
+    const schoolHoliday = isSchoolHoliday(checkInDateStr);
+    
+    // Only Saturday check-in during school holiday requires min 2 nights
+    return isSaturday && schoolHoliday;
+  };
+
   const spaces = [
     {
       name: 'Ruang Tamu Luas',
@@ -220,6 +254,13 @@ export default function HomestayExperience() {
     today.setHours(0, 0, 0, 0);
     if (checkInDate < today) {
       alert('Tarikh daftar masuk tidak boleh pada masa lalu');
+      return;
+    }
+
+    // Validate minimum stay for weekend during school holiday (3H2M)
+    const nights = calculateNights();
+    if (requiresMinStay(selectedDates.checkIn) && nights < 2) {
+      alert('Hujung minggu semasa cuti sekolah memerlukan minimum 3 Hari 2 Malam (Check-in Sabtu, Check-out Isnin)');
       return;
     }
 
@@ -915,6 +956,9 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 text-slate-900">Tempah Penginapan Villa Anda</h2>
             <p className="text-slate-600 text-sm sm:text-base md:text-lg mb-2">Sesuai untuk keluarga & kumpulan • Sehingga 20 tetamu</p>
             <p className="text-purple-600 text-sm sm:text-base font-semibold">Penginapan Muslim Sahaja</p>
+            <p className="text-amber-600 text-xs sm:text-sm mt-2 bg-amber-50 inline-block px-3 py-1 rounded-full">
+              ⚠️ Hujung minggu semasa cuti sekolah: Min 3H2M
+            </p>
           </div>
 
           <div className="bg-gradient-to-br from-slate-50 to-white rounded-2xl sm:rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-lg">
@@ -991,10 +1035,12 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                         }
                         for (let day = 1; day <= daysInMonth; day++) {
                           const date = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth(), day);
+                          const dateStr = formatDateToLocal(date);
                           const isPast = isDatePast(date);
                           const isBooked = isDateBooked(date);
                           const isSelected = isDateSelected(date);
                           const isHoliday = isPublicHoliday(date);
+                          const needsMinStay = requiresMinStay(dateStr);
                           days.push(
                             <button
                               key={day}
@@ -1007,8 +1053,12 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                                 isHoliday ? 'bg-orange-50 text-orange-600 hover:bg-orange-100 font-medium' :
                                 'hover:bg-purple-100 text-slate-700'
                               }`}
+                              title={needsMinStay && !isPast && !isBooked ? 'Min 3H2M (Hujung Minggu Cuti Sekolah)' : ''}
                             >
                               {day}
+                              {needsMinStay && !isBooked && !isPast && (
+                                <span className="absolute -top-1 -left-1 w-4 h-4 bg-amber-500 rounded-full text-[8px] text-white font-bold flex items-center justify-center">2</span>
+                              )}
                               {isHoliday && !isBooked && !isPast && (
                                 <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-orange-400 rounded-full"></span>
                               )}
