@@ -741,87 +741,81 @@ export default function Admin() {
     status: 'pending'
   });
 
-  // Promo state
-  const [promos, setPromos] = useState(() => {
-    const saved = localStorage.getItem('promos');
-    return saved ? JSON.parse(saved) : [];
+  // Custom prices state (host can override default pricing)
+  const [customPrices, setCustomPrices] = useState(() => {
+    const saved = localStorage.getItem('customPrices_lavender');
+    return saved ? JSON.parse(saved) : {};
   });
-  const [showAddPromo, setShowAddPromo] = useState(false);
-  const [newPromo, setNewPromo] = useState({
-    name: '',
-    startDate: '',
-    endDate: '',
-    price: '',
-    property: 'lavender',
-    isActive: true
-  });
+  const [showPriceModal, setShowPriceModal] = useState(false);
+  const [editingPriceDate, setEditingPriceDate] = useState(null);
+  const [editingPrice, setEditingPrice] = useState('');
 
-  // Save promos to localStorage
+  // Save custom prices to localStorage
   useEffect(() => {
-    localStorage.setItem('promos', JSON.stringify(promos));
-  }, [promos]);
+    localStorage.setItem('customPrices_lavender', JSON.stringify(customPrices));
+  }, [customPrices]);
 
-  // Check if date has promo
-  const getPromoForDate = (date, propertyId) => {
+  // Get price for a specific date (custom or calculated)
+  const getPriceForDate = (date) => {
     const dateStr = formatDateStr(date);
-    return promos.find(p => 
-      p.isActive && 
-      p.property === propertyId && 
-      dateStr >= p.startDate && 
-      dateStr <= p.endDate
-    );
+    
+    // Check for custom price first
+    if (customPrices[dateStr]) {
+      return { price: customPrices[dateStr], isCustom: true };
+    }
+    
+    // Calculate based on day type
+    const dayOfWeek = date.getDay();
+    const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+    const isHoliday = publicHolidays[dateStr];
+    const isFestive = festiveDates.includes(dateStr);
+    
+    if (isFestive) {
+      return { price: 1700, isCustom: false, type: 'festive' };
+    }
+    if (isWeekend || isHoliday) {
+      return { price: 1590, isCustom: false, type: 'weekend' };
+    }
+    return { price: 1300, isCustom: false, type: 'weekday' };
   };
 
-  // Add new promo
-  const handleAddPromo = () => {
-    if (!newPromo.name.trim()) {
-      alert('Sila masukkan nama promo');
-      return;
-    }
-    if (!newPromo.startDate || !newPromo.endDate) {
-      alert('Sila pilih tarikh mula dan tamat');
-      return;
-    }
-    if (!newPromo.price || newPromo.price <= 0) {
-      alert('Sila masukkan harga promo');
-      return;
-    }
-    if (newPromo.endDate < newPromo.startDate) {
-      alert('Tarikh tamat mesti selepas tarikh mula');
-      return;
-    }
-
-    const promo = {
-      id: `PROMO-${Date.now()}`,
-      ...newPromo,
-      price: parseInt(newPromo.price),
-      createdAt: new Date().toISOString()
-    };
-
-    setPromos([...promos, promo]);
-    setNewPromo({
-      name: '',
-      startDate: '',
-      endDate: '',
-      price: '',
-      property: 'lavender',
-      isActive: true
-    });
-    setShowAddPromo(false);
-  };
-
-  // Delete promo
-  const deletePromo = (promoId) => {
-    if (confirm('Padam promo ini?')) {
-      setPromos(promos.filter(p => p.id !== promoId));
+  // Set custom price for a date
+  const setCustomPrice = (dateStr, price) => {
+    if (price && price > 0) {
+      setCustomPrices(prev => ({ ...prev, [dateStr]: parseInt(price) }));
+    } else {
+      // Remove custom price (revert to calculated)
+      setCustomPrices(prev => {
+        const updated = { ...prev };
+        delete updated[dateStr];
+        return updated;
+      });
     }
   };
 
-  // Toggle promo active status
-  const togglePromoActive = (promoId) => {
-    setPromos(promos.map(p => 
-      p.id === promoId ? { ...p, isActive: !p.isActive } : p
-    ));
+  // Open price edit modal
+  const openPriceModal = (date) => {
+    const dateStr = formatDateStr(date);
+    setEditingPriceDate(dateStr);
+    const priceInfo = getPriceForDate(date);
+    setEditingPrice(priceInfo.price.toString());
+    setShowPriceModal(true);
+  };
+
+  // Save price from modal
+  const savePriceFromModal = () => {
+    if (editingPriceDate && editingPrice) {
+      const defaultPrice = getPriceForDate(new Date(editingPriceDate + 'T00:00:00'));
+      if (parseInt(editingPrice) === defaultPrice.price && !defaultPrice.isCustom) {
+        // Same as default, remove custom
+        setCustomPrice(editingPriceDate, null);
+      } else {
+        setCustomPrice(editingPriceDate, editingPrice);
+      }
+    }
+    setShowPriceModal(false);
+    setEditingPriceDate(null);
+    setEditingPrice('');
   };
 
   // Festive dates for pricing
@@ -2000,20 +1994,21 @@ export default function Admin() {
                 const isManual = isManuallyBlocked(date);
                 const holidayName = isPublicHoliday(date);
                 const schoolHolidayName = isSchoolHoliday(date);
-                const promo = getPromoForDate(date, activeTab);
-                // Priority: Paid > Manual > Promo > Public+School > Public > School > Normal
-                // Colors: Green=Paid, Red=Blocked, Orange=Promo, Purple=Public Holiday, Blue=School Holiday
+                const priceInfo = getPriceForDate(date);
+                // Priority: Paid > Manual > Custom Price > Public+School > Public > School > Normal
+                // Colors: Green=Paid, Red=Blocked, Orange=Custom, Purple=Public Holiday, Blue=School Holiday
                 const hasPublicAndSchool = holidayName && schoolHolidayName;
                 days.push(
                   <div key={day} className="relative group">
                     <button
                       onClick={() => toggleDate(date)}
-                      className={`w-full p-2 sm:p-4 text-xs sm:text-sm rounded-lg sm:rounded-xl transition font-medium relative ${
+                      onDoubleClick={() => activeTab === 'lavender' && openPriceModal(date)}
+                      className={`w-full p-1 sm:p-2 text-xs sm:text-sm rounded-lg sm:rounded-xl transition font-medium relative flex flex-col items-center justify-center min-h-[50px] sm:min-h-[60px] ${
                         isPaidBooking 
                           ? 'bg-emerald-500 text-white' 
                           : isManual
                           ? 'bg-red-500 text-white'
-                          : promo
+                          : priceInfo.isCustom
                           ? 'bg-gradient-to-br from-orange-100 to-amber-100 text-orange-700 border-2 border-orange-400'
                           : hasPublicAndSchool
                           ? 'bg-gradient-to-br from-purple-100 to-sky-100 text-slate-700 border-2 border-purple-300'
@@ -2024,25 +2019,32 @@ export default function Admin() {
                           : 'bg-slate-50 text-slate-700 hover:bg-slate-100'
                       }`}
                     >
-                      {day}
-                      {promo && !isPaidBooking && !isManual && (
+                      <span className="font-bold">{day}</span>
+                      {activeTab === 'lavender' && !isPaidBooking && !isManual && (
+                        <span className={`text-[9px] sm:text-[10px] mt-0.5 ${
+                          priceInfo.isCustom ? 'text-orange-600 font-bold' : 'text-slate-400'
+                        }`}>
+                          RM{priceInfo.price >= 1000 ? (priceInfo.price/1000).toFixed(1) + 'k' : priceInfo.price}
+                        </span>
+                      )}
+                      {priceInfo.isCustom && !isPaidBooking && !isManual && (
                         <span className="absolute -top-1 -right-1 w-2 h-2 bg-orange-500 rounded-full"></span>
                       )}
-                      {holidayName && !promo && !isPaidBooking && !isManual && (
+                      {holidayName && !priceInfo.isCustom && !isPaidBooking && !isManual && (
                         <span className="absolute -top-1 -right-1 w-2 h-2 bg-purple-500 rounded-full"></span>
                       )}
-                      {schoolHolidayName && !holidayName && !promo && !isPaidBooking && !isManual && (
+                      {schoolHolidayName && !holidayName && !priceInfo.isCustom && !isPaidBooking && !isManual && (
                         <span className="absolute -top-1 -right-1 w-2 h-2 bg-sky-500 rounded-full"></span>
                       )}
                     </button>
-                    {/* Tooltip for holidays and promo */}
-                    {(holidayName || schoolHolidayName || promo) && !isPaidBooking && !isManual && (
+                    {/* Tooltip for holidays and price */}
+                    {(holidayName || schoolHolidayName || priceInfo.isCustom) && !isPaidBooking && !isManual && (
                       <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
                         <div className="bg-slate-900 text-white text-xs px-3 py-2 rounded-lg shadow-lg whitespace-nowrap">
-                          {promo && (
+                          {priceInfo.isCustom && (
                             <div className="flex items-center gap-1.5 text-orange-300 font-medium">
                               <span className="w-2 h-2 bg-orange-400 rounded-full"></span>
-                              <span>{promo.name} - RM{promo.price.toLocaleString()}</span>
+                              <span>Harga Khas - RM{priceInfo.price.toLocaleString()}</span>
                             </div>
                           )}
                           {holidayName && (
@@ -2055,6 +2057,11 @@ export default function Admin() {
                             <div className="flex items-center gap-1.5 mt-1">
                               <span className="w-2 h-2 bg-sky-400 rounded-full"></span>
                               <span>{schoolHolidayName}</span>
+                            </div>
+                          )}
+                          {activeTab === 'lavender' && (
+                            <div className="text-slate-400 text-[10px] mt-1 border-t border-slate-700 pt-1">
+                              Klik 2x untuk tukar harga
                             </div>
                           )}
                         </div>
@@ -2084,7 +2091,7 @@ export default function Admin() {
             </div>
             <div className="flex items-center gap-1.5">
               <div className="w-4 h-4 bg-orange-100 rounded border-2 border-orange-400"></div>
-              <span className="text-xs text-slate-600">Promo</span>
+              <span className="text-xs text-slate-600">Harga Khas</span>
             </div>
             <div className="flex items-center gap-1.5">
               <div className="w-4 h-4 bg-purple-100 rounded border-2 border-purple-300"></div>
@@ -2095,6 +2102,15 @@ export default function Admin() {
               <span className="text-xs text-slate-600">Cuti Sekolah</span>
             </div>
           </div>
+          
+          {/* Price info note */}
+          {activeTab === 'lavender' && (
+            <div className="mt-4 p-3 bg-slate-50 rounded-xl border border-slate-200">
+              <p className="text-xs text-slate-500 text-center">
+                Klik 2x pada tarikh untuk tukar harga • Harga asal: Isnin-Jumaat RM1,300 | Sabtu-Ahad & Cuti RM1,590 | Perayaan RM1,700
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Manual Blocked Dates List */}
@@ -2253,110 +2269,56 @@ export default function Admin() {
               </div>
             </div>
 
-            {/* Promo Management Section */}
-            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mt-6">
-              <div className="bg-gradient-to-r from-orange-500 to-amber-500 px-4 py-3">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="text-white font-bold flex items-center gap-2">
-                      <TrendingUp className="w-4 h-4" />
-                      Promosi & Diskaun
-                    </h3>
-                    <p className="text-orange-100 text-xs mt-0.5">Tetapkan harga istimewa untuk tarikh tertentu</p>
-                  </div>
-                  <button
-                    onClick={() => setShowAddPromo(true)}
-                    className="bg-white/20 hover:bg-white/30 text-white px-3 py-1.5 rounded-lg text-xs font-medium transition flex items-center gap-1"
-                  >
-                    <Plus className="w-3.5 h-3.5" />
-                    Tambah Promo
-                  </button>
-                </div>
-              </div>
-              
-              <div className="p-4">
-                {promos.filter(p => p.property === activeTab).length === 0 ? (
-                  <div className="text-center py-8">
-                    <TrendingUp className="w-10 h-10 text-slate-200 mx-auto mb-3" />
-                    <p className="text-slate-400 text-sm">Tiada promo aktif untuk villa ini</p>
+            {/* Custom Prices Section - Only for Lavender Villa */}
+            {activeTab === 'lavender' && Object.keys(customPrices).length > 0 && (
+              <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mt-6">
+                <div className="bg-gradient-to-r from-orange-500 to-amber-500 px-4 py-3">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="text-white font-bold flex items-center gap-2">
+                        <TrendingUp className="w-4 h-4" />
+                        Harga Khas
+                      </h3>
+                      <p className="text-orange-100 text-xs mt-0.5">{Object.keys(customPrices).length} tarikh dengan harga khas</p>
+                    </div>
                     <button
-                      onClick={() => setShowAddPromo(true)}
-                      className="mt-3 text-orange-500 hover:text-orange-600 text-sm font-medium"
+                      onClick={() => {
+                        if (confirm('Padam semua harga khas dan kembali ke harga asal?')) {
+                          setCustomPrices({});
+                        }
+                      }}
+                      className="bg-white/20 hover:bg-white/30 text-white px-3 py-1.5 rounded-lg text-xs font-medium transition"
                     >
-                      + Tambah promo pertama
+                      Reset Semua
                     </button>
                   </div>
-                ) : (
-                  <div className="space-y-3">
-                    {promos.filter(p => p.property === activeTab).map(promo => {
-                      const startDate = new Date(promo.startDate + 'T00:00:00');
-                      const endDate = new Date(promo.endDate + 'T00:00:00');
-                      const today = new Date();
-                      today.setHours(0, 0, 0, 0);
-                      const isExpired = endDate < today;
-                      const isUpcoming = startDate > today;
-                      const isActive = promo.isActive && !isExpired && !isUpcoming;
-                      
+                </div>
+                
+                <div className="p-4">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+                    {Object.entries(customPrices).sort(([a], [b]) => a.localeCompare(b)).map(([dateStr, price]) => {
+                      const [year, month, day] = dateStr.split('-').map(Number);
+                      const displayDate = new Date(year, month - 1, day);
+                      const dayName = displayDate.toLocaleDateString('ms-MY', { weekday: 'short' });
                       return (
                         <div 
-                          key={promo.id}
-                          className={`rounded-xl p-4 border-2 transition ${
-                            !promo.isActive 
-                              ? 'bg-slate-50 border-slate-200 opacity-60'
-                              : isExpired
-                              ? 'bg-slate-50 border-slate-200 opacity-60'
-                              : isActive
-                              ? 'bg-orange-50 border-orange-300'
-                              : 'bg-amber-50 border-amber-300'
-                          }`}
+                          key={dateStr}
+                          className="group bg-orange-50 px-3 py-2 rounded-xl border border-orange-200 hover:border-orange-400 transition"
                         >
-                          <div className="flex items-start justify-between gap-3">
-                            <div className="flex-1">
-                              <div className="flex items-center gap-2 mb-1">
-                                <h4 className="font-bold text-slate-800">{promo.name}</h4>
-                                {isActive && (
-                                  <span className="px-2 py-0.5 bg-orange-500 text-white text-xs rounded-full font-medium">Aktif</span>
-                                )}
-                                {isUpcoming && promo.isActive && (
-                                  <span className="px-2 py-0.5 bg-amber-500 text-white text-xs rounded-full font-medium">Akan Datang</span>
-                                )}
-                                {isExpired && (
-                                  <span className="px-2 py-0.5 bg-slate-400 text-white text-xs rounded-full font-medium">Tamat</span>
-                                )}
-                                {!promo.isActive && !isExpired && (
-                                  <span className="px-2 py-0.5 bg-slate-400 text-white text-xs rounded-full font-medium">Tidak Aktif</span>
-                                )}
-                              </div>
-                              <div className="flex items-center gap-4 text-sm">
-                                <div className="flex items-center gap-1.5 text-slate-600">
-                                  <CalendarDays className="w-3.5 h-3.5" />
-                                  <span>
-                                    {startDate.toLocaleDateString('ms-MY', { day: 'numeric', month: 'short' })} - {endDate.toLocaleDateString('ms-MY', { day: 'numeric', month: 'short', year: 'numeric' })}
-                                  </span>
-                                </div>
-                                <div className="font-bold text-orange-600 text-lg">
-                                  RM {promo.price.toLocaleString()}
-                                </div>
-                              </div>
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <p className="text-sm font-bold text-slate-800">
+                                {displayDate.toLocaleDateString('ms-MY', { day: 'numeric', month: 'short' })}
+                              </p>
+                              <p className="text-xs text-slate-400">{dayName}</p>
                             </div>
-                            <div className="flex items-center gap-1">
-                              <button
-                                onClick={() => togglePromoActive(promo.id)}
-                                className={`p-2 rounded-lg transition ${
-                                  promo.isActive 
-                                    ? 'bg-orange-100 text-orange-600 hover:bg-orange-200' 
-                                    : 'bg-slate-100 text-slate-400 hover:bg-slate-200'
-                                }`}
-                                title={promo.isActive ? 'Nyahaktifkan' : 'Aktifkan'}
+                            <div className="text-right">
+                              <p className="text-sm font-bold text-orange-600">RM{price.toLocaleString()}</p>
+                              <button 
+                                onClick={() => setCustomPrice(dateStr, null)}
+                                className="opacity-0 group-hover:opacity-100 text-xs text-red-500 hover:text-red-600 transition"
                               >
-                                {promo.isActive ? <CheckCircle className="w-4 h-4" /> : <XCircle className="w-4 h-4" />}
-                              </button>
-                              <button
-                                onClick={() => deletePromo(promo.id)}
-                                className="p-2 rounded-lg bg-slate-100 text-slate-400 hover:bg-red-100 hover:text-red-500 transition"
-                                title="Padam"
-                              >
-                                <Trash2 className="w-4 h-4" />
+                                Padam
                               </button>
                             </div>
                           </div>
@@ -2364,101 +2326,72 @@ export default function Admin() {
                       );
                     })}
                   </div>
-                )}
+                </div>
               </div>
-              
-              <div className="px-4 py-2 bg-orange-50 border-t border-orange-100">
-                <p className="text-xs text-orange-600 text-center">Promo akan dipaparkan di kalendar dengan warna oren</p>
-              </div>
-            </div>
+            )}
 
-            {/* Add Promo Modal */}
-            {showAddPromo && (
+            {/* Price Edit Modal */}
+            {showPriceModal && editingPriceDate && (
               <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl">
+                <div className="bg-white rounded-2xl w-full max-w-sm shadow-2xl">
                   <div className="bg-gradient-to-r from-orange-500 to-amber-500 p-4 rounded-t-2xl">
                     <div className="flex items-center justify-between">
-                      <h3 className="text-white font-bold flex items-center gap-2">
-                        <TrendingUp className="w-5 h-5" />
-                        Tambah Promo Baru
-                      </h3>
-                      <button onClick={() => setShowAddPromo(false)} className="text-white/80 hover:text-white">
+                      <h3 className="text-white font-bold">Tukar Harga</h3>
+                      <button onClick={() => setShowPriceModal(false)} className="text-white/80 hover:text-white">
                         <X className="w-5 h-5" />
                       </button>
                     </div>
                   </div>
                   
                   <div className="p-4 space-y-4">
-                    <div>
-                      <label className="block text-slate-600 text-xs font-medium mb-1">Nama Promo</label>
-                      <input
-                        type="text"
-                        value={newPromo.name}
-                        onChange={(e) => setNewPromo({ ...newPromo, name: e.target.value })}
-                        placeholder="cth: Last Minute Deal, Promo Raya"
-                        className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-orange-400 transition text-sm"
-                      />
-                    </div>
-                    
-                    <div className="grid grid-cols-2 gap-3">
-                      <div>
-                        <label className="block text-slate-600 text-xs font-medium mb-1">Tarikh Mula</label>
-                        <input
-                          type="date"
-                          value={newPromo.startDate}
-                          onChange={(e) => setNewPromo({ ...newPromo, startDate: e.target.value })}
-                          className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-orange-400 transition text-sm"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-slate-600 text-xs font-medium mb-1">Tarikh Tamat</label>
-                        <input
-                          type="date"
-                          value={newPromo.endDate}
-                          onChange={(e) => setNewPromo({ ...newPromo, endDate: e.target.value })}
-                          className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-orange-400 transition text-sm"
-                        />
-                      </div>
+                    <div className="text-center">
+                      <p className="text-slate-500 text-sm">Tarikh</p>
+                      <p className="text-lg font-bold text-slate-800">
+                        {new Date(editingPriceDate + 'T00:00:00').toLocaleDateString('ms-MY', { 
+                          weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' 
+                        })}
+                      </p>
                     </div>
                     
                     <div>
-                      <label className="block text-slate-600 text-xs font-medium mb-1">Harga Promo (RM)</label>
+                      <label className="block text-slate-600 text-xs font-medium mb-1">Harga (RM)</label>
                       <input
                         type="number"
-                        value={newPromo.price}
-                        onChange={(e) => setNewPromo({ ...newPromo, price: e.target.value })}
+                        value={editingPrice}
+                        onChange={(e) => setEditingPrice(e.target.value)}
                         placeholder="cth: 999"
-                        className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-orange-400 transition text-sm"
+                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-lg font-bold text-center focus:outline-none focus:border-orange-400 transition"
                       />
-                      <p className="text-xs text-slate-400 mt-1">Harga tetap untuk setiap malam dalam tempoh promo</p>
-                    </div>
-                    
-                    <div>
-                      <label className="block text-slate-600 text-xs font-medium mb-1">Villa</label>
-                      <select
-                        value={newPromo.property}
-                        onChange={(e) => setNewPromo({ ...newPromo, property: e.target.value })}
-                        className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-orange-400 transition text-sm"
-                      >
-                        {properties.map(p => (
-                          <option key={p.id} value={p.id}>{p.name}</option>
-                        ))}
-                      </select>
+                      <p className="text-xs text-slate-400 mt-2 text-center">
+                        Harga asal: RM{(() => {
+                          const date = new Date(editingPriceDate + 'T00:00:00');
+                          const dayOfWeek = date.getDay();
+                          const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+                          const isHoliday = publicHolidays[editingPriceDate];
+                          const isFestive = festiveDates.includes(editingPriceDate);
+                          if (isFestive) return '1,700';
+                          if (isWeekend || isHoliday) return '1,590';
+                          return '1,300';
+                        })()}
+                      </p>
                     </div>
                   </div>
                   
                   <div className="p-4 border-t border-slate-100 flex gap-2">
                     <button
-                      onClick={() => setShowAddPromo(false)}
-                      className="flex-1 px-4 py-2.5 bg-slate-100 text-slate-600 rounded-xl font-medium hover:bg-slate-200 transition text-sm"
+                      onClick={() => {
+                        setCustomPrice(editingPriceDate, null);
+                        setShowPriceModal(false);
+                      }}
+                      className="px-4 py-2.5 bg-slate-100 text-slate-600 rounded-xl font-medium hover:bg-slate-200 transition text-sm"
                     >
-                      Batal
+                      Reset
                     </button>
                     <button
-                      onClick={handleAddPromo}
+                      onClick={savePriceFromModal}
                       className="flex-1 px-4 py-2.5 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-xl font-medium hover:from-orange-600 hover:to-amber-600 transition text-sm"
                     >
-                      Simpan Promo
+                      Simpan
                     </button>
                   </div>
                 </div>
