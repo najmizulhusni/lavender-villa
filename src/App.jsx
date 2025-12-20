@@ -126,14 +126,37 @@ export default function HomestayExperience() {
   };
 
   // Check if booking requires minimum 2 nights (weekend during school holiday)
+  // Returns true if check-in is on Saturday OR Sunday during school holiday
   const requiresMinStay = (checkInDateStr) => {
     const checkInDate = new Date(checkInDateStr + 'T00:00:00');
     const dayOfWeek = checkInDate.getDay();
-    const isSaturday = dayOfWeek === 6;
+    const isWeekend = dayOfWeek === 0 || dayOfWeek === 6; // Saturday = 6, Sunday = 0
     const schoolHoliday = isSchoolHoliday(checkInDateStr);
     
-    // Only Saturday check-in during school holiday requires min 2 nights
-    return isSaturday && schoolHoliday;
+    // Weekend check-in during school holiday requires min 2 nights
+    return isWeekend && schoolHoliday;
+  };
+  
+  // Check if any date in booking range includes weekend during school holiday
+  // If yes, minimum 2 nights required
+  const bookingRequiresMinStay = (checkInStr, checkOutStr) => {
+    if (!checkInStr || !checkOutStr) return false;
+    
+    const start = new Date(checkInStr + 'T00:00:00');
+    const end = new Date(checkOutStr + 'T00:00:00');
+    
+    // Check each date in the booking range (excluding checkout date)
+    for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
+      const dateStr = formatDateToLocal(d);
+      const dayOfWeek = d.getDay();
+      const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+      const schoolHoliday = isSchoolHoliday(dateStr);
+      
+      if (isWeekend && schoolHoliday) {
+        return true;
+      }
+    }
+    return false;
   };
 
   const spaces = [
@@ -259,8 +282,8 @@ export default function HomestayExperience() {
 
     // Validate minimum stay for weekend during school holiday (3H2M)
     const nights = calculateNights();
-    if (requiresMinStay(selectedDates.checkIn) && nights < 2) {
-      alert('Hujung minggu semasa cuti sekolah memerlukan minimum 3 Hari 2 Malam (Check-in Sabtu, Check-out Isnin)');
+    if (bookingRequiresMinStay(selectedDates.checkIn, selectedDates.checkOut) && nights < 2) {
+      alert('Tempahan yang termasuk hujung minggu semasa cuti sekolah memerlukan minimum 3 Hari 2 Malam');
       return;
     }
 
@@ -276,7 +299,6 @@ export default function HomestayExperience() {
       return;
     }
 
-    const nights = calculateNights();
     const total = calculateTotal();
 
     const checkIn = new Date(selectedDates.checkIn).toLocaleDateString('en-MY', {
@@ -603,6 +625,13 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
           setClickedBookedDate(dateStr);
           setShowAlternatives(true);
           setShowCalendar(null);
+          return;
+        }
+        
+        // Check minimum stay requirement for weekend during school holiday
+        const nights = Math.round((end - start) / (1000 * 60 * 60 * 24));
+        if (bookingRequiresMinStay(selectedDates.checkIn, dateStr) && nights < 2) {
+          alert('Tempahan yang termasuk hujung minggu semasa cuti sekolah memerlukan minimum 3 Hari 2 Malam.\n\nSila pilih tarikh checkout yang lebih jauh.');
           return;
         }
         
@@ -1160,9 +1189,19 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                               }
                             }
                           }
-                          // For checkout: blocked if manually blocked OR has blocked dates in between
+                          // Check minimum stay requirement - if booking includes weekend during school holiday
+                          let failsMinStay = false;
+                          if (selectedDates.checkIn && dateStr > selectedDates.checkIn && !hasBlockedBetween && !isManuallyBlocked) {
+                            const start = new Date(selectedDates.checkIn + 'T00:00:00');
+                            const end = new Date(dateStr + 'T00:00:00');
+                            const nights = Math.round((end - start) / (1000 * 60 * 60 * 24));
+                            if (bookingRequiresMinStay(selectedDates.checkIn, dateStr) && nights < 2) {
+                              failsMinStay = true;
+                            }
+                          }
+                          // For checkout: blocked if manually blocked OR has blocked dates in between OR fails min stay
                           // Manually blocked = Cuti/Tutup (fully blocked, no check-in or check-out)
-                          const isBlocked = isManuallyBlocked || hasBlockedBetween;
+                          const isBlocked = isManuallyBlocked || hasBlockedBetween || failsMinStay;
                           days.push(
                             <button
                               key={day}
@@ -1171,6 +1210,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                               className={`p-2 text-sm rounded-lg transition relative group/day ${
                                 isSelected ? 'bg-purple-500 text-white font-bold' :
                                 isInRange ? 'bg-purple-100 text-purple-700' :
+                                failsMinStay ? 'bg-amber-100 text-amber-400 cursor-not-allowed' :
                                 isManuallyBlocked ? 'bg-red-100 text-red-400 cursor-not-allowed' :
                                 isBlocked ? 'bg-red-100 text-red-400 cursor-not-allowed' :
                                 isPast || isBeforeOrSameAsCheckIn ? 'text-slate-300 cursor-not-allowed' :
@@ -1178,13 +1218,16 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                                 isHoliday ? 'bg-orange-50 text-orange-600 hover:bg-orange-100 font-medium' :
                                 'hover:bg-purple-100 text-slate-700'
                               }`}
-                              title={isManuallyBlocked ? 'Cuti/Tutup - tidak boleh checkout' : (isBooked && !isBlocked ? 'Boleh checkout hari ini' : '')}
+                              title={failsMinStay ? 'Min 3H2M untuk hujung minggu cuti sekolah' : (isManuallyBlocked ? 'Cuti/Tutup - tidak boleh checkout' : (isBooked && !isBlocked ? 'Boleh checkout hari ini' : ''))}
                             >
                               {day}
+                              {failsMinStay && (
+                                <span className="absolute -top-1 -left-1 w-4 h-4 bg-amber-500 rounded-full text-[8px] text-white font-bold flex items-center justify-center">2</span>
+                              )}
                               {isBooked && !isBlocked && !isManuallyBlocked && !isPast && !isBeforeOrSameAsCheckIn && (
                                 <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-green-400 rounded-full"></span>
                               )}
-                              {isHoliday && !isBooked && !isPast && !isBeforeOrSameAsCheckIn && (
+                              {isHoliday && !isBooked && !isPast && !isBeforeOrSameAsCheckIn && !failsMinStay && (
                                 <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-orange-400 rounded-full"></span>
                               )}
                             </button>
@@ -1198,6 +1241,10 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                       <div className="flex items-center gap-1.5">
                         <span className="w-4 h-4 bg-red-100 rounded"></span>
                         <span className="text-slate-600">Tidak Tersedia</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-4 h-4 bg-amber-100 rounded flex items-center justify-center"><span className="w-3 h-3 bg-amber-500 rounded-full text-[6px] text-white font-bold flex items-center justify-center">2</span></span>
+                        <span className="text-slate-600">Min 3H2M</span>
                       </div>
                       <div className="flex items-center gap-1.5">
                         <span className="w-4 h-4 bg-green-50 rounded relative">
