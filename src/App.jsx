@@ -1428,14 +1428,29 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
 
             {/* Pricing Info - Clean inline design */}
             <div className="mt-6 pt-6 border-t border-slate-200">
-              <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm">
-                <span className="text-slate-500">Weekday <span className="font-semibold text-slate-700">RM1,300</span></span>
+              <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-3 text-sm">
+                <div className="text-center">
+                  <span className="text-slate-500 text-xs block">Weekday</span>
+                  <span className="font-semibold text-slate-700">RM1,300</span>
+                  <span className="text-slate-400 text-xs"> / </span>
+                  <span className="font-semibold text-slate-700">RM2,400</span>
+                </div>
                 <span className="text-slate-300">|</span>
-                <span className="text-slate-500">Weekend/PH <span className="font-semibold text-purple-600">RM1,590</span></span>
+                <div className="text-center">
+                  <span className="text-slate-500 text-xs block">Weekend/PH/SH</span>
+                  <span className="font-semibold text-purple-600">RM1,590</span>
+                  <span className="text-slate-400 text-xs"> / </span>
+                  <span className="font-semibold text-purple-600">RM2,990</span>
+                </div>
                 <span className="text-slate-300">|</span>
-                <span className="text-slate-500">Festive <span className="font-semibold text-amber-600">RM1,700</span></span>
+                <div className="text-center">
+                  <span className="text-slate-500 text-xs block">Festive</span>
+                  <span className="font-semibold text-amber-600">RM1,700</span>
+                  <span className="text-slate-400 text-xs"> / </span>
+                  <span className="font-semibold text-amber-600">RM3,200</span>
+                </div>
               </div>
-              <p className="text-slate-400 text-xs text-center mt-3">Weekend & Cuti Sekolah: Min 3H2M • Pengesahan melalui WhatsApp</p>
+              <p className="text-slate-400 text-xs text-center mt-3">2H1M / 3H2M • Weekend & Cuti Sekolah: Min 3H2M • Pengesahan melalui WhatsApp</p>
             </div>
           </div>
         </div>

@@ -2143,10 +2143,10 @@ export default function Admin() {
           {activeTab === 'lavender' && (
             <div className="mt-4 p-3 bg-slate-50 rounded-xl border border-slate-200">
               <p className="text-xs text-slate-500 text-center">
-                Hover tarikh untuk tukar harga • Weekday RM1,300 | Weekend/PH RM1,590 | Festive RM1,700
+                Hover tarikh untuk tukar harga • Weekday RM1,300/RM2,400 | Weekend/PH/SH RM1,590/RM2,990 | Festive RM1,700/RM3,200
               </p>
               <p className="text-xs text-amber-600 text-center mt-1">
-                Weekend & Cuti Sekolah: Min 3H2M
+                2H1M / 3H2M • Weekend & Cuti Sekolah: Min 3H2M
               </p>
             </div>
           )}
