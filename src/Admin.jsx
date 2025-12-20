@@ -2141,13 +2141,23 @@ export default function Admin() {
           
           {/* Price info note */}
           {activeTab === 'lavender' && (
-            <div className="mt-4 p-3 bg-slate-50 rounded-xl border border-slate-200">
-              <p className="text-xs text-slate-500 text-center">
-                Hover tarikh untuk tukar harga • Weekday RM1,300/RM2,400 | Weekend/PH/SH RM1,590/RM2,990 | Festive RM1,700/RM3,200
-              </p>
-              <p className="text-xs text-amber-600 text-center mt-1">
-                2H1M / 3H2M • Weekend & Cuti Sekolah: Min 3H2M
-              </p>
+            <div className="mt-4 p-4 bg-gradient-to-br from-purple-50 to-slate-50 rounded-xl border border-purple-200">
+              <p className="text-xs font-semibold text-purple-700 mb-3">Harga Pakej (2H1M / 3H2M)</p>
+              <div className="grid grid-cols-3 gap-3 mb-3">
+                <div className="bg-white rounded-lg p-2 border border-slate-200">
+                  <p className="text-xs text-slate-600 font-medium">Weekday</p>
+                  <p className="text-xs font-bold text-slate-900">RM1,300 / RM2,400</p>
+                </div>
+                <div className="bg-white rounded-lg p-2 border border-purple-200">
+                  <p className="text-xs text-purple-600 font-medium">Weekend/PH/SH</p>
+                  <p className="text-xs font-bold text-purple-600">RM1,590 / RM2,990</p>
+                </div>
+                <div className="bg-white rounded-lg p-2 border border-amber-200">
+                  <p className="text-xs text-amber-600 font-medium">Festive</p>
+                  <p className="text-xs font-bold text-amber-600">RM1,700 / RM3,200</p>
+                </div>
+              </div>
+              <p className="text-xs text-slate-600 text-center">Hover tarikh untuk tukar harga • Min 3H2M untuk Weekend & Cuti Sekolah</p>
             </div>
           )}
         </div>
