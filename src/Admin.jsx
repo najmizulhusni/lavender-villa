@@ -1159,6 +1159,49 @@ export default function Admin() {
     return counts;
   };
 
+  // Get occupancy rate for selected month (percentage of days booked)
+  const getOccupancyRate = () => {
+    const monthKey = getAnalyticsMonthKey();
+    const year = analyticsMonth.getFullYear();
+    const month = analyticsMonth.getMonth();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    
+    // Count booked nights for paid bookings in this month
+    let bookedNights = 0;
+    bookings
+      .filter(b => b.status === 'paid' && b.checkIn)
+      .forEach(b => {
+        const checkIn = new Date(b.checkIn);
+        const checkOut = new Date(b.checkOut);
+        
+        // Count nights that fall within the selected month
+        for (let d = new Date(checkIn); d < checkOut; d.setDate(d.getDate() + 1)) {
+          const dateMonth = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+          if (dateMonth === monthKey) {
+            bookedNights++;
+          }
+        }
+      });
+    
+    return daysInMonth > 0 ? Math.round((bookedNights / daysInMonth) * 100) : 0;
+  };
+
+  // Get booking source breakdown for selected month
+  const getBookingSourceBreakdown = () => {
+    const monthKey = getAnalyticsMonthKey();
+    const monthBookings = bookings.filter(b => b.checkIn && b.checkIn.startsWith(monthKey));
+    
+    // Count by source (for now, all are WhatsApp since that's the only booking method)
+    // In future, can add more sources like website direct, OTA, etc.
+    const sources = {
+      whatsapp: monthBookings.length,
+      direct: 0,
+      other: 0
+    };
+    
+    return sources;
+  };
+
   // Get monthly revenue from Dec 2025 to Dec 2026 (13 months)
   const getMonthlyRevenue = (propertyId = 'all') => {
     const months = [];
@@ -1639,18 +1682,60 @@ export default function Admin() {
                 <p className="text-slate-500 text-sm">Tempahan</p>
               </div>
               
-              {/* Success Rate */}
+              {/* Occupancy Rate */}
               <div className="bg-white rounded-2xl p-5 border border-slate-200">
                 <div className="flex items-center justify-between mb-3">
-                  <div className="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center">
-                    <TrendingUp className="w-5 h-5 text-green-600" />
+                  <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
+                    <CalendarDays className="w-5 h-5 text-blue-600" />
                   </div>
                 </div>
-                <p className="text-3xl font-bold text-green-600">{getSelectedMonthBookingsByStatus('all') > 0 ? Math.round((getSelectedMonthBookingsByStatus('paid') / getSelectedMonthBookingsByStatus('all')) * 100) : 0}%</p>
-                <p className="text-slate-500 text-sm">Kadar Kejayaan</p>
+                <p className="text-3xl font-bold text-blue-600">{getOccupancyRate()}%</p>
+                <p className="text-slate-500 text-sm">Kadar Penghunian</p>
               </div>
             </div>
             
+            {/* Booking Source */}
+            <div className="bg-white rounded-2xl p-5 border border-slate-200">
+              <h3 className="font-bold text-slate-900 mb-4">Sumber Tempahan</h3>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                      <Phone className="w-4 h-4 text-green-600" />
+                    </div>
+                    <span className="text-slate-700 text-sm font-medium">WhatsApp</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-slate-900 font-bold">{getBookingSourceBreakdown().whatsapp}</span>
+                    <span className="text-slate-400 text-xs">tempahan</span>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                      <Navigation className="w-4 h-4 text-purple-600" />
+                    </div>
+                    <span className="text-slate-700 text-sm font-medium">Direct</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-slate-900 font-bold">{getBookingSourceBreakdown().direct}</span>
+                    <span className="text-slate-400 text-xs">tempahan</span>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center">
+                      <Users className="w-4 h-4 text-slate-600" />
+                    </div>
+                    <span className="text-slate-700 text-sm font-medium">Lain-lain</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-slate-900 font-bold">{getBookingSourceBreakdown().other}</span>
+                    <span className="text-slate-400 text-xs">tempahan</span>
+                  </div>
+                </div>
+              </div>
+            </div>
 
 
             {/* Upcoming Check-ins */}
