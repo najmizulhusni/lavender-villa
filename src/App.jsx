@@ -985,9 +985,6 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 text-slate-900">Tempah Penginapan Villa Anda</h2>
             <p className="text-slate-600 text-sm sm:text-base md:text-lg mb-2">Sesuai untuk keluarga & kumpulan • Sehingga 20 tetamu</p>
             <p className="text-purple-600 text-sm sm:text-base font-semibold">Penginapan Muslim Sahaja</p>
-            <p className="text-amber-600 text-xs sm:text-sm mt-2 bg-amber-50 inline-block px-3 py-1 rounded-full">
-              ⚠️ Hujung minggu semasa cuti sekolah: Min 3H2M
-            </p>
           </div>
 
           <div className="bg-gradient-to-br from-slate-50 to-white rounded-2xl sm:rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-lg">
@@ -1082,7 +1079,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                                 isHoliday ? 'bg-orange-50 text-orange-600 hover:bg-orange-100 font-medium' :
                                 'hover:bg-purple-100 text-slate-700'
                               }`}
-                              title={needsMinStay && !isPast && !isBooked ? 'Min 3H2M (Hujung Minggu Cuti Sekolah)' : ''}
+                              title={needsMinStay && !isPast && !isBooked ? 'Min 3H2M' : ''}
                             >
                               {day}
                               {needsMinStay && !isBooked && !isPast && (
@@ -1218,7 +1215,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                                 isHoliday ? 'bg-orange-50 text-orange-600 hover:bg-orange-100 font-medium' :
                                 'hover:bg-purple-100 text-slate-700'
                               }`}
-                              title={failsMinStay ? 'Min 3H2M untuk hujung minggu cuti sekolah' : (isManuallyBlocked ? 'Cuti/Tutup - tidak boleh checkout' : (isBooked && !isBlocked ? 'Boleh checkout hari ini' : ''))}
+                              title={failsMinStay ? 'Min 3H2M' : (isManuallyBlocked ? 'Cuti/Tutup - tidak boleh checkout' : (isBooked && !isBlocked ? 'Boleh checkout hari ini' : ''))}
                             >
                               {day}
                               {failsMinStay && (
@@ -1431,26 +1428,26 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
 
             {/* Info Text */}
             <div className="mt-6 text-center space-y-1">
-              <div className="bg-slate-50 rounded-lg p-3">
-                <p className="text-slate-700 text-xs font-semibold mb-2">Harga Pakej</p>
-                <p className="text-purple-600 text-xs mb-2 font-medium">Min 3H2M untuk Weekend & Cuti Sekolah</p>
-                <div className="grid grid-cols-3 gap-2 text-xs">
-                  <div className="text-center">
-                    <p className="text-slate-500 font-medium">Weekday</p>
-                    <p className="text-slate-700">2H1M: RM1,300</p>
-                    <p className="text-slate-700">3H2M: RM2,400</p>
+              <div className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl p-4 border border-slate-200">
+                <p className="text-slate-800 text-sm font-bold mb-3">Harga Pakej</p>
+                <div className="grid grid-cols-3 gap-3 text-xs">
+                  <div className="bg-white rounded-lg p-3 shadow-sm">
+                    <p className="text-slate-600 font-semibold mb-2">Weekday</p>
+                    <p className="text-slate-800 font-medium">2H1M: <span className="text-purple-600">RM1,300</span></p>
+                    <p className="text-slate-800 font-medium">3H2M: <span className="text-purple-600">RM2,400</span></p>
                   </div>
-                  <div className="text-center border-x border-slate-200">
-                    <p className="text-slate-500 font-medium">Weekend/PH</p>
-                    <p className="text-slate-700">2H1M: RM1,590</p>
-                    <p className="text-slate-700">3H2M: RM2,990</p>
+                  <div className="bg-white rounded-lg p-3 shadow-sm border-2 border-purple-200">
+                    <p className="text-purple-600 font-semibold mb-2">Weekend/PH</p>
+                    <p className="text-slate-800 font-medium">2H1M: <span className="text-purple-600">RM1,590</span></p>
+                    <p className="text-slate-800 font-medium">3H2M: <span className="text-purple-600">RM2,990</span></p>
                   </div>
-                  <div className="text-center">
-                    <p className="text-slate-500 font-medium">Festive</p>
-                    <p className="text-slate-700">2H1M: RM1,700</p>
-                    <p className="text-slate-700">3H2M: RM3,200</p>
+                  <div className="bg-white rounded-lg p-3 shadow-sm">
+                    <p className="text-amber-600 font-semibold mb-2">Festive</p>
+                    <p className="text-slate-800 font-medium">2H1M: <span className="text-purple-600">RM1,700</span></p>
+                    <p className="text-slate-800 font-medium">3H2M: <span className="text-purple-600">RM3,200</span></p>
                   </div>
                 </div>
+                <p className="text-amber-600 text-xs mt-3 font-medium">Weekend & Cuti Sekolah: Min 3H2M</p>
               </div>
               <p className="text-slate-400 text-xs mt-2">Pengesahan tempahan akan dihantar melalui WhatsApp</p>
             </div>

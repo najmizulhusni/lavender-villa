@@ -2061,7 +2061,7 @@ export default function Admin() {
                           {needsMinStay && (
                             <div className="flex items-center gap-1.5 text-amber-300 font-medium mb-1">
                               <span className="w-4 h-4 bg-amber-500 rounded-full text-[8px] text-white font-bold flex items-center justify-center">2</span>
-                              <span>Min 3H2M (Hujung Minggu Cuti Sekolah)</span>
+                              <span>Min 3H2M</span>
                             </div>
                           )}
                           {priceInfo.isCustom && (
@@ -2137,7 +2137,7 @@ export default function Admin() {
                 Klik 2x pada tarikh untuk tukar harga • Harga asal: Isnin-Jumaat RM1,300 | Sabtu-Ahad & Cuti RM1,590 | Perayaan RM1,700
               </p>
               <p className="text-xs text-amber-600 text-center mt-1">
-                Hujung minggu semasa cuti sekolah: Min 3H2M (Check-in Sabtu, Check-out Isnin)
+                Weekend & Cuti Sekolah: Min 3H2M
               </p>
             </div>
           )}
