@@ -1186,22 +1186,6 @@ export default function Admin() {
     return daysInMonth > 0 ? Math.round((bookedNights / daysInMonth) * 100) : 0;
   };
 
-  // Get booking source breakdown for selected month
-  const getBookingSourceBreakdown = () => {
-    const monthKey = getAnalyticsMonthKey();
-    const monthBookings = bookings.filter(b => b.checkIn && b.checkIn.startsWith(monthKey));
-    
-    // Count by source (for now, all are WhatsApp since that's the only booking method)
-    // In future, can add more sources like website direct, OTA, etc.
-    const sources = {
-      whatsapp: monthBookings.length,
-      direct: 0,
-      other: 0
-    };
-    
-    return sources;
-  };
-
   // Get monthly revenue from Dec 2025 to Dec 2026 (13 months)
   const getMonthlyRevenue = (propertyId = 'all') => {
     const months = [];
@@ -1691,49 +1675,6 @@ export default function Admin() {
                 </div>
                 <p className="text-3xl font-bold text-blue-600">{getOccupancyRate()}%</p>
                 <p className="text-slate-500 text-sm">Kadar Penghunian</p>
-              </div>
-            </div>
-            
-            {/* Booking Source */}
-            <div className="bg-white rounded-2xl p-5 border border-slate-200">
-              <h3 className="font-bold text-slate-900 mb-4">Sumber Tempahan</h3>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
-                      <Phone className="w-4 h-4 text-green-600" />
-                    </div>
-                    <span className="text-slate-700 text-sm font-medium">WhatsApp</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-slate-900 font-bold">{getBookingSourceBreakdown().whatsapp}</span>
-                    <span className="text-slate-400 text-xs">tempahan</span>
-                  </div>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
-                      <Navigation className="w-4 h-4 text-purple-600" />
-                    </div>
-                    <span className="text-slate-700 text-sm font-medium">Direct</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-slate-900 font-bold">{getBookingSourceBreakdown().direct}</span>
-                    <span className="text-slate-400 text-xs">tempahan</span>
-                  </div>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center">
-                      <Users className="w-4 h-4 text-slate-600" />
-                    </div>
-                    <span className="text-slate-700 text-sm font-medium">Lain-lain</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-slate-900 font-bold">{getBookingSourceBreakdown().other}</span>
-                    <span className="text-slate-400 text-xs">tempahan</span>
-                  </div>
-                </div>
               </div>
             </div>
 
