@@ -766,17 +766,29 @@ export default function Admin() {
     
     // Calculate based on day type
     const dayOfWeek = date.getDay();
-    const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+    const isWeekend = dayOfWeek === 0 || dayOfWeek === 6; // Saturday = 6, Sunday = 0
     const isHoliday = publicHolidays[dateStr];
     const isFestive = festiveDates.includes(dateStr);
+    const schoolHoliday = isSchoolHoliday(date);
+    
+    // Check if weekend during school holiday (requires min 3H2M)
+    const isWeekendSchoolHoliday = isWeekend && schoolHoliday;
     
     if (isFestive) {
-      return { price: 1700, isCustom: false, type: 'festive' };
+      return { price: 1700, isCustom: false, type: 'festive', minStay: isWeekendSchoolHoliday ? 2 : 1 };
     }
     if (isWeekend || isHoliday) {
-      return { price: 1590, isCustom: false, type: 'weekend' };
+      return { price: 1590, isCustom: false, type: 'weekend', minStay: isWeekendSchoolHoliday ? 2 : 1 };
     }
-    return { price: 1300, isCustom: false, type: 'weekday' };
+    return { price: 1300, isCustom: false, type: 'weekday', minStay: 1 };
+  };
+
+  // Check if a date requires minimum 2 nights (weekend during school holiday)
+  const requiresMinStay = (date) => {
+    const dayOfWeek = date.getDay();
+    const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+    const schoolHoliday = isSchoolHoliday(date);
+    return isWeekend && schoolHoliday;
   };
 
   // Set custom price for a date
@@ -1995,6 +2007,7 @@ export default function Admin() {
                 const holidayName = isPublicHoliday(date);
                 const schoolHolidayName = isSchoolHoliday(date);
                 const priceInfo = getPriceForDate(date);
+                const needsMinStay = requiresMinStay(date);
                 // Priority: Paid > Manual > Custom Price > Public+School > Public > School > Normal
                 // Colors: Green=Paid, Red=Blocked, Orange=Custom, Purple=Public Holiday, Blue=School Holiday
                 const hasPublicAndSchool = holidayName && schoolHolidayName;
@@ -2027,6 +2040,10 @@ export default function Admin() {
                           RM{priceInfo.price >= 1000 ? (priceInfo.price/1000).toFixed(1) + 'k' : priceInfo.price}
                         </span>
                       )}
+                      {/* Min 2 nights indicator for weekend during school holiday */}
+                      {needsMinStay && !isPaidBooking && !isManual && (
+                        <span className="absolute -top-1 -left-1 w-4 h-4 bg-amber-500 rounded-full text-[8px] text-white font-bold flex items-center justify-center">2</span>
+                      )}
                       {priceInfo.isCustom && !isPaidBooking && !isManual && (
                         <span className="absolute -top-1 -right-1 w-2 h-2 bg-orange-500 rounded-full"></span>
                       )}
@@ -2038,9 +2055,15 @@ export default function Admin() {
                       )}
                     </button>
                     {/* Tooltip for holidays and price */}
-                    {(holidayName || schoolHolidayName || priceInfo.isCustom) && !isPaidBooking && !isManual && (
+                    {(holidayName || schoolHolidayName || priceInfo.isCustom || needsMinStay) && !isPaidBooking && !isManual && (
                       <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
                         <div className="bg-slate-900 text-white text-xs px-3 py-2 rounded-lg shadow-lg whitespace-nowrap">
+                          {needsMinStay && (
+                            <div className="flex items-center gap-1.5 text-amber-300 font-medium mb-1">
+                              <span className="w-4 h-4 bg-amber-500 rounded-full text-[8px] text-white font-bold flex items-center justify-center">2</span>
+                              <span>Min 3H2M (Hujung Minggu Cuti Sekolah)</span>
+                            </div>
+                          )}
                           {priceInfo.isCustom && (
                             <div className="flex items-center gap-1.5 text-orange-300 font-medium">
                               <span className="w-2 h-2 bg-orange-400 rounded-full"></span>
@@ -2101,6 +2124,10 @@ export default function Admin() {
               <div className="w-4 h-4 bg-sky-100 rounded border-2 border-sky-300"></div>
               <span className="text-xs text-slate-600">Cuti Sekolah</span>
             </div>
+            <div className="flex items-center gap-1.5">
+              <div className="w-4 h-4 bg-amber-500 rounded-full text-[8px] text-white font-bold flex items-center justify-center">2</div>
+              <span className="text-xs text-slate-600">Min 3H2M</span>
+            </div>
           </div>
           
           {/* Price info note */}
@@ -2108,6 +2135,9 @@ export default function Admin() {
             <div className="mt-4 p-3 bg-slate-50 rounded-xl border border-slate-200">
               <p className="text-xs text-slate-500 text-center">
                 Klik 2x pada tarikh untuk tukar harga • Harga asal: Isnin-Jumaat RM1,300 | Sabtu-Ahad & Cuti RM1,590 | Perayaan RM1,700
+              </p>
+              <p className="text-xs text-amber-600 text-center mt-1">
+                Hujung minggu semasa cuti sekolah: Min 3H2M (Check-in Sabtu, Check-out Isnin)
               </p>
             </div>
           )}
