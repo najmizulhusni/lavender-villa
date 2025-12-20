@@ -2562,7 +2562,7 @@ export default function Admin() {
                         <CalendarDays className="w-4 h-4 text-slate-400" />
                       </button>
                       {dateFilterFrom && (
-                        <button onClick={() => setDateFilterFrom('')} className="absolute right-8 top-8 p-1 hover:bg-slate-200 rounded-full">
+                        <button onClick={() => setDateFilterFrom('')} className="absolute right-8 top-1/2 -translate-y-1/2 mt-3 p-1 hover:bg-slate-200 rounded-full z-10">
                           <X className="w-3 h-3 text-slate-400" />
                         </button>
                       )}
@@ -2623,7 +2623,7 @@ export default function Admin() {
                         <CalendarDays className="w-4 h-4 text-slate-400" />
                       </button>
                       {dateFilterTo && (
-                        <button onClick={() => setDateFilterTo('')} className="absolute right-8 top-8 p-1 hover:bg-slate-200 rounded-full">
+                        <button onClick={() => setDateFilterTo('')} className="absolute right-8 top-1/2 -translate-y-1/2 mt-3 p-1 hover:bg-slate-200 rounded-full z-10">
                           <X className="w-3 h-3 text-slate-400" />
                         </button>
                       )}

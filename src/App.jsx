@@ -1020,7 +1020,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                         setSelectedDates({ checkIn: '', checkOut: '' });
                         setShowCalendar(null);
                       }}
-                      className="absolute right-10 top-1/2 -translate-y-1/2 p-1 hover:bg-slate-100 rounded-full transition"
+                      className="absolute right-10 top-1/2 -translate-y-1/2 p-1 hover:bg-slate-100 rounded-full transition z-10"
                     >
                       <X className="w-4 h-4 text-slate-400 hover:text-slate-600" />
                     </button>
@@ -1120,7 +1120,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                         setSelectedDates({ ...selectedDates, checkOut: '' });
                         setShowCalendar(null);
                       }}
-                      className="absolute right-10 top-1/2 -translate-y-1/2 p-1 hover:bg-slate-100 rounded-full transition"
+                      className="absolute right-10 top-1/2 -translate-y-1/2 p-1 hover:bg-slate-100 rounded-full transition z-10"
                     >
                       <X className="w-4 h-4 text-slate-400 hover:text-slate-600" />
                     </button>
@@ -1506,10 +1506,10 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
         <div id="alternatives-clicked" className="py-12 sm:py-16 bg-gradient-to-br from-purple-50 via-white to-purple-50">
           <div className="max-w-4xl mx-auto px-4 sm:px-6">
             {/* Contact Host Card */}
-            <div className="bg-white rounded-3xl p-8 sm:p-10 shadow-xl border border-slate-200 text-center">
+            <div className="bg-white rounded-3xl p-8 sm:p-10 shadow-xl border border-slate-200 text-center relative">
               <button 
                 onClick={() => setShowAlternatives(false)} 
-                className="absolute top-4 right-4 p-2 hover:bg-slate-100 rounded-full transition"
+                className="absolute top-4 right-4 p-2 hover:bg-slate-100 rounded-full transition z-10"
               >
                 <X className="w-5 h-5 text-slate-400" />
               </button>
