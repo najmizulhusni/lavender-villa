@@ -68,17 +68,26 @@ export default function HomestayExperience() {
   }, []);
 
   useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener('scroll', handleScroll);
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setScrollY(window.scrollY);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const images = [
-    'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=1600',
-    'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1600',
-    'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=1600',
-    'https://images.unsplash.com/photo-1556912167-f556f1f39faa?w=1600',
-    'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1600',
+    'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&q=75',
+    'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&q=75',
+    'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800&q=75',
+    'https://images.unsplash.com/photo-1556912167-f556f1f39faa?w=800&q=75',
+    'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&q=75',
   ];
 
   const stories = [
@@ -165,9 +174,9 @@ export default function HomestayExperience() {
       size: 'Smart TV 65"',
       features: ['Semua Saluran Astro', 'Netflix & Disney+', 'Karaoke'],
       images: [
-        'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1600',
-        'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1600',
-        'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=1600'
+        'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600&q=75',
+        'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&q=75',
+        'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=600&q=75'
       ]
     },
     {
@@ -175,9 +184,9 @@ export default function HomestayExperience() {
       size: 'Dilengkapi Sepenuhnya',
       features: ['Periuk Nasi & Blender', 'Airfryer & Microwave', 'Alat Masak & Peralatan'],
       images: [
-        'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=1600',
-        'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1600',
-        'https://images.unsplash.com/photo-1556909172-54557c7e4fb7?w=1600'
+        'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=600&q=75',
+        'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&q=75',
+        'https://images.unsplash.com/photo-1556909172-54557c7e4fb7?w=600&q=75'
       ]
     },
     {
@@ -185,9 +194,9 @@ export default function HomestayExperience() {
       size: 'Penghawa Dingin Penuh',
       features: ['Bilik Luas', '4 Bilik Air', 'Katil Selesa'],
       images: [
-        'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=1600',
-        'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=1600',
-        'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=1600'
+        'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=75',
+        'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=600&q=75',
+        'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=600&q=75'
       ]
     },
     {
@@ -195,9 +204,9 @@ export default function HomestayExperience() {
       size: 'Kolam 30x12x4 kaki',
       features: ['Rumah Mainan Kanak-kanak', 'Gelongsor', 'Kawasan Aktiviti'],
       images: [
-        'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1600',
-        'https://images.unsplash.com/photo-1575429198097-0414ec08e8cd?w=1600',
-        'https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?w=1600'
+        'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600&q=75',
+        'https://images.unsplash.com/photo-1575429198097-0414ec08e8cd?w=600&q=75',
+        'https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?w=600&q=75'
       ]
     },
   ];
@@ -677,7 +686,15 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
       {/* Hero Section with Parallax */}
       <div className="relative h-screen overflow-hidden pt-12 sm:pt-0">
         <div className="absolute inset-0 transition-transform duration-300" style={{ transform: `translateY(${scrollY * 0.5}px)` }}>
-          <img src={images[currentImageIndex]} alt="Homestay" className="w-full h-full object-cover" />
+          <img 
+            src={images[currentImageIndex]} 
+            alt="Lavender Villa Melaka" 
+            className="w-full h-full object-cover"
+            width={800}
+            height={600}
+            loading="eager"
+            fetchPriority="high"
+          />
           <div className="absolute inset-0 bg-gradient-to-b from-slate-900/50 via-transparent to-slate-900/70"></div>
         </div>
 
@@ -750,7 +767,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
               const currentImg = spaceImageIndex[idx] || 0;
               return (
                 <div key={idx} className="group relative overflow-hidden rounded-2xl h-96 shadow-md hover:shadow-xl transition-shadow duration-300">
-                  <img src={space.images[currentImg]} alt={space.name} className="w-full h-full object-cover transition-transform duration-500" />
+                  <img src={space.images[currentImg]} alt={space.name} className="w-full h-full object-cover transition-transform duration-500" loading="lazy" />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900/95 via-slate-900/40 to-transparent"></div>
                   
                   {/* Navigation Arrows */}
