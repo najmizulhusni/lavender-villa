@@ -685,7 +685,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
 
       {/* Hero Section with Parallax */}
       <div className="relative h-screen overflow-hidden pt-12 sm:pt-0">
-        <div className="absolute inset-0 transition-transform duration-300" style={{ transform: `translateY(${scrollY * 0.5}px)` }}>
+        <div className="absolute inset-0 transition-transform duration-300 bg-slate-900" style={{ transform: `translateY(${scrollY * 0.5}px)` }}>
           <img 
             src={images[currentImageIndex]} 
             alt="Lavender Villa Melaka" 
@@ -694,6 +694,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
             height={600}
             loading="eager"
             fetchPriority="high"
+            style={{ aspectRatio: '4/3' }}
           />
           <div className="absolute inset-0 bg-gradient-to-b from-slate-900/50 via-transparent to-slate-900/70"></div>
         </div>
@@ -767,7 +768,14 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
               const currentImg = spaceImageIndex[idx] || 0;
               return (
                 <div key={idx} className="group relative overflow-hidden rounded-2xl h-96 shadow-md hover:shadow-xl transition-shadow duration-300">
-                  <img src={space.images[currentImg]} alt={space.name} className="w-full h-full object-cover transition-transform duration-500" loading="lazy" />
+                  <img 
+                    src={space.images[currentImg]} 
+                    alt={space.name} 
+                    className="w-full h-full object-cover transition-transform duration-500" 
+                    loading="lazy"
+                    width={600}
+                    height={400}
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900/95 via-slate-900/40 to-transparent"></div>
                   
                   {/* Navigation Arrows */}
