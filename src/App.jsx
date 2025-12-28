@@ -696,7 +696,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
             fetchPriority="high"
             style={{ aspectRatio: '4/3' }}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-slate-900/50 via-transparent to-slate-900/70"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-900/30 via-transparent to-slate-900/50"></div>
         </div>
 
         <div className="absolute inset-0 flex flex-col items-center justify-center text-white px-4 sm:px-6">
