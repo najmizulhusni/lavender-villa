@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Wifi, Coffee, Tv, Wind, MapPin, Star, X, Play, Phone, CheckCircle, Users, Home, Moon, Sun, Cloud, Instagram, Mic, ChevronLeft, ChevronRight, Calendar, Shield } from 'lucide-react';
 import { getBookedDates, getPublicHolidays, createBooking, getProperty, getManuallyBlockedDates } from './lib/database';
 
@@ -24,6 +24,30 @@ export default function HomestayExperience() {
   const [showBookingSuccess, setShowBookingSuccess] = useState(false);
   const [bookingDetails, setBookingDetails] = useState(null);
   const [honeypot, setHoneypot] = useState(''); // Anti-bot honeypot field
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
+
+  // Handle touch swipe for hero slider
+  const handleTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    const diff = touchStartX.current - touchEndX.current;
+    if (Math.abs(diff) > 50) { // Minimum swipe distance
+      if (diff > 0) {
+        // Swipe left - next image
+        setCurrentImageIndex((prev) => (prev + 1) % images.length);
+      } else {
+        // Swipe right - previous image
+        setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
+      }
+    }
+  };
 
   // Load data from Supabase
   useEffect(() => {
@@ -684,7 +708,12 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
       </nav>
 
       {/* Hero Section with Parallax */}
-      <div className="relative min-h-screen sm:h-screen overflow-hidden pt-16 sm:pt-0">
+      <div 
+        className="relative min-h-screen sm:h-screen overflow-hidden pt-16 sm:pt-0"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
         <div className="absolute inset-0 transition-transform duration-300 bg-slate-900" style={{ transform: `translateY(${scrollY * 0.5}px)` }}>
           <img 
             src={images[currentImageIndex]} 
@@ -696,12 +725,12 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
             fetchPriority="high"
             style={{ aspectRatio: '4/3' }}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-slate-900/30 via-transparent to-slate-900/50"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-900/40 via-slate-900/20 to-slate-900/60"></div>
         </div>
 
         <div className="absolute inset-0 flex flex-col items-center justify-center text-white px-4 sm:px-6 pt-8 pb-20 sm:pb-8">
-          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-3 sm:mb-4 text-center tracking-tight">Lavender Villa Melaka</h1>
-          <p className="text-sm sm:text-lg md:text-xl mb-6 sm:mb-12 text-center max-w-3xl text-slate-100 px-2">Villa Mewah di Bemban, Melaka | Homestay Keluarga dengan Kolam Renang | Penginapan Terbaik untuk Cuti Keluarga</p>
+          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-3 sm:mb-4 text-center tracking-tight drop-shadow-lg">Lavender Villa Melaka</h1>
+          <p className="text-sm sm:text-lg md:text-xl mb-6 sm:mb-12 text-center max-w-3xl text-white px-2 drop-shadow-md leading-relaxed">Villa Mewah di Bemban, Melaka<br className="sm:hidden" /> Homestay Keluarga dengan Kolam Renang</p>
           
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-8 sm:mb-16 w-full sm:w-auto px-4 sm:px-0">
             <button onClick={() => handleScrollTo('booking')} className="bg-white text-slate-900 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-bold hover:bg-slate-50 transition shadow-xl text-sm sm:text-base">Tempah Penginapan Anda</button>
@@ -709,9 +738,9 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
           </div>
           
           <div className="flex flex-wrap justify-center gap-4 sm:gap-10 text-xs sm:text-sm">
-            <div className="flex items-center gap-1.5 sm:gap-2"><Star className="w-3.5 h-3.5 sm:w-5 sm:h-5 fill-yellow-300 text-yellow-300" /><span className="font-semibold">5.0 Google Reviews</span></div>
-            <div className="flex items-center gap-1.5 sm:gap-2"><MapPin className="w-3.5 h-3.5 sm:w-5 sm:h-5" /><span className="whitespace-nowrap font-semibold">Bemban, Melaka</span></div>
-            <div className="flex items-center gap-1.5 sm:gap-2"><CheckCircle className="w-3.5 h-3.5 sm:w-5 sm:h-5" /><span className="font-semibold">Tempahan Segera</span></div>
+            <div className="flex items-center gap-1.5 sm:gap-2 bg-black/20 backdrop-blur-sm px-3 py-1.5 rounded-full"><Star className="w-3.5 h-3.5 sm:w-5 sm:h-5 fill-yellow-300 text-yellow-300" /><span className="font-semibold">5.0 Google Reviews</span></div>
+            <div className="flex items-center gap-1.5 sm:gap-2 bg-black/20 backdrop-blur-sm px-3 py-1.5 rounded-full"><MapPin className="w-3.5 h-3.5 sm:w-5 sm:h-5" /><span className="whitespace-nowrap font-semibold">Bemban, Melaka</span></div>
+            <div className="flex items-center gap-1.5 sm:gap-2 bg-black/20 backdrop-blur-sm px-3 py-1.5 rounded-full"><CheckCircle className="w-3.5 h-3.5 sm:w-5 sm:h-5" /><span className="font-semibold">Tempahan Segera</span></div>
           </div>
         </div>
 
