@@ -895,7 +895,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
             <div className="bg-white rounded-2xl p-6 shadow-md border border-slate-200 hover:shadow-lg transition">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-purple-300 to-purple-400 rounded-full flex items-center justify-center text-lg text-white font-bold flex-shrink-0">A</div>
+                <img src="/images/aryn_review.png" alt="Aryn Yusoff" className="w-12 h-12 rounded-full object-cover flex-shrink-0" />
                 <div className="min-w-0">
                   <h3 className="font-bold text-base text-slate-900">Aryn Yusoff</h3>
                   <div className="flex gap-0.5 mt-0.5">
@@ -909,7 +909,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
             </div>
             <div className="bg-white rounded-2xl p-6 shadow-md border border-slate-200 hover:shadow-lg transition">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-purple-300 to-purple-400 rounded-full flex items-center justify-center text-lg text-white font-bold flex-shrink-0">Y</div>
+                <img src="/images/yana_review_potrait.png" alt="Yana Zamri" className="w-12 h-12 rounded-full object-cover flex-shrink-0" />
                 <div className="min-w-0">
                   <h3 className="font-bold text-base text-slate-900">Yana Zamri</h3>
                   <div className="flex gap-0.5 mt-0.5">
@@ -919,11 +919,11 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                   </div>
                 </div>
               </div>
-              <p className="text-slate-700 text-sm leading-relaxed">"3h2m di Lavender Villa Melaka. Rumah yg sangat cantik dan bersih family semua happy dan selesa. Anak anak pun teruja dapat bermain di dalam kawasan rumah dan paling best ada pool 🤩. Owner rumah sangat baik dan ramah orangnya 😍."</p>
+              <p className="text-slate-700 text-sm leading-relaxed">"3h2m di Lavender Villa Melaka. Rumah yg sangat cantik dan bersih family semua happy dan selesa. Anak anak pun teruja dapat bermain di dalam kawasan rumah dan paling best ada pool. Owner rumah sangat baik dan ramah orangnya."</p>
             </div>
             <div className="bg-white rounded-2xl p-6 shadow-md border border-slate-200 hover:shadow-lg transition">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-purple-300 to-purple-400 rounded-full flex items-center justify-center text-lg text-white font-bold flex-shrink-0">H</div>
+                <img src="/images/hanin_review_potrait.png" alt="Hanin Naziha Hasnor" className="w-12 h-12 rounded-full object-cover flex-shrink-0" />
                 <div className="min-w-0">
                   <h3 className="font-bold text-base text-slate-900">Hanin Naziha Hasnor</h3>
                   <div className="flex gap-0.5 mt-0.5">
