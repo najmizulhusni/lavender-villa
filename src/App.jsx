@@ -888,9 +888,17 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <h2 className="text-3xl sm:text-4xl font-bold text-center mb-3 text-slate-900">Apa Kata Tetamu Kami</h2>
           <div className="flex items-center justify-center gap-2 mb-8 sm:mb-12">
-            <Star className="w-5 h-5 fill-purple-300 text-purple-300" />
-            <span className="text-lg sm:text-xl font-bold text-slate-900">5.0</span>
-            <span className="text-slate-600 text-sm sm:text-base">di Google Reviews</span>
+            <a 
+              href="https://www.google.com/maps/place/Lavender+Villa+Malacca/@2.2915775,102.3521975,17z/data=!4m8!3m7!1s0x31d1e73e8455d413:0x3fd97fe2de23d790!8m2!3d2.2915775!4d102.3521975!9m1!1b1!16s%2Fg%2F11t3_5_5_1" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 hover:opacity-80 transition"
+            >
+              <Star className="w-5 h-5 fill-purple-300 text-purple-300" />
+              <span className="text-lg sm:text-xl font-bold text-slate-900">5.0</span>
+              <span className="text-slate-600 text-sm sm:text-base">di Google Reviews</span>
+              <span className="text-purple-500 text-xs underline">Lihat</span>
+            </a>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
             <div className="bg-white rounded-2xl overflow-hidden shadow-md border border-slate-200 hover:shadow-lg transition">
@@ -944,6 +952,21 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                 <p className="text-slate-700 text-sm leading-relaxed">"We had family day here with 10 adults and 11 kids. Beautiful, spacious n clean space for indoor n outdoor activities. The owner is very kind and sweet too."</p>
               </div>
             </div>
+          </div>
+          
+          {/* View All Reviews Link */}
+          <div className="text-center mt-6">
+            <a 
+              href="https://www.google.com/maps/place/Lavender+Villa+Malacca/@2.2915775,102.3521975,17z/data=!4m8!3m7!1s0x31d1e73e8455d413:0x3fd97fe2de23d790!8m2!3d2.2915775!4d102.3521975!9m1!1b1!16s%2Fg%2F11t3_5_5_1"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-purple-600 hover:text-purple-700 font-semibold text-sm transition"
+            >
+              Lihat semua review di Google
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
           </div>
         </div>
       </div>
@@ -1033,6 +1056,10 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
               <div className="flex items-center gap-1.5">
                 <Star className="w-4 h-4 text-yellow-500" />
                 <span>5.0 Google Reviews</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Users className="w-4 h-4 text-purple-500" />
+                <span>500+ Tetamu</span>
               </div>
             </div>
           </div>
