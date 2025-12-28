@@ -888,17 +888,9 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <h2 className="text-3xl sm:text-4xl font-bold text-center mb-3 text-slate-900">Apa Kata Tetamu Kami</h2>
           <div className="flex items-center justify-center gap-2 mb-8 sm:mb-12">
-            <a 
-              href="https://www.google.com/maps/place/Lavender+Villa+Malacca/@2.2915775,102.3521975,17z/data=!4m8!3m7!1s0x31d1e73e8455d413:0x3fd97fe2de23d790!8m2!3d2.2915775!4d102.3521975!9m1!1b1!16s%2Fg%2F11t3_5_5_1" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 hover:opacity-80 transition"
-            >
-              <Star className="w-5 h-5 fill-purple-300 text-purple-300" />
-              <span className="text-lg sm:text-xl font-bold text-slate-900">5.0</span>
-              <span className="text-slate-600 text-sm sm:text-base">di Google Reviews</span>
-              <span className="text-purple-500 text-xs underline">Lihat</span>
-            </a>
+            <Star className="w-5 h-5 fill-purple-300 text-purple-300" />
+            <span className="text-lg sm:text-xl font-bold text-slate-900">5.0</span>
+            <span className="text-slate-600 text-sm sm:text-base">di Google Reviews</span>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
             <div className="bg-white rounded-2xl overflow-hidden shadow-md border border-slate-200 hover:shadow-lg transition">
