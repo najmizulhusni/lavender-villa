@@ -83,11 +83,11 @@ export default function HomestayExperience() {
   }, []);
 
   const images = [
-    'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&q=75',
-    'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&q=75',
-    'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800&q=75',
-    'https://images.unsplash.com/photo-1556912167-f556f1f39faa?w=800&q=75',
-    'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&q=75',
+    '/images/view_from_top_1_lanscape.jpg',
+    '/images/view_from_top_2_landscape.jpg',
+    '/images/view_from_top_3_landscape.jpg',
+    '/images/living_room_1_lanscape.jpg',
+    '/images/pool_1_potrait.jpg',
   ];
 
   const stories = [
@@ -174,9 +174,9 @@ export default function HomestayExperience() {
       size: 'Smart TV 65"',
       features: ['Semua Saluran Astro', 'Netflix & Disney+', 'Karaoke'],
       images: [
-        'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600&q=75',
-        'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=600&q=75',
-        'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=600&q=75'
+        '/images/living_room_1_lanscape.jpg',
+        '/images/living_room_1_potrait.jpg',
+        '/images/dining_table_1_lanscape.jpg'
       ]
     },
     {
@@ -184,9 +184,9 @@ export default function HomestayExperience() {
       size: 'Dilengkapi Sepenuhnya',
       features: ['Periuk Nasi & Blender', 'Airfryer & Microwave', 'Alat Masak & Peralatan'],
       images: [
-        'https://images.unsplash.com/photo-1484154218962-a197022b5858?w=600&q=75',
-        'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&q=75',
-        'https://images.unsplash.com/photo-1556909172-54557c7e4fb7?w=600&q=75'
+        '/images/kitchen_1_lanscape.jpg',
+        '/images/dining_table_1_lanscape.jpg',
+        '/images/washing_machine_1_lanscape.jpg'
       ]
     },
     {
@@ -194,9 +194,9 @@ export default function HomestayExperience() {
       size: 'Penghawa Dingin Penuh',
       features: ['Bilik Luas', '4 Bilik Air', 'Katil Selesa'],
       images: [
-        'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=75',
-        'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=600&q=75',
-        'https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=600&q=75'
+        '/images/bedroom_1_lanscape.jpg',
+        '/images/bedroom_2_lanscape.jpg',
+        '/images/bedroom_3_lanscape.jpg'
       ]
     },
     {
@@ -204,9 +204,9 @@ export default function HomestayExperience() {
       size: 'Kolam 30x12x4 kaki',
       features: ['Rumah Mainan Kanak-kanak', 'Gelongsor', 'Kawasan Aktiviti'],
       images: [
-        'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=600&q=75',
-        'https://images.unsplash.com/photo-1575429198097-0414ec08e8cd?w=600&q=75',
-        'https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?w=600&q=75'
+        '/images/pool_1_potrait.jpg',
+        '/images/view_from_top_1_lanscape.jpg',
+        '/images/view_from_top_2_landscape.jpg'
       ]
     },
   ];
