@@ -893,47 +893,56 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
             <span className="text-slate-600 text-sm sm:text-base">di Google Reviews</span>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
-            <div className="bg-white rounded-2xl p-6 shadow-md border border-slate-200 hover:shadow-lg transition">
-              <div className="flex items-center gap-3 mb-4">
-                <img src="/images/aryn_review.png" alt="Aryn Yusoff" className="w-12 h-12 rounded-full object-cover flex-shrink-0" />
-                <div className="min-w-0">
-                  <h3 className="font-bold text-base text-slate-900">Aryn Yusoff</h3>
-                  <div className="flex gap-0.5 mt-0.5">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-3 h-3 fill-purple-300 text-purple-300" />
-                    ))}
+            <div className="bg-white rounded-2xl overflow-hidden shadow-md border border-slate-200 hover:shadow-lg transition">
+              <img src="/images/aryn_review.png" alt="Review dari Aryn Yusoff" className="w-full h-48 object-cover" />
+              <div className="p-6">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 bg-gradient-to-br from-purple-300 to-purple-400 rounded-full flex items-center justify-center text-sm text-white font-bold flex-shrink-0">A</div>
+                  <div>
+                    <h3 className="font-bold text-sm text-slate-900">Aryn Yusoff</h3>
+                    <div className="flex gap-0.5">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-3 h-3 fill-purple-300 text-purple-300" />
+                      ))}
+                    </div>
                   </div>
                 </div>
+                <p className="text-slate-700 text-sm leading-relaxed">"The villa is spacious, clean, and comfortable. The kids absolutely loved the swimming pool. Special thanks to Kak Ila for her prompt responses and complimentary treats."</p>
               </div>
-              <p className="text-slate-700 text-sm leading-relaxed">"The villa is spacious, clean, and comfortable. The kids absolutely loved the swimming pool. Special thanks to Kak Ila for her prompt responses and complimentary treats. We will definitely return!"</p>
             </div>
-            <div className="bg-white rounded-2xl p-6 shadow-md border border-slate-200 hover:shadow-lg transition">
-              <div className="flex items-center gap-3 mb-4">
-                <img src="/images/yana_review_potrait.png" alt="Yana Zamri" className="w-12 h-12 rounded-full object-cover flex-shrink-0" />
-                <div className="min-w-0">
-                  <h3 className="font-bold text-base text-slate-900">Yana Zamri</h3>
-                  <div className="flex gap-0.5 mt-0.5">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-3 h-3 fill-purple-300 text-purple-300" />
-                    ))}
+            <div className="bg-white rounded-2xl overflow-hidden shadow-md border border-slate-200 hover:shadow-lg transition">
+              <img src="/images/yana_review_potrait.png" alt="Review dari Yana Zamri" className="w-full h-48 object-cover" />
+              <div className="p-6">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 bg-gradient-to-br from-purple-300 to-purple-400 rounded-full flex items-center justify-center text-sm text-white font-bold flex-shrink-0">Y</div>
+                  <div>
+                    <h3 className="font-bold text-sm text-slate-900">Yana Zamri</h3>
+                    <div className="flex gap-0.5">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-3 h-3 fill-purple-300 text-purple-300" />
+                      ))}
+                    </div>
                   </div>
                 </div>
+                <p className="text-slate-700 text-sm leading-relaxed">"3h2m di Lavender Villa Melaka. Rumah yg sangat cantik dan bersih family semua happy dan selesa. Anak anak pun teruja dapat bermain di dalam kawasan rumah dan paling best ada pool."</p>
               </div>
-              <p className="text-slate-700 text-sm leading-relaxed">"3h2m di Lavender Villa Melaka. Rumah yg sangat cantik dan bersih family semua happy dan selesa. Anak anak pun teruja dapat bermain di dalam kawasan rumah dan paling best ada pool. Owner rumah sangat baik dan ramah orangnya."</p>
             </div>
-            <div className="bg-white rounded-2xl p-6 shadow-md border border-slate-200 hover:shadow-lg transition">
-              <div className="flex items-center gap-3 mb-4">
-                <img src="/images/hanin_review_potrait.png" alt="Hanin Naziha Hasnor" className="w-12 h-12 rounded-full object-cover flex-shrink-0" />
-                <div className="min-w-0">
-                  <h3 className="font-bold text-base text-slate-900">Hanin Naziha Hasnor</h3>
-                  <div className="flex gap-0.5 mt-0.5">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-3 h-3 fill-purple-300 text-purple-300" />
-                    ))}
+            <div className="bg-white rounded-2xl overflow-hidden shadow-md border border-slate-200 hover:shadow-lg transition">
+              <img src="/images/hanin_review_potrait.png" alt="Review dari Hanin Naziha" className="w-full h-48 object-cover" />
+              <div className="p-6">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 bg-gradient-to-br from-purple-300 to-purple-400 rounded-full flex items-center justify-center text-sm text-white font-bold flex-shrink-0">H</div>
+                  <div>
+                    <h3 className="font-bold text-sm text-slate-900">Hanin Naziha Hasnor</h3>
+                    <div className="flex gap-0.5">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-3 h-3 fill-purple-300 text-purple-300" />
+                      ))}
+                    </div>
                   </div>
                 </div>
+                <p className="text-slate-700 text-sm leading-relaxed">"We had family day here with 10 adults and 11 kids. Beautiful, spacious n clean space for indoor n outdoor activities. The owner is very kind and sweet too."</p>
               </div>
-              <p className="text-slate-700 text-sm leading-relaxed">"We had family day here with 10 adults and 11 kids. Beautiful, spacious n clean space for indoor n outdoor activities. The owner is very kind and sweet too. Easy to communicate with and so generous as we received 2 boxes of desserts, brownies and cheese tart as"</p>
             </div>
           </div>
         </div>
