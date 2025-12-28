@@ -26,10 +26,12 @@ export default function HomestayExperience() {
   const [honeypot, setHoneypot] = useState(''); // Anti-bot honeypot field
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
+  const activeTouchTarget = useRef(null);
 
-  // Handle touch swipe for hero slider
-  const handleTouchStart = (e) => {
+  // Handle touch swipe for sliders
+  const handleTouchStart = (e, target = 'hero') => {
     touchStartX.current = e.touches[0].clientX;
+    activeTouchTarget.current = target;
   };
 
   const handleTouchMove = (e) => {
@@ -39,14 +41,25 @@ export default function HomestayExperience() {
   const handleTouchEnd = () => {
     const diff = touchStartX.current - touchEndX.current;
     if (Math.abs(diff) > 50) { // Minimum swipe distance
-      if (diff > 0) {
-        // Swipe left - next image
-        setCurrentImageIndex((prev) => (prev + 1) % images.length);
-      } else {
-        // Swipe right - previous image
-        setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
+      if (activeTouchTarget.current === 'hero') {
+        if (diff > 0) {
+          setCurrentImageIndex((prev) => (prev + 1) % images.length);
+        } else {
+          setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
+        }
+      } else if (typeof activeTouchTarget.current === 'number') {
+        // Space card swipe
+        const idx = activeTouchTarget.current;
+        const space = spaces[idx];
+        const currentImg = spaceImageIndex[idx] || 0;
+        if (diff > 0) {
+          setSpaceImageIndex(prev => ({ ...prev, [idx]: currentImg === space.images.length - 1 ? 0 : currentImg + 1 }));
+        } else {
+          setSpaceImageIndex(prev => ({ ...prev, [idx]: currentImg === 0 ? space.images.length - 1 : currentImg - 1 }));
+        }
       }
     }
+    activeTouchTarget.current = null;
   };
 
   // Load data from Supabase
@@ -710,7 +723,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
       {/* Hero Section with Parallax */}
       <div 
         className="relative min-h-screen sm:h-screen overflow-hidden pt-16 sm:pt-0"
-        onTouchStart={handleTouchStart}
+        onTouchStart={(e) => handleTouchStart(e, 'hero')}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
@@ -796,7 +809,13 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
             {spaces.map((space, idx) => {
               const currentImg = spaceImageIndex[idx] || 0;
               return (
-                <div key={idx} className="group relative overflow-hidden rounded-2xl h-96 shadow-md hover:shadow-xl transition-shadow duration-300">
+                <div 
+                  key={idx} 
+                  className="group relative overflow-hidden rounded-2xl h-96 shadow-md hover:shadow-xl transition-shadow duration-300"
+                  onTouchStart={(e) => handleTouchStart(e, idx)}
+                  onTouchMove={handleTouchMove}
+                  onTouchEnd={handleTouchEnd}
+                >
                   <img 
                     src={space.images[currentImg]} 
                     alt={space.name} 
