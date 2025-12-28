@@ -894,7 +894,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
             <div className="bg-white rounded-2xl overflow-hidden shadow-md border border-slate-200 hover:shadow-lg transition">
-              <img src="/images/aryn_review.png" alt="Review dari Aryn Yusoff" className="w-full h-48 object-cover" />
+              <img src="/images/aryn_review.webp" alt="Review dari Aryn Yusoff" className="w-full h-48 object-cover" />
               <div className="p-6">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-10 h-10 bg-gradient-to-br from-purple-300 to-purple-400 rounded-full flex items-center justify-center text-sm text-white font-bold flex-shrink-0">A</div>
@@ -911,7 +911,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
               </div>
             </div>
             <div className="bg-white rounded-2xl overflow-hidden shadow-md border border-slate-200 hover:shadow-lg transition">
-              <img src="/images/yana_review_potrait.png" alt="Review dari Yana Zamri" className="w-full h-48 object-cover" />
+              <img src="/images/yana_review_potrait.webp" alt="Review dari Yana Zamri" className="w-full h-48 object-cover" />
               <div className="p-6">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-10 h-10 bg-gradient-to-br from-purple-300 to-purple-400 rounded-full flex items-center justify-center text-sm text-white font-bold flex-shrink-0">Y</div>
@@ -928,7 +928,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
               </div>
             </div>
             <div className="bg-white rounded-2xl overflow-hidden shadow-md border border-slate-200 hover:shadow-lg transition">
-              <img src="/images/hanin_review_potrait.png" alt="Review dari Hanin Naziha" className="w-full h-48 object-cover" />
+              <img src="/images/hanin_review_potrait.webp" alt="Review dari Hanin Naziha" className="w-full h-48 object-cover" />
               <div className="p-6">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-10 h-10 bg-gradient-to-br from-purple-300 to-purple-400 rounded-full flex items-center justify-center text-sm text-white font-bold flex-shrink-0">H</div>
