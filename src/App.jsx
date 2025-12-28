@@ -744,7 +744,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
           <p className="text-center text-slate-600 text-lg sm:text-xl mb-16 sm:mb-20">Dari check-in sampai check-out, semua dah ready untuk anda</p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-10">
             {stories.map((story, idx) => (
-              <div key={idx} onMouseEnter={() => setActiveStory(idx)} className={`relative overflow-hidden rounded-3xl cursor-pointer transition-all duration-500 bg-gradient-to-br from-purple-400 to-purple-500 ${activeStory === idx ? 'shadow-2xl scale-105' : 'shadow-lg scale-100'}`}>
+              <div key={idx} className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-purple-400 to-purple-500 shadow-lg">
                 <div className="relative p-10 h-96 flex flex-col justify-between text-white">
                   <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center">{story.icon}</div>
                   <div>
