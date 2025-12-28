@@ -684,7 +684,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
       </nav>
 
       {/* Hero Section with Parallax */}
-      <div className="relative h-screen overflow-hidden pt-12 sm:pt-0">
+      <div className="relative min-h-screen sm:h-screen overflow-hidden pt-16 sm:pt-0">
         <div className="absolute inset-0 transition-transform duration-300 bg-slate-900" style={{ transform: `translateY(${scrollY * 0.5}px)` }}>
           <img 
             src={images[currentImageIndex]} 
@@ -699,38 +699,38 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
           <div className="absolute inset-0 bg-gradient-to-b from-slate-900/30 via-transparent to-slate-900/50"></div>
         </div>
 
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-white px-4 sm:px-6">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-3 sm:mb-4 text-center tracking-tight">Lavender Villa Melaka</h1>
-          <p className="text-base sm:text-lg md:text-xl mb-8 sm:mb-12 text-center max-w-3xl text-slate-100">Villa Mewah di Bemban, Melaka | Homestay Keluarga dengan Kolam Renang | Penginapan Terbaik untuk Cuti Keluarga</p>
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-white px-4 sm:px-6 pt-8 pb-20 sm:pb-8">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-3 sm:mb-4 text-center tracking-tight">Lavender Villa Melaka</h1>
+          <p className="text-sm sm:text-lg md:text-xl mb-6 sm:mb-12 text-center max-w-3xl text-slate-100 px-2">Villa Mewah di Bemban, Melaka | Homestay Keluarga dengan Kolam Renang | Penginapan Terbaik untuk Cuti Keluarga</p>
           
-          <div className="flex flex-col sm:flex-row gap-4 mb-16">
-            <button onClick={() => handleScrollTo('booking')} className="bg-white text-slate-900 px-8 py-4 rounded-full font-bold hover:bg-slate-50 transition shadow-xl">Tempah Penginapan Anda</button>
-            <button onClick={() => setShowVideoModal(true)} className="bg-white/15 backdrop-blur-md text-white px-8 py-4 rounded-full font-bold hover:bg-white/25 transition flex items-center justify-center gap-2 border border-white/30"><Play className="w-5 h-5" />Virtual Tour</button>
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-8 sm:mb-16 w-full sm:w-auto px-4 sm:px-0">
+            <button onClick={() => handleScrollTo('booking')} className="bg-white text-slate-900 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-bold hover:bg-slate-50 transition shadow-xl text-sm sm:text-base">Tempah Penginapan Anda</button>
+            <button onClick={() => setShowVideoModal(true)} className="bg-white/15 backdrop-blur-md text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-bold hover:bg-white/25 transition flex items-center justify-center gap-2 border border-white/30 text-sm sm:text-base"><Play className="w-4 h-4 sm:w-5 sm:h-5" />Virtual Tour</button>
           </div>
           
-          <div className="flex flex-wrap justify-center gap-6 sm:gap-10 text-sm">
-            <div className="flex items-center gap-2"><Star className="w-4 h-4 sm:w-5 sm:h-5 fill-yellow-300 text-yellow-300" /><span className="font-semibold">5.0 Google Reviews</span></div>
-            <div className="flex items-center gap-2"><MapPin className="w-4 h-4 sm:w-5 sm:h-5" /><span className="whitespace-nowrap font-semibold">Bemban, Melaka</span></div>
-            <div className="flex items-center gap-2"><CheckCircle className="w-4 h-4 sm:w-5 sm:h-5" /><span className="font-semibold">Tempahan Segera</span></div>
+          <div className="flex flex-wrap justify-center gap-4 sm:gap-10 text-xs sm:text-sm">
+            <div className="flex items-center gap-1.5 sm:gap-2"><Star className="w-3.5 h-3.5 sm:w-5 sm:h-5 fill-yellow-300 text-yellow-300" /><span className="font-semibold">5.0 Google Reviews</span></div>
+            <div className="flex items-center gap-1.5 sm:gap-2"><MapPin className="w-3.5 h-3.5 sm:w-5 sm:h-5" /><span className="whitespace-nowrap font-semibold">Bemban, Melaka</span></div>
+            <div className="flex items-center gap-1.5 sm:gap-2"><CheckCircle className="w-3.5 h-3.5 sm:w-5 sm:h-5" /><span className="font-semibold">Tempahan Segera</span></div>
           </div>
         </div>
 
-        {/* Image Navigation Arrows */}
+        {/* Image Navigation Arrows - Hidden on mobile */}
         <button
           onClick={() => setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length)}
-          className="absolute left-6 top-1/2 transform -translate-y-1/2 z-10 bg-white/20 hover:bg-white/40 text-white p-3 rounded-full transition backdrop-blur-sm"
+          className="absolute left-2 sm:left-6 top-1/2 transform -translate-y-1/2 z-10 bg-white/20 hover:bg-white/40 text-white p-2 sm:p-3 rounded-full transition backdrop-blur-sm hidden sm:block"
         >
-          <ChevronLeft className="w-6 h-6" />
+          <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
         </button>
         <button
           onClick={() => setCurrentImageIndex((prev) => (prev + 1) % images.length)}
-          className="absolute right-6 top-1/2 transform -translate-y-1/2 z-10 bg-white/20 hover:bg-white/40 text-white p-3 rounded-full transition backdrop-blur-sm"
+          className="absolute right-2 sm:right-6 top-1/2 transform -translate-y-1/2 z-10 bg-white/20 hover:bg-white/40 text-white p-2 sm:p-3 rounded-full transition backdrop-blur-sm hidden sm:block"
         >
-          <ChevronRight className="w-6 h-6" />
+          <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
         </button>
 
         {/* Image Navigation Dots */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-2">
+        <div className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 flex gap-2 z-10">
           {images.map((_, idx) => (
             <button key={idx} onClick={() => setCurrentImageIndex(idx)} className={`h-2 rounded-full transition-all ${currentImageIndex === idx ? 'bg-white w-8' : 'bg-white/50 w-2'}`} />
           ))}
