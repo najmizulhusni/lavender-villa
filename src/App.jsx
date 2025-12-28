@@ -87,7 +87,7 @@ export default function HomestayExperience() {
     '/images/view_from_top_2_landscape.jpg',
     '/images/view_from_top_3_landscape.jpg',
     '/images/living_room_1_lanscape.jpg',
-    '/images/pool_1_potrait.jpg',
+    '/images/kitchen_1_lanscape.jpg',
   ];
 
   const stories = [
@@ -204,9 +204,9 @@ export default function HomestayExperience() {
       size: 'Kolam 30x12x4 kaki',
       features: ['Rumah Mainan Kanak-kanak', 'Gelongsor', 'Kawasan Aktiviti'],
       images: [
-        '/images/pool_1_potrait.jpg',
         '/images/view_from_top_1_lanscape.jpg',
-        '/images/view_from_top_2_landscape.jpg'
+        '/images/view_from_top_2_landscape.jpg',
+        '/images/view_from_top_3_landscape.jpg'
       ]
     },
   ];
