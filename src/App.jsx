@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Wifi, Coffee, Tv, Wind, MapPin, Star, X, Play, Phone, CheckCircle, Users, Sparkles, Moon, Sun, Cloud, Instagram, Mic, ChevronLeft, ChevronRight, Calendar } from 'lucide-react';
+import { Wifi, Coffee, Tv, Wind, MapPin, Star, X, Play, Phone, CheckCircle, Users, Home, Moon, Sun, Cloud, Instagram, Mic, ChevronLeft, ChevronRight, Calendar, Shield } from 'lucide-react';
 import { getBookedDates, getPublicHolidays, createBooking, getProperty, getManuallyBlockedDates } from './lib/database';
 
 export default function HomestayExperience() {
@@ -670,7 +670,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
         <div className="bg-white/5 backdrop-blur-2xl rounded-full px-3 sm:px-6 md:px-8 py-2 sm:py-3 shadow-2xl border border-white/20 flex items-center justify-between">
           <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center gap-1 sm:gap-2 cursor-pointer transition flex-shrink-0 group">
             <div className="w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-gradient-to-br from-purple-400 to-purple-500 rounded-full flex items-center justify-center">
-              <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 text-white" />
+              <Home className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 text-white" />
             </div>
             <span className="font-bold text-xs sm:text-sm md:text-base text-slate-900 tracking-tight hidden sm:inline">Lavender Villa Melaka</span>
           </button>
@@ -1009,7 +1009,23 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
           <div className="text-center mb-8 sm:mb-12">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 text-slate-900">Tempah Penginapan Villa Anda</h2>
             <p className="text-slate-600 text-sm sm:text-base md:text-lg mb-2">Sesuai untuk keluarga & kumpulan • Sehingga 20 tetamu</p>
-            <p className="text-purple-600 text-sm sm:text-base font-semibold">Penginapan Muslim Sahaja</p>
+            <p className="text-purple-600 text-sm sm:text-base font-semibold mb-4">Penginapan Muslim Sahaja</p>
+            
+            {/* Trust Badges */}
+            <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-slate-500">
+              <div className="flex items-center gap-1.5">
+                <Shield className="w-4 h-4 text-green-500" />
+                <span>Tempahan Selamat</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <CheckCircle className="w-4 h-4 text-green-500" />
+                <span>Pengesahan Segera</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Star className="w-4 h-4 text-yellow-500" />
+                <span>5.0 Google Reviews</span>
+              </div>
+            </div>
           </div>
 
           <div className="bg-gradient-to-br from-slate-50 to-white rounded-2xl sm:rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-lg">
