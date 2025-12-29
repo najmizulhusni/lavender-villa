@@ -39,29 +39,36 @@ export default function FAQ() {
     },
     {
       q: 'Berapa bilik tidur ada?',
-      a: 'Villa mempunyai 5 bilik tidur yang luas dengan 4 bilik air. Selesa untuk 15 orang, maksimum 20 orang termasuk kanak-kanak berusia 5 tahun ke atas.'
+      a: '5 bilik tidur: Bilik 1 (King + 2 Single, aircond, bilik air), Bilik 2 (Queen, aircond, bilik air), Bilik 3 (Queen, aircond), Bilik 4 (Queen, aircond), Bilik 5 tingkat atas (King, aircond, bilik air). 12 bantal disediakan. Selesa untuk 15 orang, maksimum 20 orang.'
     },
     {
       q: 'Adakah kolam renang?',
-      a: 'Ya, kami mempunyai kolam renang berukuran 30x12x4 kaki yang sempurna untuk keluarga.'
+      a: 'Ya, kolam renang peribadi berukuran 30x12x4 kaki dengan air terjun. Tiada lifeguard - keselamatan adalah tanggungjawab tetamu sendiri.'
     },
     {
       q: 'Apakah yang disediakan di villa?',
-      a: 'WiFi 300Mbps, TV pintar 65" dengan Astro/Netflix/Disney+, dapur lengkap, penghawa dingin di semua bilik, kolam renang, kawasan bermain kanak-kanak, dan tempat letak kereta percuma.'
+      a: 'Ruang Tamu: Aircond, Smart TV 65", Astro Full Package, Netflix & Disney+, WiFi 300Mbps, Sofa, Karaoke. Dapur: English Style Cabinet, Standing Stove with Oven, Peti Ais 2 Pintu, Periuk Nasi, Toaster, Microwave, Air Fryer, Pengukus, Set Periuk Dessini, Air Penapis Coway, Coffee Station. Laundry: Washer & Dryer. Lain-lain: BBQ Set, Iron & Ironing Board, 12 Tuala, CCTV 24 jam (luar sahaja).'
     },
     {
-      q: 'Bagaimana cara membuat tempahan?',
-      a: 'Gunakan borang tempahan di laman web kami. Pilih tarikh, bilangan tetamu, dan hantar. Kami akan menghubungi anda melalui WhatsApp untuk mengesahkan.'
+      q: 'Berapa deposit untuk tempahan?',
+      a: 'Deposit RM300 untuk tempahan biasa. Untuk majlis ringkas seperti pertunangan atau akikah yang menjemput orang luar, deposit adalah RM500. Bayaran penuh perlu dijelaskan 3 hari sebelum check-in. Deposit akan dipulangkan dalam 24 jam selepas check-out jika tiada kerosakan.'
     },
     {
-      q: 'Adakah deposit diperlukan?',
-      a: 'Ya, deposit sebanyak 50% diperlukan untuk mengesahkan tempahan. Baki pembayaran perlu diselesaikan 7 hari sebelum ketibaan.'
+      q: 'Apakah polisi pembatalan?',
+      a: 'Pembatalan atau perubahan tarikh mestilah 4 minggu sebelum check-in. Jika tidak, deposit tidak akan dipulangkan.'
     },
     {
       q: 'Apakah waktu check-in dan check-out?',
-      a: 'Check-in: 3 petang | Check-out: 12 tengah hari. Waktu lain boleh disesuaikan dengan menghubungi kami.'
+      a: 'Check-in: 3:00 petang | Check-out: 12:00 tengah hari'
     },
-
+    {
+      q: 'Apakah peraturan penginapan?',
+      a: 'Tetamu mestilah ahli keluarga mahram atau kumpulan rakan sama jantina sahaja. Percampuran lelaki dan wanita bukan mahram tidak dibenarkan. Makanan dan minuman halal sahaja. Minimum 2 malam untuk weekend (kecuali last minute booking dan hari bekerja).'
+    },
+    {
+      q: 'Apa tarikan berdekatan?',
+      a: '4 min: Orna Golf Resort, Tiara Golf & Country Resort, Adam & Hawa Wedding Hall. 5 min: Mydin Jasin, Kolam Air Panas Jasin. 7 min: Asam Pedas Pak Man (Viral), Leypark Food Truck. 8-10 min: MITC, Plaza Tol Ayer Keroh. 10 min: Zoo Melaka, Taman Buaya, Botanical Garden, Taman Mini Malaysia, Melaka Wonderland. 15 min: MMU & UTEM. 25 min: Batu Berendam Airport.'
+    },
     {
       q: 'Bagaimana cara menghubungi kami?',
       a: 'Hubungi kami melalui WhatsApp di +60 19 334 5686 atau telefon di nombor yang sama. Kami juga di Instagram @lavendervillamelaka.'

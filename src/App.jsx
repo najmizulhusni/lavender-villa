@@ -1713,29 +1713,25 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
             </div>
           </div>
 
-          {/* Nearby Attractions */}
+          {/* House Rules */}
           <div className="bg-gradient-to-br from-slate-50 to-purple-50 rounded-2xl p-6 sm:p-8">
-            <h3 className="text-xl sm:text-2xl font-bold text-center mb-6 text-slate-900">Tarikan Berdekatan</h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-white rounded-xl p-4 text-center shadow-sm">
-                <div className="text-2xl sm:text-3xl font-bold text-purple-600 mb-1">~25 km</div>
-                <div className="text-xs sm:text-sm text-slate-600 font-medium">Jonker Street</div>
-                <div className="text-xs text-slate-400 mt-1">30-40 min</div>
+            <h3 className="text-xl sm:text-2xl font-bold text-center mb-6 text-slate-900">Peraturan Penginapan</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-sm">
+              <div className="flex items-start gap-3 bg-white rounded-xl p-4">
+                <Shield className="w-5 h-5 text-purple-500 flex-shrink-0 mt-0.5" />
+                <p className="text-slate-600">Tetamu mestilah ahli keluarga mahram atau kumpulan rakan sama jantina sahaja</p>
               </div>
-              <div className="bg-white rounded-xl p-4 text-center shadow-sm">
-                <div className="text-2xl sm:text-3xl font-bold text-purple-600 mb-1">~18 km</div>
-                <div className="text-xs sm:text-sm text-slate-600 font-medium">A Famosa</div>
-                <div className="text-xs text-slate-400 mt-1">20-25 min</div>
+              <div className="flex items-start gap-3 bg-white rounded-xl p-4">
+                <CheckCircle className="w-5 h-5 text-purple-500 flex-shrink-0 mt-0.5" />
+                <p className="text-slate-600">Makanan dan minuman halal sahaja dibenarkan</p>
               </div>
-              <div className="bg-white rounded-xl p-4 text-center shadow-sm">
-                <div className="text-2xl sm:text-3xl font-bold text-purple-600 mb-1">~28 km</div>
-                <div className="text-xs sm:text-sm text-slate-600 font-medium">Pantai Klebang</div>
-                <div className="text-xs text-slate-400 mt-1">30-35 min</div>
+              <div className="flex items-start gap-3 bg-white rounded-xl p-4">
+                <Calendar className="w-5 h-5 text-purple-500 flex-shrink-0 mt-0.5" />
+                <p className="text-slate-600">Deposit RM300 untuk tempahan biasa, RM500 untuk majlis (pertunangan/akikah)</p>
               </div>
-              <div className="bg-white rounded-xl p-4 text-center shadow-sm">
-                <div className="text-2xl sm:text-3xl font-bold text-purple-600 mb-1">~22 km</div>
-                <div className="text-xs sm:text-sm text-slate-600 font-medium">Dataran Pahlawan</div>
-                <div className="text-xs text-slate-400 mt-1">25-30 min</div>
+              <div className="flex items-start gap-3 bg-white rounded-xl p-4">
+                <X className="w-5 h-5 text-purple-500 flex-shrink-0 mt-0.5" />
+                <p className="text-slate-600">Pembatalan mestilah 4 minggu sebelum check-in untuk pulangan deposit</p>
               </div>
             </div>
           </div>
