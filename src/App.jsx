@@ -976,12 +976,12 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
               </div>
             </div>
             <div className="bg-white rounded-2xl overflow-hidden shadow-md border border-slate-200 hover:shadow-lg transition">
-              <img src="/images/hanin_review_potrait.webp" alt="Review dari Hanin Naziha" className="w-full h-48 object-cover" />
+              <img src="/images/hidayah_review_landscape.webp" alt="Review dari Hidayah Ishak" className="w-full h-48 object-cover" />
               <div className="p-6">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-10 h-10 bg-gradient-to-br from-purple-300 to-purple-400 rounded-full flex items-center justify-center text-sm text-white font-bold flex-shrink-0">H</div>
                   <div>
-                    <h3 className="font-bold text-sm text-slate-900">Hanin Naziha Hasnor</h3>
+                    <h3 className="font-bold text-sm text-slate-900">Hidayah Ishak</h3>
                     <div className="flex gap-0.5">
                       {[...Array(5)].map((_, i) => (
                         <Star key={i} className="w-3 h-3 fill-purple-300 text-purple-300" />
@@ -989,7 +989,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                     </div>
                   </div>
                 </div>
-                <p className="text-slate-700 text-sm leading-relaxed">"We had family day here with 10 adults and 11 kids. Beautiful, spacious n clean space for indoor n outdoor activities. The owner is very kind and sweet too."</p>
+                <p className="text-slate-700 text-sm leading-relaxed">"3H2M di Lavender Villa Melaka.. Alhamdulillah selesa sangat2.. Kelengkapan rumah semua complete dan bersih.. Tuan rumah sangat peramah dan baik hati siap bagi buah tangan dekat kami sekeluarga.. terima kasih banyak"</p>
               </div>
             </div>
           </div>
