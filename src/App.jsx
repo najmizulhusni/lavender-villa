@@ -233,7 +233,9 @@ export default function HomestayExperience() {
       images: [
         '/images/bedroom_1_lanscape.jpg',
         '/images/bedroom_2_lanscape.jpg',
-        '/images/bedroom_3_lanscape.jpg'
+        '/images/bedroom_3_lanscape.jpg',
+        '/images/bedroom_4_landscape.jpg',
+        '/images/bedroom_5_potrait.jpg'
       ]
     },
     {
