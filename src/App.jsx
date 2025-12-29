@@ -242,8 +242,8 @@ export default function HomestayExperience() {
       features: ['Rumah Mainan Kanak-kanak', 'Gelongsor', 'Kawasan Aktiviti'],
       images: [
         '/images/pool_1_potrait.jpg',
-        '/images/view_from_top_1_lanscape.jpg',
-        '/images/view_from_top_2_landscape.jpg'
+        '/images/pool_2_landscape.webp',
+        '/images/playground_1_potrait.webp'
       ]
     },
   ];
