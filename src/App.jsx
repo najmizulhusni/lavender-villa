@@ -1681,14 +1681,14 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
             Villa mewah di Bemban, Melaka untuk percutian keluarga yang tidak dapat dilupakan
           </p>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mb-12">
             <div className="bg-white rounded-2xl p-8 shadow-md border border-slate-100 hover:shadow-lg transition">
               <div className="w-14 h-14 bg-gradient-to-br from-purple-400 to-purple-500 rounded-xl flex items-center justify-center mb-6">
                 <MapPin className="w-7 h-7 text-white" />
               </div>
               <h3 className="text-xl font-bold mb-2 text-slate-900">Lokasi Strategik</h3>
               <p className="text-slate-600 text-sm leading-relaxed">
-                Terletak di Bemban, Melaka dengan akses mudah ke Jonker Street, A Famosa, dan Pantai Klebang
+                Terletak di Bemban, utara Melaka. Dekat dengan lebuh raya dan mudah akses ke tarikan utama Melaka
               </p>
             </div>
             
@@ -1710,6 +1710,33 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
               <p className="text-slate-600 text-sm leading-relaxed">
                 Pakej bermula dari RM1,300 (2H1M) dengan kemudahan lengkap termasuk kolam renang, BBQ, dan WiFi percuma
               </p>
+            </div>
+          </div>
+
+          {/* Nearby Attractions */}
+          <div className="bg-gradient-to-br from-slate-50 to-purple-50 rounded-2xl p-6 sm:p-8">
+            <h3 className="text-xl sm:text-2xl font-bold text-center mb-6 text-slate-900">Tarikan Berdekatan</h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="bg-white rounded-xl p-4 text-center shadow-sm">
+                <div className="text-2xl sm:text-3xl font-bold text-purple-600 mb-1">~25 km</div>
+                <div className="text-xs sm:text-sm text-slate-600 font-medium">Jonker Street</div>
+                <div className="text-xs text-slate-400 mt-1">30-40 min</div>
+              </div>
+              <div className="bg-white rounded-xl p-4 text-center shadow-sm">
+                <div className="text-2xl sm:text-3xl font-bold text-purple-600 mb-1">~18 km</div>
+                <div className="text-xs sm:text-sm text-slate-600 font-medium">A Famosa</div>
+                <div className="text-xs text-slate-400 mt-1">20-25 min</div>
+              </div>
+              <div className="bg-white rounded-xl p-4 text-center shadow-sm">
+                <div className="text-2xl sm:text-3xl font-bold text-purple-600 mb-1">~28 km</div>
+                <div className="text-xs sm:text-sm text-slate-600 font-medium">Pantai Klebang</div>
+                <div className="text-xs text-slate-400 mt-1">30-35 min</div>
+              </div>
+              <div className="bg-white rounded-xl p-4 text-center shadow-sm">
+                <div className="text-2xl sm:text-3xl font-bold text-purple-600 mb-1">~22 km</div>
+                <div className="text-xs sm:text-sm text-slate-600 font-medium">Dataran Pahlawan</div>
+                <div className="text-xs text-slate-400 mt-1">25-30 min</div>
+              </div>
             </div>
           </div>
         </div>
