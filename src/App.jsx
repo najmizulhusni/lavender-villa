@@ -245,7 +245,7 @@ export default function HomestayExperience() {
       images: [
         '/images/pool_1_potrait.jpg',
         '/images/pool_2_landscape.webp',
-        '/images/playground_1_potrait.webp'
+        '/images/playground_1_potrait.jpg'
       ]
     },
   ];
