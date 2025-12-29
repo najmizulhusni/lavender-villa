@@ -154,7 +154,7 @@ export default function Admin() {
   };
   
   const properties = [
-    { id: 'lavender', name: 'Lavender Villa Melaka', location: 'Bemban', address: 'Lot 1234, Jalan Bemban, 77200 Bemban, Melaka', code: 'VLM' },
+    { id: 'lavender', name: 'Lavender Villa Melaka', location: 'Bemban, Jasin', address: '47, Jalan Anjung Lavender 1, Taman Anjung Gapam, 77200 Bemban, Melaka', code: 'VLM' },
     { id: 'venus', name: 'Venus Cabana Villa', location: 'Ayer Keroh', address: 'Lot 5678, Jalan Ayer Keroh, 75450 Ayer Keroh, Melaka', code: 'VCV' },
     { id: 'merpati', name: 'Merpati Purple Guesthouse', location: 'Jasin', address: 'Lot 9012, Jalan Jasin, 77000 Jasin, Melaka', code: 'MPG' },
     { id: 'defrance', name: 'De France Pool Villa', location: 'Alor Gajah', address: 'Lot 3456, Jalan Alor Gajah, 78000 Alor Gajah, Melaka', code: 'DFV' },
@@ -371,7 +371,7 @@ export default function Admin() {
               <div class="footer-left">
                 <strong>${property.name}</strong><br>
                 Terima kasih atas tempahan anda.<br>
-                Untuk pertanyaan: WhatsApp 012-345 6789
+                Untuk pertanyaan: WhatsApp 019-334 5686
               </div>
             </div>
           </div>
@@ -1879,7 +1879,7 @@ export default function Admin() {
               
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 <button
-                  onClick={() => { setEditingTemplate({ title: 'Pengesahan Tempahan', message: `🏡 *PENGESAHAN TEMPAHAN*\n\nTerima kasih kerana memilih Lavender Villa Melaka!\n\n✅ Tempahan anda telah disahkan.\n\n📅 Check-in: 3:00 PM\n📅 Check-out: 12:00 PM\n\nKami akan hantar maklumat lokasi dan peraturan villa sebelum tarikh check-in.\n\nSebarang pertanyaan, hubungi kami di sini.\n\nTerima kasih! 🙏` }); setShowTemplateModal(true); }}
+                  onClick={() => { setEditingTemplate({ title: 'Pengesahan Tempahan', message: `🏡 *PENGESAHAN TEMPAHAN*\n\nTerima kasih kerana memilih Lavender Villa Melaka!\n\n✅ Tempahan anda telah disahkan.\n\n📅 Check-in: 3:00 PM\n📅 Check-out: 12:00 PM\n\n💰 Deposit: RM300 (RM500 untuk majlis)\n💳 Bayaran penuh: 3 hari sebelum check-in\n\nKami akan hantar maklumat lokasi dan peraturan villa sebelum tarikh check-in.\n\nSebarang pertanyaan, hubungi kami.\n\nTerima kasih! 🙏` }); setShowTemplateModal(true); }}
                   className="flex flex-col items-center gap-2 p-4 bg-purple-50 border border-purple-200 rounded-xl hover:bg-purple-100 transition group"
                 >
                   <div className="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center group-hover:scale-110 transition">
@@ -1889,7 +1889,7 @@ export default function Admin() {
                 </button>
 
                 <button
-                  onClick={() => { setEditingTemplate({ title: 'Lokasi & Arah', message: `📍 *LOKASI & ARAH*\n\nLavender Villa Melaka\nBemban, Melaka\n\n🗺️ Google Maps:\nhttps://maps.google.com/?q=Lavender+Villa+Melaka\n\n🚗 Dari Lebuhraya PLUS:\n1. Keluar di Exit Jasin\n2. Ikut papan tanda ke Bemban\n3. Villa terletak di sebelah kanan\n\n⏰ Check-in: 3:00 PM\n📞 Hubungi jika sesat!` }); setShowTemplateModal(true); }}
+                  onClick={() => { setEditingTemplate({ title: 'Lokasi & Arah', message: `📍 *LOKASI & ARAH*\n\nLavender Villa Melaka\n47, Jalan Anjung Lavender 1,\nTaman Anjung Gapam,\n77200 Bemban, Melaka\n\n🗺️ Google Maps:\nhttps://maps.google.com/?q=Lavender+Villa+Melaka\n\n🚗 Dari Plaza Tol Ayer Keroh:\nHanya 8-10 minit sahaja!\n\n⏰ Check-in: 3:00 PM\n📞 Hubungi 019-334 5686 jika sesat!` }); setShowTemplateModal(true); }}
                   className="flex flex-col items-center gap-2 p-4 bg-purple-50 border border-purple-200 rounded-xl hover:bg-purple-100 transition group"
                 >
                   <div className="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center group-hover:scale-110 transition">
@@ -1899,7 +1899,7 @@ export default function Admin() {
                 </button>
 
                 <button
-                  onClick={() => { setEditingTemplate({ title: 'Peraturan Villa', message: `📋 *PERATURAN VILLA*\n\n✅ DIBENARKAN:\n• Masak di dapur\n• BBQ di luar\n• Karaoke (sehingga 10PM)\n• Kolam renang\n\n❌ TIDAK DIBENARKAN:\n• Haiwan peliharaan\n• Merokok dalam rumah\n• Parti bising selepas 11PM\n• Tetamu tambahan tanpa maklum\n\n⚠️ DEPOSIT:\n• RM500 deposit kerosakan\n• Dipulangkan selepas pemeriksaan\n\nTerima kasih atas kerjasama! 🙏` }); setShowTemplateModal(true); }}
+                  onClick={() => { setEditingTemplate({ title: 'Peraturan Villa', message: `📋 *PERATURAN VILLA*\n\n👨‍👩‍👧‍👦 TETAMU:\n• Ahli keluarga mahram atau kumpulan sama jantina sahaja\n• Percampuran lelaki & wanita bukan mahram TIDAK dibenarkan\n• Ideal 15 orang, maksimum 20 orang\n\n🍽️ MAKANAN:\n• Makanan & minuman HALAL sahaja\n\n✅ DIBENARKAN:\n• Masak di dapur\n• BBQ di luar\n• Karaoke (sehingga 10PM)\n• Kolam renang (tiada lifeguard)\n\n❌ TIDAK DIBENARKAN:\n• Haiwan peliharaan\n• Merokok dalam rumah\n• Parti bising selepas 11PM\n\n💰 DEPOSIT:\n• RM300 tempahan biasa\n• RM500 untuk majlis (pertunangan/akikah)\n• Dipulangkan dalam 24 jam selepas check-out\n\n⚠️ PEMBATALAN:\n• Mestilah 4 minggu sebelum check-in\n• Jika tidak, deposit tidak dipulangkan\n\nTerima kasih! 🙏` }); setShowTemplateModal(true); }}
                   className="flex flex-col items-center gap-2 p-4 bg-purple-50 border border-purple-200 rounded-xl hover:bg-purple-100 transition group"
                 >
                   <div className="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center group-hover:scale-110 transition">
@@ -1909,7 +1909,7 @@ export default function Admin() {
                 </button>
 
                 <button
-                  onClick={() => { setEditingTemplate({ title: 'Peringatan Check-in', message: `⏰ *PERINGATAN CHECK-IN*\n\nHai! Ini peringatan untuk check-in anda esok.\n\n📅 Check-in: 3:00 PM\n📍 Lokasi: Lavender Villa Melaka, Bemban\n\n🔑 Kod pintu akan dihantar pada hari check-in.\n\n📞 Hubungi kami jika ada sebarang pertanyaan.\n\nJumpa esok! 👋` }); setShowTemplateModal(true); }}
+                  onClick={() => { setEditingTemplate({ title: 'Peringatan Check-in', message: `⏰ *PERINGATAN CHECK-IN*\n\nHai! Ini peringatan untuk check-in anda esok.\n\n📅 Check-in: 3:00 PM\n📍 Lokasi: Lavender Villa Melaka\n47, Jalan Anjung Lavender 1, Taman Anjung Gapam, 77200 Bemban\n\n🔑 Kod pintu akan dihantar pada hari check-in.\n\n📞 Hubungi 019-334 5686 jika ada pertanyaan.\n\nJumpa esok! 👋` }); setShowTemplateModal(true); }}
                   className="flex flex-col items-center gap-2 p-4 bg-purple-50 border border-purple-200 rounded-xl hover:bg-purple-100 transition group"
                 >
                   <div className="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center group-hover:scale-110 transition">
@@ -1919,7 +1919,7 @@ export default function Admin() {
                 </button>
 
                 <button
-                  onClick={() => { setEditingTemplate({ title: 'Peringatan Check-out', message: `🏠 *PERINGATAN CHECK-OUT*\n\nHai! Ini peringatan untuk check-out hari ini.\n\n⏰ Masa Check-out: 12:00 PM\n\n✅ Senarai Semak Sebelum Keluar:\n• Pastikan semua pintu & tingkap dikunci\n• Matikan semua lampu & kipas\n• Matikan aircond\n• Buang sampah di tong luar\n• Letakkan kunci di tempat asal\n• Pastikan tiada barang tertinggal\n\n🔑 Sila pastikan kunci diletakkan semula di tempat yang ditetapkan.\n\nTerima kasih atas kerjasama! 🙏\nJumpa lagi di lain masa! 👋` }); setShowTemplateModal(true); }}
+                  onClick={() => { setEditingTemplate({ title: 'Peringatan Check-out', message: `🏠 *PERINGATAN CHECK-OUT*\n\nHai! Ini peringatan untuk check-out hari ini.\n\n⏰ Masa Check-out: 12:00 PM\n\n✅ Senarai Semak Sebelum Keluar:\n• Pastikan semua pintu & tingkap dikunci\n• Matikan semua lampu & kipas\n• Matikan aircond\n• Buang sampah di tong luar\n• Letakkan kunci di tempat asal\n• Pastikan tiada barang tertinggal\n\n🔑 Sila pastikan kunci diletakkan semula di tempat yang ditetapkan.\n\n💰 Deposit akan dipulangkan dalam 24 jam jika tiada kerosakan.\n\nTerima kasih! 🙏\nJumpa lagi! 👋` }); setShowTemplateModal(true); }}
                   className="flex flex-col items-center gap-2 p-4 bg-purple-50 border border-purple-200 rounded-xl hover:bg-purple-100 transition group"
                 >
                   <div className="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center group-hover:scale-110 transition">
@@ -1929,7 +1929,7 @@ export default function Admin() {
                 </button>
 
                 <button
-                  onClick={() => { setEditingTemplate({ title: 'Terima Kasih', message: `🙏 *TERIMA KASIH*\n\nTerima kasih kerana menginap di Lavender Villa Melaka!\n\nKami harap anda dan keluarga menikmati penginapan.\n\n⭐ Jika berkenan, sila tinggalkan review di Google:\nhttps://g.page/r/lavendervillamelaka/review\n\nHubungi kami untuk tempahan akan datang. Jumpa lagi! 👋` }); setShowTemplateModal(true); }}
+                  onClick={() => { setEditingTemplate({ title: 'Terima Kasih', message: `🙏 *TERIMA KASIH*\n\nTerima kasih kerana menginap di Lavender Villa Melaka!\n\nKami harap anda dan keluarga menikmati penginapan.\n\n⭐ Jika berkenan, sila tinggalkan review di Google:\nhttps://g.page/r/lavendervillamelaka/review\n\nHubungi kami untuk tempahan akan datang.\n📞 019-334 5686\n\nJumpa lagi! 👋` }); setShowTemplateModal(true); }}
                   className="flex flex-col items-center gap-2 p-4 bg-purple-50 border border-purple-200 rounded-xl hover:bg-purple-100 transition group"
                 >
                   <div className="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center group-hover:scale-110 transition">
