@@ -1791,7 +1791,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
             <div className="w-32 h-32 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-6">
               <Play className="w-16 h-16" />
             </div>
-            <p className="text-2xl">Virtual tour video would play here</p>
+            <p className="text-2xl">Coming Soon</p>
           </div>
         </div>
       )}
