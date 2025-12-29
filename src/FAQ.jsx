@@ -141,57 +141,44 @@ export default function FAQ() {
       </div>
 
       {/* Footer */}
-      <footer className="bg-slate-900 text-white py-12 sm:py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+      <footer className="bg-slate-900 text-white py-8">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          {/* Main Footer Content */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-6 mb-6">
             {/* Brand */}
-            <div>
-              <h3 className="text-2xl font-bold mb-3 bg-gradient-to-r from-purple-400 to-purple-500 bg-clip-text text-transparent">Lavender Villa Melaka</h3>
-              <p className="text-slate-400 text-sm leading-relaxed">Tempat penginapan keluarga terbaik di villa Bemban, Melaka</p>
+            <div className="text-center sm:text-left">
+              <h3 className="text-lg font-bold text-white mb-1">Lavender Villa Melaka</h3>
+              <p className="text-slate-400 text-xs">Villa Mewah di Bemban, Melaka</p>
             </div>
 
-            {/* Quick Links */}
-            <div>
-              <h4 className="font-bold mb-4 text-white">Quick Links</h4>
-              <ul className="space-y-2 text-sm text-slate-400">
-                <li><a href="/" className="hover:text-purple-400 transition">Pengalaman</a></li>
-                <li><a href="/" className="hover:text-purple-400 transition">Ruang</a></li>
-                <li><a href="/" className="hover:text-purple-400 transition">Tempah Sekarang</a></li>
-                <li><a href="/faq" className="hover:text-purple-400 transition">FAQ</a></li>
-              </ul>
-            </div>
-
-            {/* Contact */}
-            <div>
-              <h4 className="font-bold mb-4 text-white">Hubungi</h4>
-              <ul className="space-y-2 text-sm text-slate-400">
-                <li><a href="tel:+60193345686" className="hover:text-purple-400 transition">+60 19 334 5686</a></li>
-                <li><a href="https://wasap.my/60193345686/PPHMLVM" target="_blank" rel="noopener noreferrer" className="hover:text-purple-400 transition">WhatsApp</a></li>
-                <li className="text-xs">Bemban, Melaka</li>
-              </ul>
-            </div>
-
-            {/* Social */}
-            <div>
-              <h4 className="font-bold mb-4 text-white">Ikuti Kami</h4>
-              <div className="flex gap-4">
-                <a href="https://www.facebook.com/lavendervillamelaka" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-purple-400 transition">
+            {/* Contact & Social */}
+            <div className="flex items-center gap-6">
+              <a href="tel:+60193345686" className="text-slate-400 hover:text-white transition text-sm">
+                +60 19 334 5686
+              </a>
+              <div className="flex gap-3">
+                <a href="https://www.facebook.com/lavendervillamelaka" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white transition">
                   <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                   </svg>
                 </a>
-                <a href="https://www.instagram.com/lavendervillamelaka" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-purple-400 transition">
+                <a href="https://www.instagram.com/lavendervillamelaka" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white transition">
                   <Instagram className="w-5 h-5" />
                 </a>
-                <a href="https://www.tiktok.com/@lavendervillamelaka" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-purple-400 transition">
+                <a href="https://www.tiktok.com/@lavendervillamelaka" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white transition">
                   <TikTokIcon />
                 </a>
               </div>
             </div>
           </div>
 
-          <div className="border-t border-slate-800 pt-8">
-            <p className="text-center text-slate-500 text-sm">© 2025 Lavender Villa Melaka. Semua hak terpelihara. Penginapan Muslim Sahaja.</p>
+          {/* Bottom Bar */}
+          <div className="border-t border-slate-800 pt-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <p className="text-slate-500 text-xs">© 2025 Lavender Villa Melaka</p>
+            <div className="flex items-center gap-4 text-xs text-slate-500">
+              <span>Penginapan Muslim Sahaja</span>
+              <a href="/" className="hover:text-white transition">Utama</a>
+            </div>
           </div>
         </div>
       </footer>
