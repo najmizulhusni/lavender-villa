@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Sparkles, X, Trash2, ChevronLeft, ChevronRight, MapPin, TrendingUp, Users, CalendarDays, Lock, Eye, EyeOff, Phone, CheckCircle, Clock, XCircle, ClipboardList, Plus, FileText, Send, Navigation, ScrollText, Bell, Key, Heart, Copy } from 'lucide-react';
-import { adminLogin, updateAdminPassword, getAllBookings, updateBookingStatus, deleteBooking, getBookedDates, addBlockedDate, removeBlockedDate } from './lib/database';
+import { adminLogin, updateAdminPassword, getAllBookings, updateBookingStatus, deleteBooking, getBookedDates, addBlockedDate, removeBlockedDate, getManuallyBlockedDates } from './lib/database';
 import { supabase } from './lib/supabase';
 
 export default function Admin() {
@@ -520,19 +520,34 @@ export default function Admin() {
         
         // Load booked dates - only for lavender (the only property in database for now)
         const newBookedDates = {};
+        const newManualBlockedDates = {};
+        
         try {
           const lavenderDates = await getBookedDates('lavender');
           newBookedDates['lavender'] = lavenderDates;
+          
+          // Also load manually blocked dates from Supabase
+          const manualBlocked = await getManuallyBlockedDates('lavender');
+          newManualBlockedDates['lavender'] = manualBlocked;
         } catch {
           newBookedDates['lavender'] = [];
+          newManualBlockedDates['lavender'] = [];
         }
+        
         // Initialize other properties as empty (not in database yet)
         properties.forEach(p => {
           if (!newBookedDates[p.id]) {
             newBookedDates[p.id] = [];
           }
+          if (!newManualBlockedDates[p.id]) {
+            // Load from localStorage for other properties
+            const saved = localStorage.getItem(`manualBlocked_${p.id}`);
+            newManualBlockedDates[p.id] = saved ? JSON.parse(saved) : [];
+          }
         });
+        
         setBookedDates(newBookedDates);
+        setManualBlockedDates(newManualBlockedDates);
         
       } catch (error) {
         console.error('Error loading from Supabase:', error);
@@ -547,6 +562,8 @@ export default function Admin() {
           const saved = localStorage.getItem(`manualBlocked_${p.id}`);
           manualDates[p.id] = saved ? JSON.parse(saved) : [];
         });
+        
+        setManualBlockedDates(manualDates);
         
         const newBookedDates = {};
         properties.forEach(p => {
