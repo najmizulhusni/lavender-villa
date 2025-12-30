@@ -1082,7 +1082,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-8 sm:mb-12">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 text-slate-900">Tempah Penginapan Villa Anda</h2>
-            <p className="text-slate-600 text-sm sm:text-base md:text-lg mb-2">Jumlah tetamu 15-20 pax (termasuk kanak-kanak berumur 5 tahun ke atas)</p>
+            <p className="text-slate-600 text-sm sm:text-base md:text-lg mb-2">Sesuai untuk keluarga & kumpulan • Jumlah tetamu 15-20 pax (termasuk kanak-kanak berumur 5 tahun ke atas)</p>
             <p className="text-purple-600 text-sm sm:text-base font-semibold mb-4">Penginapan Muslim Sahaja</p>
             
             {/* Trust Badges */}
