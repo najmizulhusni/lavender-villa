@@ -1192,6 +1192,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                           const isBooked = isDateBooked(date);
                           const isSelected = isDateSelected(date);
                           const isHoliday = isPublicHoliday(date);
+                          const schoolHolidayName = isSchoolHoliday(dateStr);
                           const needsMinStay = requiresMinStay(dateStr);
                           days.push(
                             <button
@@ -1203,9 +1204,10 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                                 isBooked ? 'bg-red-100 text-red-500 cursor-pointer hover:bg-red-200' :
                                 isPast ? 'text-slate-300 cursor-not-allowed' :
                                 isHoliday ? 'bg-orange-50 text-orange-600 hover:bg-orange-100 font-medium' :
+                                schoolHolidayName ? 'bg-yellow-50 text-yellow-700 hover:bg-yellow-100 font-medium' :
                                 'hover:bg-purple-100 text-slate-700'
                               }`}
-                              title={needsMinStay && !isPast && !isBooked ? 'Min 3H2M' : ''}
+                              title={isBooked ? 'Tiada Kekosongan' : (schoolHolidayName ? schoolHolidayName : (needsMinStay && !isPast ? 'Min 3H2M' : ''))}
                             >
                               {day}
                               {needsMinStay && !isBooked && !isPast && (
@@ -1214,11 +1216,37 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                               {isHoliday && !isBooked && !isPast && (
                                 <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-orange-400 rounded-full"></span>
                               )}
+                              {schoolHolidayName && !isHoliday && !isBooked && !isPast && (
+                                <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-yellow-400 rounded-full"></span>
+                              )}
                             </button>
                           );
                         }
                         return days;
                       })()}
+                    </div>
+                    {/* Legend */}
+                    <div className="mt-3 pt-2 border-t border-slate-100 grid grid-cols-2 gap-2 text-xs">
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-3 h-3 bg-red-100 rounded"></span>
+                        <span className="text-slate-500">Tiada Kekosongan</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-3 h-3 bg-amber-100 rounded flex items-center justify-center"><span className="w-2 h-2 bg-amber-500 rounded-full text-[5px] text-white font-bold flex items-center justify-center">2</span></span>
+                        <span className="text-slate-500">Min 3H2M</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-3 h-3 bg-yellow-50 rounded relative">
+                          <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-yellow-400 rounded-full"></span>
+                        </span>
+                        <span className="text-slate-500">Cuti Sekolah</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-3 h-3 bg-orange-50 rounded relative">
+                          <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-orange-400 rounded-full"></span>
+                        </span>
+                        <span className="text-slate-500">Cuti Umum</span>
+                      </div>
                     </div>
                   </div>
                 )}
@@ -1365,32 +1393,32 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                       })()}
                     </div>
                     {/* Legend */}
-                    <div className="mt-3 pt-2 border-t border-slate-100 flex flex-wrap items-center justify-center gap-3 text-xs">
+                    <div className="mt-3 pt-2 border-t border-slate-100 grid grid-cols-2 gap-2 text-xs">
                       <div className="flex items-center gap-1.5">
-                        <span className="w-4 h-4 bg-red-100 rounded"></span>
-                        <span className="text-slate-600">Tiada Kekosongan</span>
+                        <span className="w-3 h-3 bg-red-100 rounded"></span>
+                        <span className="text-slate-500">Tiada Kekosongan</span>
                       </div>
                       <div className="flex items-center gap-1.5">
-                        <span className="w-4 h-4 bg-amber-100 rounded flex items-center justify-center"><span className="w-3 h-3 bg-amber-500 rounded-full text-[6px] text-white font-bold flex items-center justify-center">2</span></span>
-                        <span className="text-slate-600">Min 3H2M</span>
+                        <span className="w-3 h-3 bg-amber-100 rounded flex items-center justify-center"><span className="w-2 h-2 bg-amber-500 rounded-full text-[5px] text-white font-bold flex items-center justify-center">2</span></span>
+                        <span className="text-slate-500">Min 3H2M</span>
                       </div>
                       <div className="flex items-center gap-1.5">
-                        <span className="w-4 h-4 bg-green-50 rounded relative">
+                        <span className="w-3 h-3 bg-green-50 rounded relative">
                           <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-green-400 rounded-full"></span>
                         </span>
-                        <span className="text-slate-600">Boleh Checkout</span>
+                        <span className="text-slate-500">Boleh Checkout</span>
                       </div>
                       <div className="flex items-center gap-1.5">
-                        <span className="w-4 h-4 bg-yellow-50 rounded relative">
+                        <span className="w-3 h-3 bg-yellow-50 rounded relative">
                           <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-yellow-400 rounded-full"></span>
                         </span>
-                        <span className="text-slate-600">Cuti Sekolah</span>
+                        <span className="text-slate-500">Cuti Sekolah</span>
                       </div>
-                      <div className="flex items-center gap-1.5">
-                        <span className="w-4 h-4 bg-orange-50 rounded relative">
+                      <div className="flex items-center gap-1.5 col-span-2 justify-center">
+                        <span className="w-3 h-3 bg-orange-50 rounded relative">
                           <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-orange-400 rounded-full"></span>
                         </span>
-                        <span className="text-slate-600">Cuti Umum</span>
+                        <span className="text-slate-500">Cuti Umum</span>
                       </div>
                     </div>
                   </div>
