@@ -1333,13 +1333,13 @@ export default function Admin() {
     return daysInMonth > 0 ? Math.round((bookedNights / daysInMonth) * 100) : 0;
   };
 
-  // Get monthly revenue from Jan to Dec of current year (12 months)
+  // Get monthly revenue from Jan to Dec of selected year (12 months)
   const getMonthlyRevenue = (propertyId = 'all') => {
     const months = [];
-    const currentYear = new Date().getFullYear();
+    const selectedYear = analyticsMonth.getFullYear();
     // Start from January to December
     for (let i = 0; i < 12; i++) {
-      const date = new Date(currentYear, i, 1); // 0 = January (0-indexed)
+      const date = new Date(selectedYear, i, 1); // 0 = January (0-indexed)
       const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
       const monthName = date.toLocaleDateString('ms-MY', { month: 'short' });
       const revenue = bookings
@@ -1885,7 +1885,7 @@ export default function Admin() {
             {/* Monthly Revenue & Bookings Line Chart */}
             <div className="bg-white rounded-2xl p-5 border border-slate-200">
               <div className="flex items-center justify-between mb-2">
-                <h3 className="font-bold text-slate-900">Prestasi Jan - Dis {new Date().getFullYear()}</h3>
+                <h3 className="font-bold text-slate-900">Prestasi Jan - Dis {analyticsMonth.getFullYear()}</h3>
                 {chartPropertyFilter !== 'all' && (
                   <span className="text-xs bg-purple-100 text-purple-600 px-2 py-1 rounded-full font-medium">
                     {properties.find(p => p.id === chartPropertyFilter)?.name}
