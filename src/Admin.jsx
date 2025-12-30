@@ -2017,155 +2017,180 @@ export default function Admin() {
         {/* History View - Past Bookings */}
         {adminView === 'history' && (
           <div className="space-y-4">
+            {/* Filter Panel - Always visible */}
+            <div className="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-sm">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-bold text-slate-900 flex items-center gap-2">
+                  <Clock className="w-4 h-4 text-purple-500" />
+                  Sejarah Tempahan
+                </h3>
+                {(bookingFilter !== 'all' || propertyFilter !== 'all' || dateFilterFrom || dateFilterTo) && (
+                  <button 
+                    onClick={clearAllFilters}
+                    className="text-xs text-purple-600 hover:text-purple-700 font-medium flex items-center gap-1"
+                  >
+                    <X className="w-3 h-3" /> Reset
+                  </button>
+                )}
+              </div>
+              
+              {/* Status Filter Buttons - Sticky style */}
+              <div className="flex gap-2 flex-wrap mb-4">
+                <span className="text-slate-400 text-xs self-center mr-1 hidden sm:inline">Status:</span>
+                <button 
+                  onClick={() => setBookingFilter('all')}
+                  className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${bookingFilter === 'all' ? 'bg-purple-500 text-white shadow-md' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
+                >
+                  Semua
+                </button>
+                <button 
+                  onClick={() => setBookingFilter('paid')}
+                  className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${bookingFilter === 'paid' ? 'bg-green-500 text-white shadow-md' : 'bg-green-50 text-green-700 hover:bg-green-100 border border-green-200'}`}
+                >
+                  ✓ Selesai
+                </button>
+                <button 
+                  onClick={() => setBookingFilter('cancelled')}
+                  className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${bookingFilter === 'cancelled' ? 'bg-red-500 text-white shadow-md' : 'bg-red-50 text-red-700 hover:bg-red-100 border border-red-200'}`}
+                >
+                  ✗ Batal
+                </button>
+                <button 
+                  onClick={() => setBookingFilter('refund')}
+                  className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${bookingFilter === 'refund' ? 'bg-orange-500 text-white shadow-md' : 'bg-orange-50 text-orange-700 hover:bg-orange-100 border border-orange-200'}`}
+                >
+                  ↩ Refund
+                </button>
+              </div>
+              
+              {/* Villa Filter */}
+              <div className="relative">
+                <label className="block text-slate-500 text-xs mb-1.5">Villa / Homestay</label>
+                <button
+                  onClick={() => setShowVillaDropdown(showVillaDropdown === 'history' ? null : 'history')}
+                  className="w-full sm:w-64 px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-sm sm:text-base font-medium focus:outline-none focus:border-purple-400 transition text-left flex items-center justify-between"
+                >
+                  <span>{propertyFilter === 'all' ? 'Semua Villa' : properties.find(p => p.id === propertyFilter)?.name}</span>
+                  <ChevronRight className={`w-4 h-4 text-slate-400 transition-transform ${showVillaDropdown === 'history' ? 'rotate-90' : ''}`} />
+                </button>
+                
+                {showVillaDropdown === 'history' && (
+                  <div className="absolute top-full left-0 right-0 sm:right-auto sm:w-64 mt-2 bg-white rounded-xl shadow-xl border border-slate-200 p-2 z-50 max-h-64 overflow-y-auto">
+                    <button
+                      onClick={() => { setPropertyFilter('all'); setShowVillaDropdown(null); }}
+                      className={`w-full px-3 py-2.5 rounded-lg text-left text-sm font-medium transition ${propertyFilter === 'all' ? 'bg-purple-100 text-purple-700' : 'hover:bg-slate-50 text-slate-700'}`}
+                    >
+                      Semua Villa
+                    </button>
+                    {properties.map(p => (
+                      <button
+                        key={p.id}
+                        onClick={() => { setPropertyFilter(p.id); setShowVillaDropdown(null); }}
+                        className={`w-full px-3 py-2.5 rounded-lg text-left text-sm font-medium transition ${propertyFilter === p.id ? 'bg-purple-100 text-purple-700' : 'hover:bg-slate-50 text-slate-700'}`}
+                      >
+                        {p.name}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* History List or Empty State */}
             {getHistoryBookings().length === 0 ? (
-              <div className="bg-white rounded-2xl p-12 border border-slate-200 shadow-sm text-center">
+              <div className="bg-white rounded-2xl p-8 sm:p-12 border border-slate-200 shadow-sm text-center">
                 <Clock className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-                <p className="text-slate-500">Tiada sejarah tempahan</p>
+                <p className="text-slate-500 text-sm sm:text-base">
+                  {bookingFilter !== 'all' 
+                    ? `Tiada tempahan "${bookingFilter === 'paid' ? 'Selesai' : bookingFilter === 'cancelled' ? 'Dibatalkan' : 'Refund'}" dalam sejarah`
+                    : 'Tiada sejarah tempahan'}
+                </p>
+                {bookingFilter !== 'all' && (
+                  <button 
+                    onClick={() => setBookingFilter('all')}
+                    className="mt-3 text-purple-600 text-sm font-medium hover:text-purple-700"
+                  >
+                    Lihat semua sejarah →
+                  </button>
+                )}
               </div>
             ) : (
               <>
-                {/* Filter Panel */}
-                <div className="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-sm mb-4">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="font-bold text-slate-900 flex items-center gap-2">
-                      <Clock className="w-4 h-4 text-purple-500" />
-                      Sejarah Tempahan
-                    </h3>
-                    {(bookingFilter !== 'all' || propertyFilter !== 'all' || dateFilterFrom || dateFilterTo) && (
-                      <button 
-                        onClick={clearAllFilters}
-                        className="text-xs text-purple-600 hover:text-purple-700 font-medium flex items-center gap-1"
-                      >
-                        <X className="w-3 h-3" /> Reset
-                      </button>
-                    )}
-                  </div>
-                  
-                  {/* Status Filter Buttons */}
-                  <div className="flex gap-2 flex-wrap mb-4">
-                    <span className="text-slate-400 text-xs self-center mr-1">Status:</span>
-                    <button 
-                      onClick={() => setBookingFilter('all')}
-                      className={`px-3 py-1.5 rounded-full text-xs font-medium transition ${bookingFilter === 'all' ? 'bg-purple-500 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
-                    >
-                      Semua
-                    </button>
-                    <button 
-                      onClick={() => setBookingFilter('paid')}
-                      className={`px-3 py-1.5 rounded-full text-xs font-medium transition ${bookingFilter === 'paid' ? 'bg-green-500 text-white' : 'bg-green-100 text-green-700 hover:bg-green-200'}`}
-                    >
-                      Telah Bayar
-                    </button>
-                    <button 
-                      onClick={() => setBookingFilter('cancelled')}
-                      className={`px-3 py-1.5 rounded-full text-xs font-medium transition ${bookingFilter === 'cancelled' ? 'bg-red-500 text-white' : 'bg-red-100 text-red-700 hover:bg-red-200'}`}
-                    >
-                      Dibatalkan
-                    </button>
-                  </div>
-                  
-                  {/* Villa Filter */}
-                  <div className="relative">
-                    <label className="block text-slate-500 text-xs mb-1.5">Villa / Homestay</label>
-                    <button
-                      onClick={() => setShowVillaDropdown(showVillaDropdown === 'history' ? null : 'history')}
-                      className="w-full sm:w-64 px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-base font-medium focus:outline-none focus:border-purple-400 transition text-left flex items-center justify-between"
-                    >
-                      <span>{propertyFilter === 'all' ? 'Semua' : properties.find(p => p.id === propertyFilter)?.name}</span>
-                      <ChevronRight className={`w-4 h-4 text-slate-400 transition-transform ${showVillaDropdown === 'history' ? 'rotate-90' : ''}`} />
-                    </button>
-                    
-                    {showVillaDropdown === 'history' && (
-                      <div className="absolute top-full left-0 right-0 sm:right-auto sm:w-64 mt-2 bg-white rounded-xl shadow-xl border border-slate-200 p-2 z-50 max-h-64 overflow-y-auto">
-                        <button
-                          onClick={() => { setPropertyFilter('all'); setShowVillaDropdown(null); }}
-                          className={`w-full px-3 py-2.5 rounded-lg text-left text-sm font-medium transition ${propertyFilter === 'all' ? 'bg-purple-100 text-purple-700' : 'hover:bg-slate-50 text-slate-700'}`}
-                        >
-                          Semua Villa
-                        </button>
-                        {properties.map(p => (
-                          <button
-                            key={p.id}
-                            onClick={() => { setPropertyFilter(p.id); setShowVillaDropdown(null); }}
-                            className={`w-full px-3 py-2.5 rounded-lg text-left text-sm font-medium transition ${propertyFilter === p.id ? 'bg-purple-100 text-purple-700' : 'hover:bg-slate-50 text-slate-700'}`}
-                          >
-                            {p.name}
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </div>
-
                 {/* History List */}
                 <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
                   <div className="divide-y divide-slate-100">
                     {getHistoryBookings().sort((a, b) => new Date(b.checkIn) - new Date(a.checkIn)).map(booking => (
-                      <div key={booking.id} className="p-3 sm:p-4 hover:bg-slate-50 transition">
-                        <div className="flex items-start justify-between gap-3">
-                          <div className="flex items-start gap-3 min-w-0 flex-1">
-                            <div className="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center flex-shrink-0">
-                              <span className="text-slate-500 text-xs font-bold">{booking.name?.charAt(0)?.toUpperCase()}</span>
+                      <div key={booking.id} className="p-3 sm:p-4 hover:bg-slate-50 transition active:bg-slate-100">
+                        <div className="flex items-start justify-between gap-2 sm:gap-3">
+                          <div className="flex items-start gap-2 sm:gap-3 min-w-0 flex-1">
+                            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-slate-100 rounded-full flex items-center justify-center flex-shrink-0">
+                              <span className="text-slate-500 text-xs sm:text-sm font-bold">{booking.name?.charAt(0)?.toUpperCase()}</span>
                             </div>
                             <div className="min-w-0 flex-1">
-                              <div className="flex items-center gap-2 flex-wrap">
-                                <span className="font-semibold text-slate-900 text-sm">{booking.name}</span>
-                                <span className="text-slate-400 text-xs hidden sm:inline">•</span>
-                                <span className="text-slate-500 text-xs">{booking.phone}</span>
-                                <span className="text-slate-300 text-xs hidden sm:inline">•</span>
-                                <span className="text-slate-400 text-xs font-mono hidden sm:inline">{booking.id}</span>
+                              <div className="flex items-center gap-1 sm:gap-2 flex-wrap">
+                                <span className="font-semibold text-slate-900 text-sm sm:text-base">{booking.name}</span>
+                                <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
+                                  booking.status === 'paid' ? 'bg-green-100 text-green-700' :
+                                  booking.status === 'refund' ? 'bg-orange-100 text-orange-700' :
+                                  booking.status === 'cancelled' ? 'bg-red-100 text-red-700' :
+                                  'bg-yellow-100 text-yellow-700'
+                                }`}>
+                                  {booking.status === 'paid' ? '✓ Selesai' :
+                                   booking.status === 'refund' ? '↩ Refund' :
+                                   booking.status === 'cancelled' ? '✗ Batal' :
+                                   'Belum'}
+                                </span>
                               </div>
-                              <div className="flex items-center gap-2 text-xs text-slate-500 mt-0.5 flex-wrap">
+                              <div className="text-xs text-slate-500 mt-1">
                                 <span className="text-purple-600 font-medium">{properties.find(p => p.id === booking.property)?.name?.replace(' Melaka', '') || 'Lavender Villa'}</span>
-                                <span>•</span>
-                                <span>{new Date(booking.checkIn).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short' })} - {new Date(booking.checkOut).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short' })}</span>
-                                <span>•</span>
-                                <span>{booking.nights} malam</span>
-                                {booking.createdAt && (
-                                  <>
-                                    <span className="hidden sm:inline">•</span>
-                                    <span className="text-slate-400 hidden sm:inline">Ditempah: {new Date(booking.createdAt).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
-                                  </>
-                                )}
                               </div>
+                              <div className="flex items-center gap-1 sm:gap-2 text-xs text-slate-500 mt-0.5 flex-wrap">
+                                <span>{new Date(booking.checkIn).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                                <span>→</span>
+                                <span>{new Date(booking.checkOut).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short' })}</span>
+                                <span className="text-slate-300">•</span>
+                                <span>{booking.nights} malam</span>
+                              </div>
+                              {booking.createdAt && (
+                                <div className="text-xs text-slate-400 mt-1">
+                                  Ditempah: {new Date(booking.createdAt).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short', year: 'numeric' })}
+                                </div>
+                              )}
                             </div>
                           </div>
                           
-                          {/* Price & Status */}
+                          {/* Price */}
                           <div className="text-right flex-shrink-0">
-                            <p className="font-bold text-slate-900">RM {booking.total?.toLocaleString()}</p>
-                            <span className={`text-xs font-medium ${
-                              booking.status === 'paid' ? 'text-green-600' :
-                              booking.status === 'refund' ? 'text-orange-600' :
-                              booking.status === 'cancelled' ? 'text-red-600' :
-                              'text-yellow-600'
-                            }`}>
-                              {booking.status === 'paid' ? 'Selesai ✓' :
-                               booking.status === 'refund' ? 'Refund' :
-                               booking.status === 'cancelled' ? 'Batal' :
-                               'Belum'}
-                            </span>
+                            <p className="font-bold text-slate-900 text-sm sm:text-base">RM {booking.total?.toLocaleString()}</p>
+                            <p className="text-xs text-slate-400 font-mono mt-0.5 hidden sm:block">{booking.id}</p>
                           </div>
                         </div>
                         
-                        {/* Actions */}
-                        <div className="flex items-center gap-2 ml-11 mt-2 flex-wrap">
-                          <button
-                            onClick={() => generateReceipt(booking)}
-                            className="px-3 py-1.5 bg-slate-100 text-slate-700 rounded-lg text-xs font-medium hover:bg-slate-200 transition flex items-center gap-1"
+                        {/* Actions - Touch friendly */}
+                        <div className="flex items-center gap-2 mt-3 pt-3 border-t border-slate-100">
+                          <a
+                            href={`tel:${booking.phone}`}
+                            className="flex-1 sm:flex-none px-3 py-2 bg-slate-100 text-slate-700 rounded-xl text-xs font-medium hover:bg-slate-200 transition flex items-center justify-center gap-1.5"
                           >
-                            <FileText className="w-3.5 h-3.5" />
-                            Resit
-                          </button>
+                            <Phone className="w-3.5 h-3.5" />
+                            <span>{booking.phone}</span>
+                          </a>
                           <a
                             href={`https://wa.me/${booking.phone?.replace(/^0/, '60')}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="px-3 py-1.5 bg-green-100 text-green-700 rounded-lg text-xs font-medium hover:bg-green-200 transition flex items-center gap-1"
+                            className="px-3 py-2 bg-green-100 text-green-700 rounded-xl text-xs font-medium hover:bg-green-200 transition flex items-center gap-1.5"
                           >
-                            <Phone className="w-3 h-3" />
-                            WhatsApp
+                            <Send className="w-3.5 h-3.5" />
+                            <span className="hidden sm:inline">WhatsApp</span>
                           </a>
+                          <button
+                            onClick={() => generateReceipt(booking)}
+                            className="px-3 py-2 bg-purple-100 text-purple-700 rounded-xl text-xs font-medium hover:bg-purple-200 transition flex items-center gap-1.5"
+                          >
+                            <FileText className="w-3.5 h-3.5" />
+                            <span className="hidden sm:inline">Resit</span>
+                          </button>
                         </div>
                       </div>
                     ))}
@@ -2175,7 +2200,7 @@ export default function Admin() {
                 {/* Summary */}
                 <div className="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm">
                   <div className="flex items-center justify-between">
-                    <span className="text-slate-500 text-sm">Jumlah Sejarah Tempahan</span>
+                    <span className="text-slate-500 text-sm">Jumlah</span>
                     <span className="font-bold text-slate-900">{getHistoryBookings().length} tempahan</span>
                   </div>
                 </div>
@@ -2708,171 +2733,157 @@ export default function Admin() {
         {/* Bookings View */}
         {adminView === 'bookings' && (
           <div className="space-y-4">
-            {bookings.length === 0 ? (
-              <div className="bg-white rounded-2xl p-12 border border-slate-200 shadow-sm text-center">
-                <ClipboardList className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-                <p className="text-slate-500 mb-4">Tiada tempahan lagi</p>
-                <button
-                  onClick={() => setShowAddBooking(true)}
-                  className="px-4 py-2 rounded-full text-sm font-semibold transition bg-green-500 text-white hover:bg-green-600 inline-flex items-center gap-2"
+            {/* Filter Panel - Always visible */}
+            <div className="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-sm">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-bold text-slate-900 flex items-center gap-2">
+                  <CalendarDays className="w-4 h-4 text-purple-500" />
+                  Tempahan Aktif
+                </h3>
+                <div className="flex items-center gap-2">
+                  {(bookingFilter !== 'all' || propertyFilter !== 'all' || dateFilterFrom || dateFilterTo) && (
+                    <button 
+                      onClick={clearAllFilters}
+                      className="text-xs text-purple-600 hover:text-purple-700 font-medium flex items-center gap-1"
+                    >
+                      <X className="w-3 h-3" /> Reset
+                    </button>
+                  )}
+                  <button
+                    onClick={() => setShowAddBooking(true)}
+                    className="px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-green-500 text-white hover:bg-green-600 flex items-center gap-1.5 shadow-md"
+                  >
+                    <Plus className="w-4 h-4" />
+                    <span className="hidden sm:inline">Tambah</span>
+                  </button>
+                </div>
+              </div>
+              
+              {/* Status Filter Buttons - Touch friendly */}
+              <div className="flex gap-2 flex-wrap mb-4">
+                <span className="text-slate-400 text-xs self-center mr-1 hidden sm:inline">Status:</span>
+                <button 
+                  onClick={() => setBookingFilter('all')}
+                  className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${bookingFilter === 'all' ? 'bg-purple-500 text-white shadow-md' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
                 >
-                  <Plus className="w-4 h-4" />
-                  Tambah Tempahan
+                  Semua
+                </button>
+                <button 
+                  onClick={() => setBookingFilter('pending')}
+                  className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${bookingFilter === 'pending' ? 'bg-yellow-500 text-white shadow-md' : 'bg-yellow-50 text-yellow-700 hover:bg-yellow-100 border border-yellow-200'}`}
+                >
+                  ⏳ Belum ({getPendingCount()})
+                </button>
+                <button 
+                  onClick={() => setBookingFilter('paid')}
+                  className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${bookingFilter === 'paid' ? 'bg-green-500 text-white shadow-md' : 'bg-green-50 text-green-700 hover:bg-green-100 border border-green-200'}`}
+                >
+                  ✓ Bayar ({getPaidCount()})
+                </button>
+                <button 
+                  onClick={() => setBookingFilter('refund')}
+                  className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${bookingFilter === 'refund' ? 'bg-orange-500 text-white shadow-md' : 'bg-orange-50 text-orange-700 hover:bg-orange-100 border border-orange-200'}`}
+                >
+                  ↩ Refund ({getRefundCount()})
+                </button>
+                <button 
+                  onClick={() => setBookingFilter('cancelled')}
+                  className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${bookingFilter === 'cancelled' ? 'bg-red-500 text-white shadow-md' : 'bg-red-50 text-red-700 hover:bg-red-100 border border-red-200'}`}
+                >
+                  ✗ Batal ({getCancelledCount()})
                 </button>
               </div>
-            ) : (
-              <>
-                {/* Filter Panel */}
-                <div className="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-sm mb-4">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="font-bold text-slate-900 flex items-center gap-2">
-                      <CalendarDays className="w-4 h-4 text-purple-500" />
-                      Tapis Tempahan
-                    </h3>
-                    <div className="flex items-center gap-2">
-                      {(bookingFilter !== 'all' || propertyFilter !== 'all' || dateFilterFrom || dateFilterTo) && (
-                        <button 
-                          onClick={clearAllFilters}
-                          className="text-xs text-purple-600 hover:text-purple-700 font-medium flex items-center gap-1"
+              
+              {/* Villa & Date Filters - Clean Grid Layout */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="relative">
+                  <label className="block text-slate-500 text-xs mb-1.5">Villa / Homestay</label>
+                  <button
+                    onClick={() => setShowVillaDropdown(showVillaDropdown === 'bookings' ? null : 'bookings')}
+                    className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-sm sm:text-base font-medium focus:outline-none focus:border-purple-400 transition text-left flex items-center justify-between"
+                  >
+                    <span>{propertyFilter === 'all' ? 'Semua Villa' : properties.find(p => p.id === propertyFilter)?.name}</span>
+                    <ChevronRight className={`w-4 h-4 text-slate-400 transition-transform ${showVillaDropdown === 'bookings' ? 'rotate-90' : ''}`} />
+                  </button>
+                  
+                  {/* Custom Dropdown */}
+                  {showVillaDropdown === 'bookings' && (
+                    <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-slate-200 p-2 z-50 max-h-64 overflow-y-auto">
+                      <button
+                        onClick={() => { setPropertyFilter('all'); setShowVillaDropdown(null); }}
+                        className={`w-full px-3 py-2.5 rounded-lg text-left text-sm font-medium transition ${propertyFilter === 'all' ? 'bg-purple-100 text-purple-700' : 'hover:bg-slate-50 text-slate-700'}`}
+                      >
+                        Semua Villa
+                      </button>
+                      {properties.map(p => (
+                        <button
+                          key={p.id}
+                          onClick={() => { setPropertyFilter(p.id); setShowVillaDropdown(null); }}
+                          className={`w-full px-3 py-2.5 rounded-lg text-left text-sm font-medium transition ${propertyFilter === p.id ? 'bg-purple-100 text-purple-700' : 'hover:bg-slate-50 text-slate-700'}`}
                         >
-                          <X className="w-3 h-3" /> Reset
+                          {p.name}
                         </button>
-                      )}
-                      <button
-                        onClick={() => setShowAddBooking(true)}
-                        className="px-3 py-1.5 rounded-lg text-xs font-semibold transition bg-green-500 text-white hover:bg-green-600 flex items-center gap-1.5"
-                      >
-                        <Plus className="w-3.5 h-3.5" />
-                        Tambah
-                      </button>
+                      ))}
                     </div>
-                  </div>
+                  )}
+                </div>
+                <div className="relative">
+                  <label className="block text-slate-500 text-xs mb-1.5">Dari Tarikh</label>
+                  <button
+                    onClick={() => setShowDatePicker(showDatePicker === 'from' ? null : 'from')}
+                    className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-sm sm:text-base font-medium focus:outline-none focus:border-purple-400 transition text-left flex items-center justify-between"
+                  >
+                    <span className={dateFilterFrom ? 'text-slate-900' : 'text-slate-400'}>
+                      {dateFilterFrom ? new Date(dateFilterFrom).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Pilih tarikh'}
+                    </span>
+                    <CalendarDays className="w-4 h-4 text-slate-400" />
+                  </button>
+                  {dateFilterFrom && (
+                    <button onClick={() => setDateFilterFrom('')} className="absolute right-8 top-1/2 -translate-y-1/2 mt-3 p-1 hover:bg-slate-200 rounded-full z-10">
+                      <X className="w-3 h-3 text-slate-400" />
+                    </button>
+                  )}
                   
-                  {/* Status Filter Buttons */}
-                  <div className="flex gap-2 flex-wrap mb-4">
-                    <span className="text-slate-400 text-xs self-center mr-1">Status:</span>
-                    <button 
-                      onClick={() => setBookingFilter('all')}
-                      className={`px-3 py-1.5 rounded-full text-xs font-medium transition ${bookingFilter === 'all' ? 'bg-purple-500 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
-                    >
-                      Semua
-                    </button>
-                    <button 
-                      onClick={() => setBookingFilter('pending')}
-                      className={`px-3 py-1.5 rounded-full text-xs font-medium transition ${bookingFilter === 'pending' ? 'bg-yellow-500 text-white' : 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200'}`}
-                    >
-                      Belum Bayar ({getPendingCount()})
-                    </button>
-                    <button 
-                      onClick={() => setBookingFilter('paid')}
-                      className={`px-3 py-1.5 rounded-full text-xs font-medium transition ${bookingFilter === 'paid' ? 'bg-green-500 text-white' : 'bg-green-100 text-green-700 hover:bg-green-200'}`}
-                    >
-                      Telah Bayar ({getPaidCount()})
-                    </button>
-                    <button 
-                      onClick={() => setBookingFilter('refund')}
-                      className={`px-3 py-1.5 rounded-full text-xs font-medium transition ${bookingFilter === 'refund' ? 'bg-orange-500 text-white' : 'bg-orange-100 text-orange-700 hover:bg-orange-200'}`}
-                    >
-                      Refund ({getRefundCount()})
-                    </button>
-                    <button 
-                      onClick={() => setBookingFilter('cancelled')}
-                      className={`px-3 py-1.5 rounded-full text-xs font-medium transition ${bookingFilter === 'cancelled' ? 'bg-red-500 text-white' : 'bg-red-100 text-red-700 hover:bg-red-200'}`}
-                    >
-                      Dibatalkan ({getCancelledCount()})
-                    </button>
-                  </div>
-                  
-                  {/* Villa & Date Filters - Clean Grid Layout */}
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    <div className="relative">
-                      <label className="block text-slate-500 text-xs mb-1.5">Villa / Homestay</label>
-                      <button
-                        onClick={() => setShowVillaDropdown(showVillaDropdown === 'bookings' ? null : 'bookings')}
-                        className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-base font-medium focus:outline-none focus:border-purple-400 transition text-left flex items-center justify-between"
-                      >
-                        <span>{propertyFilter === 'all' ? 'Semua' : properties.find(p => p.id === propertyFilter)?.name}</span>
-                        <ChevronRight className={`w-4 h-4 text-slate-400 transition-transform ${showVillaDropdown === 'bookings' ? 'rotate-90' : ''}`} />
-                      </button>
-                      
-                      {/* Custom Dropdown */}
-                      {showVillaDropdown === 'bookings' && (
-                        <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-slate-200 p-2 z-50 max-h-64 overflow-y-auto">
-                          <button
-                            onClick={() => { setPropertyFilter('all'); setShowVillaDropdown(null); }}
-                            className={`w-full px-3 py-2.5 rounded-lg text-left text-sm font-medium transition ${propertyFilter === 'all' ? 'bg-purple-100 text-purple-700' : 'hover:bg-slate-50 text-slate-700'}`}
-                          >
-                            Semua
-                          </button>
-                          {properties.map(p => (
-                            <button
-                              key={p.id}
-                              onClick={() => { setPropertyFilter(p.id); setShowVillaDropdown(null); }}
-                              className={`w-full px-3 py-2.5 rounded-lg text-left text-sm font-medium transition ${propertyFilter === p.id ? 'bg-purple-100 text-purple-700' : 'hover:bg-slate-50 text-slate-700'}`}
-                            >
-                              {p.name}
-                            </button>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                    <div className="relative">
-                      <label className="block text-slate-500 text-xs mb-1.5">Dari Tarikh</label>
-                      <button
-                        onClick={() => setShowDatePicker(showDatePicker === 'from' ? null : 'from')}
-                        className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-base font-medium focus:outline-none focus:border-purple-400 transition text-left flex items-center justify-between"
-                      >
-                        <span className={dateFilterFrom ? 'text-slate-900' : 'text-slate-400'}>
-                          {dateFilterFrom ? new Date(dateFilterFrom).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Pilih tarikh'}
-                        </span>
-                        <CalendarDays className="w-4 h-4 text-slate-400" />
-                      </button>
-                      {dateFilterFrom && (
-                        <button onClick={() => setDateFilterFrom('')} className="absolute right-8 top-1/2 -translate-y-1/2 mt-3 p-1 hover:bg-slate-200 rounded-full z-10">
-                          <X className="w-3 h-3 text-slate-400" />
+                  {/* Calendar Popup */}
+                  {showDatePicker === 'from' && (
+                    <div className="absolute top-full left-0 mt-2 bg-white rounded-xl shadow-xl border border-slate-200 p-4 z-50 w-72">
+                      <div className="flex items-center justify-between mb-4">
+                        <button onClick={() => setDatePickerMonth(new Date(datePickerMonth.getFullYear(), datePickerMonth.getMonth() - 1))} className="p-2 hover:bg-slate-100 rounded-lg">
+                          <ChevronLeft className="w-4 h-4 text-slate-600" />
                         </button>
-                      )}
-                      
-                      {/* Calendar Popup */}
-                      {showDatePicker === 'from' && (
-                        <div className="absolute top-full left-0 mt-2 bg-white rounded-xl shadow-xl border border-slate-200 p-4 z-50 w-72">
-                          <div className="flex items-center justify-between mb-4">
-                            <button onClick={() => setDatePickerMonth(new Date(datePickerMonth.getFullYear(), datePickerMonth.getMonth() - 1))} className="p-2 hover:bg-slate-100 rounded-lg">
-                              <ChevronLeft className="w-4 h-4 text-slate-600" />
-                            </button>
-                            <span className="font-bold text-slate-900 text-sm">{datePickerMonth.toLocaleDateString('ms-MY', { month: 'long', year: 'numeric' })}</span>
-                            <button onClick={() => setDatePickerMonth(new Date(datePickerMonth.getFullYear(), datePickerMonth.getMonth() + 1))} className="p-2 hover:bg-slate-100 rounded-lg">
-                              <ChevronRight className="w-4 h-4 text-slate-600" />
-                            </button>
-                          </div>
-                          <div className="grid grid-cols-7 gap-1 mb-2">
-                            {['Ah', 'Is', 'Se', 'Ra', 'Kh', 'Ju', 'Sa'].map(d => (
-                              <div key={d} className="text-center text-xs font-semibold text-slate-500 py-1">{d}</div>
-                            ))}
-                          </div>
-                          <div className="grid grid-cols-7 gap-1">
-                            {(() => {
-                              const year = datePickerMonth.getFullYear();
-                              const month = datePickerMonth.getMonth();
-                              const firstDay = new Date(year, month, 1).getDay();
-                              const daysInMonth = new Date(year, month + 1, 0).getDate();
-                              const days = [];
-                              for (let i = 0; i < firstDay; i++) days.push(<div key={`e-${i}`} />);
-                              for (let day = 1; day <= daysInMonth; day++) {
-                                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-                                const isSelected = dateFilterFrom === dateStr;
-                                days.push(
-                                  <button
-                                    key={day}
-                                    onClick={() => { setDateFilterFrom(dateStr); setShowDatePicker(null); }}
-                                    className={`p-2 text-sm rounded-lg transition ${isSelected ? 'bg-purple-500 text-white font-bold' : 'hover:bg-purple-100 text-slate-700'}`}
-                                  >
-                                    {day}
-                                  </button>
-                                );
-                              }
-                              return days;
-                            })()}
+                        <span className="font-bold text-slate-900 text-sm">{datePickerMonth.toLocaleDateString('ms-MY', { month: 'long', year: 'numeric' })}</span>
+                        <button onClick={() => setDatePickerMonth(new Date(datePickerMonth.getFullYear(), datePickerMonth.getMonth() + 1))} className="p-2 hover:bg-slate-100 rounded-lg">
+                          <ChevronRight className="w-4 h-4 text-slate-600" />
+                        </button>
+                      </div>
+                      <div className="grid grid-cols-7 gap-1 mb-2">
+                        {['Ah', 'Is', 'Se', 'Ra', 'Kh', 'Ju', 'Sa'].map(d => (
+                          <div key={d} className="text-center text-xs font-semibold text-slate-500 py-1">{d}</div>
+                        ))}
+                      </div>
+                      <div className="grid grid-cols-7 gap-1">
+                        {(() => {
+                          const year = datePickerMonth.getFullYear();
+                          const month = datePickerMonth.getMonth();
+                          const firstDay = new Date(year, month, 1).getDay();
+                          const daysInMonth = new Date(year, month + 1, 0).getDate();
+                          const days = [];
+                          for (let i = 0; i < firstDay; i++) days.push(<div key={`e-${i}`} />);
+                          for (let day = 1; day <= daysInMonth; day++) {
+                            const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                            const isSelected = dateFilterFrom === dateStr;
+                            days.push(
+                              <button
+                                key={day}
+                                onClick={() => { setDateFilterFrom(dateStr); setShowDatePicker(null); }}
+                                className={`p-2 text-sm rounded-lg transition ${isSelected ? 'bg-purple-500 text-white font-bold' : 'hover:bg-purple-100 text-slate-700'}`}
+                              >
+                                {day}
+                              </button>
+                            );
+                          }
+                          return days;
+                        })()}
                           </div>
                         </div>
                       )}
@@ -2881,7 +2892,7 @@ export default function Admin() {
                       <label className="block text-slate-500 text-xs mb-1.5">Hingga Tarikh</label>
                       <button
                         onClick={() => setShowDatePicker(showDatePicker === 'to' ? null : 'to')}
-                        className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-base font-medium focus:outline-none focus:border-purple-400 transition text-left flex items-center justify-between"
+                        className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-sm sm:text-base font-medium focus:outline-none focus:border-purple-400 transition text-left flex items-center justify-between"
                       >
                         <span className={dateFilterTo ? 'text-slate-900' : 'text-slate-400'}>
                           {dateFilterTo ? new Date(dateFilterTo).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Pilih tarikh'}
@@ -2941,138 +2952,171 @@ export default function Admin() {
                   </div>
                 </div>
                 
-                {/* Bookings List - Compact Table Style */}
+            {/* Bookings List or Empty State */}
+            {getFilteredBookings().length === 0 ? (
+              <div className="bg-white rounded-2xl p-8 sm:p-12 border border-slate-200 shadow-sm text-center">
+                <ClipboardList className="w-12 h-12 text-slate-300 mx-auto mb-4" />
+                <p className="text-slate-500 text-sm sm:text-base">
+                  {bookingFilter !== 'all' 
+                    ? `Tiada tempahan "${bookingFilter === 'pending' ? 'Belum Bayar' : bookingFilter === 'paid' ? 'Telah Bayar' : bookingFilter === 'cancelled' ? 'Dibatalkan' : 'Refund'}"`
+                    : 'Tiada tempahan aktif'}
+                </p>
+                {bookingFilter !== 'all' && (
+                  <button 
+                    onClick={() => setBookingFilter('all')}
+                    className="mt-3 text-purple-600 text-sm font-medium hover:text-purple-700"
+                  >
+                    Lihat semua tempahan →
+                  </button>
+                )}
+              </div>
+            ) : (
+              <>
+                {/* Bookings List - Mobile Optimized */}
                 <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-                  {getFilteredBookings().length === 0 ? (
-                    <div className="p-8 text-center">
-                      <p className="text-slate-500">Tiada tempahan</p>
-                    </div>
-                  ) : (
-                    <div className="divide-y divide-slate-100">
-                      {getFilteredBookings().sort((a, b) => new Date(a.checkIn) - new Date(b.checkIn)).map(booking => (
-                        <div key={booking.id} className="p-3 sm:p-4 hover:bg-slate-50 transition">
-                          {/* Row 1: Name, Villa, Dates, Price, Status */}
-                          <div className="flex items-center gap-3 mb-2">
+                  <div className="divide-y divide-slate-100">
+                    {getFilteredBookings().sort((a, b) => new Date(a.checkIn) - new Date(b.checkIn)).map(booking => (
+                      <div key={booking.id} className="p-3 sm:p-4 hover:bg-slate-50 transition active:bg-slate-100">
+                        <div className="flex items-start justify-between gap-2 sm:gap-3">
+                          <div className="flex items-start gap-2 sm:gap-3 min-w-0 flex-1">
                             {/* Status Indicator */}
-                            <div className={`w-2 h-2 rounded-full flex-shrink-0 ${
-                              booking.status === 'paid' ? 'bg-green-500' :
-                              booking.status === 'refund' ? 'bg-orange-500' :
-                              booking.status === 'cancelled' ? 'bg-red-500' :
-                              'bg-yellow-500'
-                            }`}></div>
-                            
-                            {/* Name & Phone */}
-                            <div className="min-w-0 flex-1">
-                              <div className="flex items-center gap-2 flex-wrap">
-                                <span className="font-semibold text-slate-900 text-sm">{booking.name}</span>
-                                <span className="text-slate-400 text-xs hidden sm:inline">•</span>
-                                <span className="text-slate-500 text-xs">{booking.phone}</span>
-                                <span className="text-slate-300 text-xs hidden sm:inline">•</span>
-                                <span className="text-slate-400 text-xs font-mono hidden sm:inline">{booking.id}</span>
-                              </div>
-                              <div className="flex items-center gap-2 text-xs text-slate-500 mt-0.5 flex-wrap">
-                                <span className="text-purple-600 font-medium">{properties.find(p => p.id === booking.property)?.name?.replace(' Melaka', '') || 'Lavender Villa'}</span>
-                                <span>•</span>
-                                <span>{new Date(booking.checkIn).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short' })} - {new Date(booking.checkOut).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short' })}</span>
-                                <span>•</span>
-                                <span>{booking.nights} malam</span>
-                                {booking.createdAt && (
-                                  <>
-                                    <span className="hidden sm:inline">•</span>
-                                    <span className="text-slate-400 hidden sm:inline">Ditempah: {new Date(booking.createdAt).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
-                                  </>
-                                )}
-                              </div>
-                            </div>
-                            
-                            {/* Price */}
-                            <div className="text-right flex-shrink-0">
-                              <p className="font-bold text-slate-900">RM {booking.total?.toLocaleString()}</p>
-                              <span className={`text-xs font-medium ${
+                            <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
+                              booking.status === 'paid' ? 'bg-green-100' :
+                              booking.status === 'refund' ? 'bg-orange-100' :
+                              booking.status === 'cancelled' ? 'bg-red-100' :
+                              'bg-yellow-100'
+                            }`}>
+                              <span className={`text-xs sm:text-sm font-bold ${
                                 booking.status === 'paid' ? 'text-green-600' :
                                 booking.status === 'refund' ? 'text-orange-600' :
                                 booking.status === 'cancelled' ? 'text-red-600' :
                                 'text-yellow-600'
-                              }`}>
-                                {booking.status === 'paid' ? 'Bayar ✓' :
-                                 booking.status === 'refund' ? 'Refund' :
-                                 booking.status === 'cancelled' ? 'Batal' :
-                                 'Belum'}
-                              </span>
+                              }`}>{booking.name?.charAt(0)?.toUpperCase()}</span>
+                            </div>
+                            
+                            {/* Name & Details */}
+                            <div className="min-w-0 flex-1">
+                              <div className="flex items-center gap-1 sm:gap-2 flex-wrap">
+                                <span className="font-semibold text-slate-900 text-sm sm:text-base">{booking.name}</span>
+                                <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
+                                  booking.status === 'paid' ? 'bg-green-100 text-green-700' :
+                                  booking.status === 'refund' ? 'bg-orange-100 text-orange-700' :
+                                  booking.status === 'cancelled' ? 'bg-red-100 text-red-700' :
+                                  'bg-yellow-100 text-yellow-700'
+                                }`}>
+                                  {booking.status === 'paid' ? '✓ Bayar' :
+                                   booking.status === 'refund' ? '↩ Refund' :
+                                   booking.status === 'cancelled' ? '✗ Batal' :
+                                   '⏳ Belum'}
+                                </span>
+                              </div>
+                              <div className="text-xs text-slate-500 mt-1">
+                                <span className="text-purple-600 font-medium">{properties.find(p => p.id === booking.property)?.name?.replace(' Melaka', '') || 'Lavender Villa'}</span>
+                              </div>
+                              <div className="flex items-center gap-1 sm:gap-2 text-xs text-slate-500 mt-0.5 flex-wrap">
+                                <span>{new Date(booking.checkIn).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                                <span>→</span>
+                                <span>{new Date(booking.checkOut).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short' })}</span>
+                                <span className="text-slate-300">•</span>
+                                <span>{booking.nights} malam</span>
+                              </div>
+                              {booking.createdAt && (
+                                <div className="text-xs text-slate-400 mt-1">
+                                  Ditempah: {new Date(booking.createdAt).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short', year: 'numeric' })}
+                                </div>
+                              )}
                             </div>
                           </div>
                           
-                          {/* Row 2: Actions */}
-                          <div className="flex items-center gap-2 ml-5 flex-wrap">
-                            {booking.status === 'pending' && (
-                              <button
-                                onClick={() => handleUpdateBookingStatus(booking.id, 'paid')}
-                                className="px-3 py-1.5 bg-green-500 text-white rounded-lg text-xs font-medium hover:bg-green-600 transition"
-                              >
-                                ✓ Sahkan
-                              </button>
-                            )}
-                            {booking.status === 'paid' && (
-                              <>
-                                <button
-                                  onClick={() => generateReceipt(booking)}
-                                  className="px-3 py-1.5 bg-green-100 text-green-700 rounded-lg text-xs font-medium hover:bg-green-200 transition flex items-center gap-1"
-                                >
-                                  <FileText className="w-3.5 h-3.5" />
-                                  Resit
-                                </button>
-                                <button
-                                  onClick={() => handleUpdateBookingStatus(booking.id, 'refund')}
-                                  className="px-3 py-1.5 bg-orange-100 text-orange-700 rounded-lg text-xs font-medium hover:bg-orange-200 transition"
-                                >
-                                  Refund
-                                </button>
-                              </>
-                            )}
-                            {booking.status === 'refund' && (
-                              <button
-                                onClick={() => handleUpdateBookingStatus(booking.id, 'cancelled')}
-                                className="px-3 py-1.5 bg-green-500 text-white rounded-lg text-xs font-medium hover:bg-green-600 transition"
-                              >
-                                ✓ Refund Selesai
-                              </button>
-                            )}
-                            {(booking.status === 'pending') && (
-                              <button
-                                onClick={() => handleUpdateBookingStatus(booking.id, 'cancelled')}
-                                className="px-3 py-1.5 bg-slate-100 text-slate-600 rounded-lg text-xs font-medium hover:bg-slate-200 transition"
-                              >
-                                Batal
-                              </button>
-                            )}
-                            <button
-                              onClick={() => handleDeleteBooking(booking.id)}
-                              className="px-3 py-1.5 bg-red-50 text-red-600 rounded-lg text-xs font-medium hover:bg-red-100 transition"
-                            >
-                              Padam
-                            </button>
-                            <div className="relative group">
-                              <a
-                                href={`https://wa.me/${booking.phone?.replace(/^0/, '60')}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="px-3 py-1.5 bg-purple-100 text-purple-700 rounded-lg text-xs font-medium hover:bg-purple-200 transition inline-flex items-center gap-1"
-                              >
-                                <Phone className="w-3 h-3" />
-                                WhatsApp
-                              </a>
-                            </div>
+                          {/* Price */}
+                          <div className="text-right flex-shrink-0">
+                            <p className="font-bold text-slate-900 text-sm sm:text-base">RM {booking.total?.toLocaleString()}</p>
+                            <p className="text-xs text-slate-400 font-mono mt-0.5 hidden sm:block">{booking.id}</p>
                           </div>
                         </div>
-                      ))}
-                    </div>
-                  )}
+                        
+                        {/* Actions - Touch friendly */}
+                        <div className="flex items-center gap-2 mt-3 pt-3 border-t border-slate-100 flex-wrap">
+                          {booking.status === 'pending' && (
+                            <button
+                              onClick={() => handleUpdateBookingStatus(booking.id, 'paid')}
+                              className="flex-1 sm:flex-none px-3 py-2 bg-green-500 text-white rounded-xl text-xs font-semibold hover:bg-green-600 transition shadow-md"
+                            >
+                              ✓ Sahkan Bayaran
+                            </button>
+                          )}
+                          {booking.status === 'paid' && (
+                            <>
+                              <button
+                                onClick={() => generateReceipt(booking)}
+                                className="px-3 py-2 bg-purple-100 text-purple-700 rounded-xl text-xs font-medium hover:bg-purple-200 transition flex items-center gap-1.5"
+                              >
+                                <FileText className="w-3.5 h-3.5" />
+                                <span className="hidden sm:inline">Resit</span>
+                              </button>
+                              <button
+                                onClick={() => handleUpdateBookingStatus(booking.id, 'refund')}
+                                className="px-3 py-2 bg-orange-100 text-orange-700 rounded-xl text-xs font-medium hover:bg-orange-200 transition"
+                              >
+                                ↩ Refund
+                              </button>
+                            </>
+                          )}
+                          {booking.status === 'refund' && (
+                            <button
+                              onClick={() => handleUpdateBookingStatus(booking.id, 'cancelled')}
+                              className="px-3 py-2 bg-green-500 text-white rounded-xl text-xs font-semibold hover:bg-green-600 transition"
+                            >
+                              ✓ Refund Selesai
+                            </button>
+                          )}
+                          {booking.status === 'pending' && (
+                            <button
+                              onClick={() => handleUpdateBookingStatus(booking.id, 'cancelled')}
+                              className="px-3 py-2 bg-slate-100 text-slate-600 rounded-xl text-xs font-medium hover:bg-slate-200 transition"
+                            >
+                              ✗ Batal
+                            </button>
+                          )}
+                          <a
+                            href={`tel:${booking.phone}`}
+                            className="px-3 py-2 bg-slate-100 text-slate-700 rounded-xl text-xs font-medium hover:bg-slate-200 transition flex items-center gap-1.5"
+                          >
+                            <Phone className="w-3.5 h-3.5" />
+                            <span className="hidden sm:inline">{booking.phone}</span>
+                          </a>
+                          <a
+                            href={`https://wa.me/${booking.phone?.replace(/^0/, '60')}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-3 py-2 bg-green-100 text-green-700 rounded-xl text-xs font-medium hover:bg-green-200 transition flex items-center gap-1.5"
+                          >
+                            <Send className="w-3.5 h-3.5" />
+                            <span className="hidden sm:inline">WhatsApp</span>
+                          </a>
+                          <button
+                            onClick={() => handleDeleteBooking(booking.id)}
+                            className="px-3 py-2 bg-red-50 text-red-600 rounded-xl text-xs font-medium hover:bg-red-100 transition"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+                {/* Summary */}
+                <div className="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm">
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-500 text-sm">Jumlah</span>
+                    <span className="font-bold text-slate-900">{getFilteredBookings().length} tempahan</span>
+                  </div>
                 </div>
               </>
             )}
           </div>
         )}
-
 
       </div>
 
