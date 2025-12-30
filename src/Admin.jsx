@@ -750,6 +750,42 @@ export default function Admin() {
   const getRefundCount = () => bookings.filter(b => b.status === 'refund').length;
   const getCancelledCount = () => bookings.filter(b => b.status === 'cancelled').length;
   
+  // Get bookings count by status for ACTIVE view only (checkout >= today)
+  const getActivePendingCount = () => {
+    const todayStr = getTodayStr();
+    return bookings.filter(b => b.checkOut >= todayStr && (b.status || 'pending') === 'pending').length;
+  };
+  const getActivePaidCount = () => {
+    const todayStr = getTodayStr();
+    return bookings.filter(b => b.checkOut >= todayStr && b.status === 'paid').length;
+  };
+  const getActiveRefundCount = () => {
+    const todayStr = getTodayStr();
+    return bookings.filter(b => b.checkOut >= todayStr && b.status === 'refund').length;
+  };
+  const getActiveCancelledCount = () => {
+    const todayStr = getTodayStr();
+    return bookings.filter(b => b.checkOut >= todayStr && b.status === 'cancelled').length;
+  };
+  
+  // Get bookings count by status for HISTORY view only (checkout < today)
+  const getHistoryPendingCount = () => {
+    const todayStr = getTodayStr();
+    return bookings.filter(b => b.checkOut < todayStr && (b.status || 'pending') === 'pending').length;
+  };
+  const getHistoryPaidCount = () => {
+    const todayStr = getTodayStr();
+    return bookings.filter(b => b.checkOut < todayStr && b.status === 'paid').length;
+  };
+  const getHistoryRefundCount = () => {
+    const todayStr = getTodayStr();
+    return bookings.filter(b => b.checkOut < todayStr && b.status === 'refund').length;
+  };
+  const getHistoryCancelledCount = () => {
+    const todayStr = getTodayStr();
+    return bookings.filter(b => b.checkOut < todayStr && b.status === 'cancelled').length;
+  };
+  
   // Filter state
   const [bookingFilter, setBookingFilter] = useState('all'); // 'all', 'pending', 'paid', 'cancelled'
   const [propertyFilter, setPropertyFilter] = useState('all'); // 'all' or property id
@@ -2071,19 +2107,19 @@ export default function Admin() {
                   onClick={() => setBookingFilter('paid')}
                   className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${bookingFilter === 'paid' ? 'bg-green-500 text-white shadow-md' : 'bg-green-50 text-green-700 hover:bg-green-100 border border-green-200'}`}
                 >
-                  ✓ Selesai
+                  ✓ Selesai ({getHistoryPaidCount()})
                 </button>
                 <button 
                   onClick={() => setBookingFilter('cancelled')}
                   className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${bookingFilter === 'cancelled' ? 'bg-red-500 text-white shadow-md' : 'bg-red-50 text-red-700 hover:bg-red-100 border border-red-200'}`}
                 >
-                  ✗ Batal
+                  ✗ Batal ({getHistoryCancelledCount()})
                 </button>
                 <button 
                   onClick={() => setBookingFilter('refund')}
                   className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${bookingFilter === 'refund' ? 'bg-orange-500 text-white shadow-md' : 'bg-orange-50 text-orange-700 hover:bg-orange-100 border border-orange-200'}`}
                 >
-                  ↩ Refund
+                  ↩ Refund ({getHistoryRefundCount()})
                 </button>
               </div>
               
@@ -2796,25 +2832,25 @@ export default function Admin() {
                   onClick={() => setBookingFilter('pending')}
                   className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${bookingFilter === 'pending' ? 'bg-yellow-500 text-white shadow-md' : 'bg-yellow-50 text-yellow-700 hover:bg-yellow-100 border border-yellow-200'}`}
                 >
-                  ⏳ Belum ({getPendingCount()})
+                  ⏳ Belum ({getActivePendingCount()})
                 </button>
                 <button 
                   onClick={() => setBookingFilter('paid')}
                   className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${bookingFilter === 'paid' ? 'bg-green-500 text-white shadow-md' : 'bg-green-50 text-green-700 hover:bg-green-100 border border-green-200'}`}
                 >
-                  ✓ Bayar ({getPaidCount()})
+                  ✓ Bayar ({getActivePaidCount()})
                 </button>
                 <button 
                   onClick={() => setBookingFilter('refund')}
                   className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${bookingFilter === 'refund' ? 'bg-orange-500 text-white shadow-md' : 'bg-orange-50 text-orange-700 hover:bg-orange-100 border border-orange-200'}`}
                 >
-                  ↩ Refund ({getRefundCount()})
+                  ↩ Refund ({getActiveRefundCount()})
                 </button>
                 <button 
                   onClick={() => setBookingFilter('cancelled')}
                   className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${bookingFilter === 'cancelled' ? 'bg-red-500 text-white shadow-md' : 'bg-red-50 text-red-700 hover:bg-red-100 border border-red-200'}`}
                 >
-                  ✗ Batal ({getCancelledCount()})
+                  ✗ Batal ({getActiveCancelledCount()})
                 </button>
               </div>
               
