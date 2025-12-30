@@ -2399,7 +2399,7 @@ export default function Admin() {
                 const priceInfo = getPriceForDate(date);
                 const needsMinStay = requiresMinStay(date);
                 // Priority: Paid > Manual > Custom Price > Public+School > Public > School > Normal
-                // Colors: Green=Paid, Red=Blocked, Orange=Custom, Purple=Public Holiday, Blue=School Holiday
+                // Colors: Green=Paid, Red=Blocked, Orange=Custom, Blue=Public Holiday, Yellow=School Holiday
                 const hasPublicAndSchool = holidayName && schoolHolidayName;
                 days.push(
                   <div key={day} className="relative group">
@@ -2413,11 +2413,11 @@ export default function Admin() {
                           : priceInfo.isCustom
                           ? 'bg-gradient-to-br from-orange-100 to-amber-100 text-orange-700 border-2 border-orange-400'
                           : hasPublicAndSchool
-                          ? 'bg-gradient-to-br from-purple-100 to-sky-100 text-slate-700 border-2 border-purple-300'
+                          ? 'bg-gradient-to-br from-blue-100 to-yellow-100 text-slate-700 border-2 border-blue-300'
                           : holidayName
-                          ? 'bg-purple-100 text-purple-700 border-2 border-purple-300'
+                          ? 'bg-blue-100 text-blue-700 border-2 border-blue-300'
                           : schoolHolidayName
-                          ? 'bg-sky-100 text-sky-700 border-2 border-sky-300'
+                          ? 'bg-yellow-100 text-yellow-700 border-2 border-yellow-300'
                           : 'bg-slate-50 text-slate-700 hover:bg-slate-100'
                       }`}
                     >
@@ -2429,18 +2429,14 @@ export default function Admin() {
                           RM{priceInfo.price >= 1000 ? (priceInfo.price/1000).toFixed(1) + 'k' : priceInfo.price}
                         </span>
                       )}
-                      {/* Min 2 nights indicator for weekend during school holiday */}
-                      {needsMinStay && !isPaidBooking && !isManual && (
-                        <span className="absolute -top-1 -left-1 w-4 h-4 bg-amber-500 rounded-full text-[8px] text-white font-bold flex items-center justify-center">2</span>
-                      )}
                       {priceInfo.isCustom && !isPaidBooking && !isManual && (
                         <span className="absolute -top-1 -right-1 w-2 h-2 bg-orange-500 rounded-full"></span>
                       )}
                       {holidayName && !priceInfo.isCustom && !isPaidBooking && !isManual && (
-                        <span className="absolute -top-1 -right-1 w-2 h-2 bg-purple-500 rounded-full"></span>
+                        <span className="absolute -top-1 -right-1 w-2 h-2 bg-blue-500 rounded-full"></span>
                       )}
                       {schoolHolidayName && !holidayName && !priceInfo.isCustom && !isPaidBooking && !isManual && (
-                        <span className="absolute -top-1 -right-1 w-2 h-2 bg-sky-500 rounded-full"></span>
+                        <span className="absolute -top-1 -right-1 w-2 h-2 bg-yellow-500 rounded-full"></span>
                       )}
                     </button>
                     {/* Edit price button - appears on hover for Lavender Villa */}
@@ -2454,15 +2450,9 @@ export default function Admin() {
                       </button>
                     )}
                     {/* Tooltip for holidays and price */}
-                    {(holidayName || schoolHolidayName || priceInfo.isCustom || needsMinStay) && !isPaidBooking && !isManual && (
+                    {(holidayName || schoolHolidayName || priceInfo.isCustom) && !isPaidBooking && !isManual && (
                       <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
                         <div className="bg-slate-900 text-white text-xs px-3 py-2 rounded-lg shadow-lg whitespace-nowrap">
-                          {needsMinStay && (
-                            <div className="flex items-center gap-1.5 text-amber-300 font-medium mb-1">
-                              <span className="w-4 h-4 bg-amber-500 rounded-full text-[8px] text-white font-bold flex items-center justify-center">2</span>
-                              <span>Min 3H2M</span>
-                            </div>
-                          )}
                           {priceInfo.isCustom && (
                             <div className="flex items-center gap-1.5 text-orange-300 font-medium">
                               <span className="w-2 h-2 bg-orange-400 rounded-full"></span>
@@ -2471,13 +2461,13 @@ export default function Admin() {
                           )}
                           {holidayName && (
                             <div className="flex items-center gap-1.5 mt-1">
-                              <span className="w-2 h-2 bg-purple-400 rounded-full"></span>
+                              <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
                               <span>{holidayName}</span>
                             </div>
                           )}
                           {schoolHolidayName && (
                             <div className="flex items-center gap-1.5 mt-1">
-                              <span className="w-2 h-2 bg-sky-400 rounded-full"></span>
+                              <span className="w-2 h-2 bg-yellow-400 rounded-full"></span>
                               <span>{schoolHolidayName}</span>
                             </div>
                           )}
@@ -2516,16 +2506,15 @@ export default function Admin() {
               <span className="text-xs text-slate-600">Harga Khas</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <div className="w-4 h-4 bg-purple-100 rounded border-2 border-purple-300"></div>
+              <div className="w-4 h-4 bg-blue-100 rounded border-2 border-blue-300"></div>
               <span className="text-xs text-slate-600">Cuti Umum</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <div className="w-4 h-4 bg-sky-100 rounded border-2 border-sky-300"></div>
+              <div className="w-4 h-4 bg-yellow-100 rounded border-2 border-yellow-300"></div>
               <span className="text-xs text-slate-600">Cuti Sekolah</span>
             </div>
             <div className="flex items-center gap-1.5">
-              <div className="w-4 h-4 bg-amber-500 rounded-full text-[8px] text-white font-bold flex items-center justify-center">2</div>
-              <span className="text-xs text-slate-600">Min 3H2M</span>
+              <span className="text-xs text-slate-400">⚠️ Hujung Minggu: Min 3H2M</span>
             </div>
           </div>
           
@@ -3330,6 +3319,7 @@ export default function Admin() {
                               const isPast = date < new Date(new Date().setHours(0,0,0,0));
                               const isBooked = isDateBookedForAdd(date, newBooking.property);
                               const holidayName = isPublicHoliday(date);
+                              const schoolHolidayName = isSchoolHoliday(date);
                               days.push(
                                 <button
                                   key={day}
@@ -3343,22 +3333,25 @@ export default function Admin() {
                                     newBooking.checkIn === dateStr ? 'bg-purple-500 text-white font-bold' :
                                     isBooked ? 'bg-red-100 text-red-400 cursor-not-allowed' :
                                     isPast ? 'text-slate-300 cursor-not-allowed' :
-                                    holidayName ? 'bg-purple-50 text-purple-600' :
+                                    holidayName ? 'bg-blue-50 text-blue-600' :
+                                    schoolHolidayName ? 'bg-yellow-50 text-yellow-700' :
                                     'hover:bg-purple-100 text-slate-700'
                                   }`}
-                                  title={holidayName || ''}
+                                  title={holidayName || schoolHolidayName || ''}
                                 >
                                   {day}
-                                  {holidayName && !isBooked && <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-purple-500 rounded-full"></span>}
+                                  {holidayName && !isBooked && <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-blue-500 rounded-full"></span>}
+                                  {schoolHolidayName && !holidayName && !isBooked && <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-yellow-400 rounded-full"></span>}
                                 </button>
                               );
                             }
                             return days;
                           })()}
                         </div>
-                        <div className="mt-2 pt-2 border-t flex gap-2 text-xs">
+                        <div className="mt-2 pt-2 border-t flex flex-wrap gap-2 text-xs">
                           <span className="flex items-center gap-1"><span className="w-3 h-3 bg-red-100 rounded"></span>Ditempah</span>
-                          <span className="flex items-center gap-1"><span className="w-3 h-3 bg-purple-50 rounded border border-purple-200"></span>Cuti Umum</span>
+                          <span className="flex items-center gap-1"><span className="w-3 h-3 bg-blue-50 rounded border border-blue-200"></span>Cuti Umum</span>
+                          <span className="flex items-center gap-1"><span className="w-3 h-3 bg-yellow-50 rounded border border-yellow-200"></span>Cuti Sekolah</span>
                         </div>
                       </div>
                     )}
@@ -3408,6 +3401,7 @@ export default function Admin() {
                                 }
                               }
                               const holidayName = isPublicHoliday(date);
+                              const schoolHolidayName = isSchoolHoliday(date);
                               const isDisabled = isBeforeCheckIn || isBooked || hasBlockedBetween;
                               days.push(
                                 <button
@@ -3423,13 +3417,15 @@ export default function Admin() {
                                     newBooking.checkOut === dateStr ? 'bg-purple-500 text-white font-bold' :
                                     isBooked || hasBlockedBetween ? 'bg-red-100 text-red-400 cursor-not-allowed' :
                                     isBeforeCheckIn ? 'text-slate-300 cursor-not-allowed' :
-                                    holidayName ? 'bg-purple-50 text-purple-600' :
+                                    holidayName ? 'bg-blue-50 text-blue-600' :
+                                    schoolHolidayName ? 'bg-yellow-50 text-yellow-700' :
                                     'hover:bg-purple-100 text-slate-700'
                                   }`}
-                                  title={holidayName || ''}
+                                  title={holidayName || schoolHolidayName || ''}
                                 >
                                   {day}
-                                  {holidayName && !isBooked && !hasBlockedBetween && !isBeforeCheckIn && <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-purple-500 rounded-full"></span>}
+                                  {holidayName && !isBooked && !hasBlockedBetween && !isBeforeCheckIn && <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-blue-500 rounded-full"></span>}
+                                  {schoolHolidayName && !holidayName && !isBooked && !hasBlockedBetween && !isBeforeCheckIn && <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-yellow-400 rounded-full"></span>}
                                 </button>
                               );
                             }
