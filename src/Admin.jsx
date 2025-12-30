@@ -766,33 +766,31 @@ export default function Admin() {
     
     // Calculate based on day type
     // Weekend NIGHTS are Friday (5) and Saturday (6) - these are the nights you stay
-    // But for min stay requirement, weekend DAYS are Saturday (6) and Sunday (0)
+    // Weekend DAYS are Saturday (6) and Sunday (0) - for min stay requirement
     const dayOfWeek = date.getDay();
     const isWeekendNight = dayOfWeek === 5 || dayOfWeek === 6; // Friday & Saturday nights for pricing
     const isWeekendDay = dayOfWeek === 0 || dayOfWeek === 6; // Saturday & Sunday for min stay
     const isHoliday = publicHolidays[dateStr];
     const isFestive = festiveDates.includes(dateStr);
-    const schoolHoliday = isSchoolHoliday(date);
     
-    // Check if weekend during school holiday (requires min 3H2M)
-    const isWeekendSchoolHoliday = isWeekendDay && schoolHoliday;
+    // ALL weekends require min 3H2M (2 nights)
+    const requiresMinStayForDay = isWeekendDay;
     
     if (isFestive) {
-      return { price: 1700, isCustom: false, type: 'festive', minStay: isWeekendSchoolHoliday ? 2 : 1 };
+      return { price: 1700, isCustom: false, type: 'festive', minStay: requiresMinStayForDay ? 2 : 1 };
     }
     if (isWeekendNight || isHoliday) {
-      return { price: 1590, isCustom: false, type: 'weekend', minStay: isWeekendSchoolHoliday ? 2 : 1 };
+      return { price: 1590, isCustom: false, type: 'weekend', minStay: requiresMinStayForDay ? 2 : 1 };
     }
     return { price: 1300, isCustom: false, type: 'weekday', minStay: 1 };
   };
 
-  // Check if a date requires minimum 2 nights (weekend during school holiday)
+  // Check if a date requires minimum 2 nights (ALL weekends require 3H2M)
   // Weekend = Saturday (6) or Sunday (0)
   const requiresMinStay = (date) => {
     const dayOfWeek = date.getDay();
     const isWeekend = dayOfWeek === 0 || dayOfWeek === 6; // Saturday & Sunday
-    const schoolHoliday = isSchoolHoliday(date);
-    return isWeekend && schoolHoliday;
+    return isWeekend;
   };
 
   // Set custom price for a date

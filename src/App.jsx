@@ -171,20 +171,19 @@ export default function HomestayExperience() {
     return null;
   };
 
-  // Check if booking requires minimum 2 nights (weekend during school holiday)
-  // Weekend during school holiday = must check-in Saturday, checkout Monday (3H2M)
-  // Returns true if check-in is on Saturday OR Sunday during school holiday
+  // Check if booking requires minimum 2 nights (ALL weekends require 3H2M)
+  // Weekend = must check-in Saturday, checkout Monday (3H2M)
+  // Returns true if check-in is on Saturday OR Sunday
   const requiresMinStay = (checkInDateStr) => {
     const checkInDate = new Date(checkInDateStr + 'T00:00:00');
     const dayOfWeek = checkInDate.getDay();
     const isWeekend = dayOfWeek === 0 || dayOfWeek === 6; // Saturday = 6, Sunday = 0
-    const schoolHoliday = isSchoolHoliday(checkInDateStr);
     
-    // Weekend check-in during school holiday requires min 2 nights
-    return isWeekend && schoolHoliday;
+    // ALL weekend check-ins require min 2 nights (3H2M)
+    return isWeekend;
   };
   
-  // Check if any night in booking range includes weekend during school holiday
+  // Check if any night in booking range includes weekend
   // If yes, minimum 2 nights required (3H2M)
   const bookingRequiresMinStay = (checkInStr, checkOutStr) => {
     if (!checkInStr || !checkOutStr) return false;
@@ -194,13 +193,11 @@ export default function HomestayExperience() {
     
     // Check each night in the booking range (excluding checkout date)
     for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
-      const dateStr = formatDateToLocal(d);
       const dayOfWeek = d.getDay();
       // Weekend = Saturday (6) or Sunday (0)
       const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
-      const schoolHoliday = isSchoolHoliday(dateStr);
       
-      if (isWeekend && schoolHoliday) {
+      if (isWeekend) {
         return true;
       }
     }
