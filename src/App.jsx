@@ -1030,7 +1030,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
             {/* Map - Takes 2 columns */}
             <div className="lg:col-span-2 rounded-2xl overflow-hidden shadow-lg h-96 lg:h-96">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3984.5234567890123!2d102.3521975!3d2.2915775!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31d1e73e8455d413%3A0x3fd97fe2de23d790!2sLavender%20Villa%20Malacca!5e0!3m2!1sen!2smy!4v1234567890"
+                src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d500!2d102.3521975!3d2.2915775!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31d1e73e8455d413%3A0x3fd97fe2de23d790!2sLavender%20Villa%20Malacca!5e1!3m2!1sen!2smy!4v1703900000000"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
