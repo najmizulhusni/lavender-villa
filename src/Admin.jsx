@@ -1000,9 +1000,42 @@ export default function Admin() {
     setShowAddBooking(false);
   };
   
-  // Get filtered bookings
+  // Get today's date string for comparison
+  const getTodayStr = () => {
+    const today = new Date();
+    return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+  };
+
+  // Get filtered bookings (current/upcoming only - checkout >= today)
   const getFilteredBookings = () => {
-    let filtered = bookings;
+    const todayStr = getTodayStr();
+    let filtered = bookings.filter(b => b.checkOut >= todayStr); // Only current/upcoming
+    
+    // Filter by status
+    if (bookingFilter !== 'all') {
+      filtered = filtered.filter(b => (b.status || 'pending') === bookingFilter);
+    }
+    
+    // Filter by property
+    if (propertyFilter !== 'all') {
+      filtered = filtered.filter(b => b.property === propertyFilter);
+    }
+    
+    // Filter by date range (check-in date)
+    if (dateFilterFrom) {
+      filtered = filtered.filter(b => b.checkIn >= dateFilterFrom);
+    }
+    if (dateFilterTo) {
+      filtered = filtered.filter(b => b.checkIn <= dateFilterTo);
+    }
+    
+    return filtered;
+  };
+
+  // Get history bookings (past only - checkout < today)
+  const getHistoryBookings = () => {
+    const todayStr = getTodayStr();
+    let filtered = bookings.filter(b => b.checkOut < todayStr); // Only past bookings
     
     // Filter by status
     if (bookingFilter !== 'all') {
@@ -1208,14 +1241,15 @@ export default function Admin() {
     return daysInMonth > 0 ? Math.round((bookedNights / daysInMonth) * 100) : 0;
   };
 
-  // Get monthly revenue from Dec 2025 to Dec 2026 (13 months)
+  // Get monthly revenue from Jan to Dec of current year (12 months)
   const getMonthlyRevenue = (propertyId = 'all') => {
     const months = [];
-    // Start from December 2025 to December 2026
-    for (let i = 0; i <= 12; i++) {
-      const date = new Date(2025, 11 + i, 1); // 11 = December (0-indexed)
+    const currentYear = new Date().getFullYear();
+    // Start from January to December
+    for (let i = 0; i < 12; i++) {
+      const date = new Date(currentYear, i, 1); // 0 = January (0-indexed)
       const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
-      const monthName = date.toLocaleDateString('ms-MY', { month: 'short', year: '2-digit' });
+      const monthName = date.toLocaleDateString('ms-MY', { month: 'short' });
       const revenue = bookings
         .filter(b => b.status === 'paid' && b.checkIn && b.checkIn.startsWith(monthKey) && (propertyId === 'all' || b.property === propertyId))
         .reduce((sum, b) => sum + (b.total || 0), 0);
@@ -1581,6 +1615,17 @@ export default function Admin() {
             )}
           </button>
           <button
+            onClick={() => setAdminView('history')}
+            className={`px-4 py-2.5 rounded-full text-sm font-semibold transition whitespace-nowrap flex items-center gap-2 ${
+              adminView === 'history'
+                ? 'bg-purple-500 text-white shadow-lg shadow-purple-200'
+                : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
+            }`}
+          >
+            <Clock className="w-4 h-4" />
+            History
+          </button>
+          <button
             onClick={() => setAdminView('calendar')}
             className={`px-4 py-2.5 rounded-full text-sm font-semibold transition whitespace-nowrap flex items-center gap-2 ${
               adminView === 'calendar'
@@ -1741,7 +1786,7 @@ export default function Admin() {
             {/* Monthly Revenue & Bookings Line Chart */}
             <div className="bg-white rounded-2xl p-5 border border-slate-200">
               <div className="flex items-center justify-between mb-2">
-                <h3 className="font-bold text-slate-900">Prestasi Dis 2025 - Dis 2026</h3>
+                <h3 className="font-bold text-slate-900">Prestasi Jan - Dis {new Date().getFullYear()}</h3>
                 {chartPropertyFilter !== 'all' && (
                   <span className="text-xs bg-purple-100 text-purple-600 px-2 py-1 rounded-full font-medium">
                     {properties.find(p => p.id === chartPropertyFilter)?.name}
@@ -1966,6 +2011,176 @@ export default function Admin() {
               
               <p className="text-slate-400 text-xs text-center mt-4">Klik untuk edit & salin mesej</p>
             </div>
+          </div>
+        )}
+
+        {/* History View - Past Bookings */}
+        {adminView === 'history' && (
+          <div className="space-y-4">
+            {getHistoryBookings().length === 0 ? (
+              <div className="bg-white rounded-2xl p-12 border border-slate-200 shadow-sm text-center">
+                <Clock className="w-12 h-12 text-slate-300 mx-auto mb-4" />
+                <p className="text-slate-500">Tiada sejarah tempahan</p>
+              </div>
+            ) : (
+              <>
+                {/* Filter Panel */}
+                <div className="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-sm mb-4">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="font-bold text-slate-900 flex items-center gap-2">
+                      <Clock className="w-4 h-4 text-purple-500" />
+                      Sejarah Tempahan
+                    </h3>
+                    {(bookingFilter !== 'all' || propertyFilter !== 'all' || dateFilterFrom || dateFilterTo) && (
+                      <button 
+                        onClick={clearAllFilters}
+                        className="text-xs text-purple-600 hover:text-purple-700 font-medium flex items-center gap-1"
+                      >
+                        <X className="w-3 h-3" /> Reset
+                      </button>
+                    )}
+                  </div>
+                  
+                  {/* Status Filter Buttons */}
+                  <div className="flex gap-2 flex-wrap mb-4">
+                    <span className="text-slate-400 text-xs self-center mr-1">Status:</span>
+                    <button 
+                      onClick={() => setBookingFilter('all')}
+                      className={`px-3 py-1.5 rounded-full text-xs font-medium transition ${bookingFilter === 'all' ? 'bg-purple-500 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
+                    >
+                      Semua
+                    </button>
+                    <button 
+                      onClick={() => setBookingFilter('paid')}
+                      className={`px-3 py-1.5 rounded-full text-xs font-medium transition ${bookingFilter === 'paid' ? 'bg-green-500 text-white' : 'bg-green-100 text-green-700 hover:bg-green-200'}`}
+                    >
+                      Telah Bayar
+                    </button>
+                    <button 
+                      onClick={() => setBookingFilter('cancelled')}
+                      className={`px-3 py-1.5 rounded-full text-xs font-medium transition ${bookingFilter === 'cancelled' ? 'bg-red-500 text-white' : 'bg-red-100 text-red-700 hover:bg-red-200'}`}
+                    >
+                      Dibatalkan
+                    </button>
+                  </div>
+                  
+                  {/* Villa Filter */}
+                  <div className="relative">
+                    <label className="block text-slate-500 text-xs mb-1.5">Villa / Homestay</label>
+                    <button
+                      onClick={() => setShowVillaDropdown(showVillaDropdown === 'history' ? null : 'history')}
+                      className="w-full sm:w-64 px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 text-base font-medium focus:outline-none focus:border-purple-400 transition text-left flex items-center justify-between"
+                    >
+                      <span>{propertyFilter === 'all' ? 'Semua' : properties.find(p => p.id === propertyFilter)?.name}</span>
+                      <ChevronRight className={`w-4 h-4 text-slate-400 transition-transform ${showVillaDropdown === 'history' ? 'rotate-90' : ''}`} />
+                    </button>
+                    
+                    {showVillaDropdown === 'history' && (
+                      <div className="absolute top-full left-0 right-0 sm:right-auto sm:w-64 mt-2 bg-white rounded-xl shadow-xl border border-slate-200 p-2 z-50 max-h-64 overflow-y-auto">
+                        <button
+                          onClick={() => { setPropertyFilter('all'); setShowVillaDropdown(null); }}
+                          className={`w-full px-3 py-2.5 rounded-lg text-left text-sm font-medium transition ${propertyFilter === 'all' ? 'bg-purple-100 text-purple-700' : 'hover:bg-slate-50 text-slate-700'}`}
+                        >
+                          Semua Villa
+                        </button>
+                        {properties.map(p => (
+                          <button
+                            key={p.id}
+                            onClick={() => { setPropertyFilter(p.id); setShowVillaDropdown(null); }}
+                            className={`w-full px-3 py-2.5 rounded-lg text-left text-sm font-medium transition ${propertyFilter === p.id ? 'bg-purple-100 text-purple-700' : 'hover:bg-slate-50 text-slate-700'}`}
+                          >
+                            {p.name}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* History List */}
+                <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                  <div className="divide-y divide-slate-100">
+                    {getHistoryBookings().sort((a, b) => new Date(b.checkIn) - new Date(a.checkIn)).map(booking => (
+                      <div key={booking.id} className="p-3 sm:p-4 hover:bg-slate-50 transition">
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="flex items-start gap-3 min-w-0 flex-1">
+                            <div className="w-8 h-8 bg-slate-100 rounded-full flex items-center justify-center flex-shrink-0">
+                              <span className="text-slate-500 text-xs font-bold">{booking.name?.charAt(0)?.toUpperCase()}</span>
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <div className="flex items-center gap-2 flex-wrap">
+                                <span className="font-semibold text-slate-900 text-sm">{booking.name}</span>
+                                <span className="text-slate-400 text-xs hidden sm:inline">•</span>
+                                <span className="text-slate-500 text-xs">{booking.phone}</span>
+                                <span className="text-slate-300 text-xs hidden sm:inline">•</span>
+                                <span className="text-slate-400 text-xs font-mono hidden sm:inline">{booking.id}</span>
+                              </div>
+                              <div className="flex items-center gap-2 text-xs text-slate-500 mt-0.5 flex-wrap">
+                                <span className="text-purple-600 font-medium">{properties.find(p => p.id === booking.property)?.name?.replace(' Melaka', '') || 'Lavender Villa'}</span>
+                                <span>•</span>
+                                <span>{new Date(booking.checkIn).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short' })} - {new Date(booking.checkOut).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short' })}</span>
+                                <span>•</span>
+                                <span>{booking.nights} malam</span>
+                                {booking.createdAt && (
+                                  <>
+                                    <span className="hidden sm:inline">•</span>
+                                    <span className="text-slate-400 hidden sm:inline">Ditempah: {new Date(booking.createdAt).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                                  </>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                          
+                          {/* Price & Status */}
+                          <div className="text-right flex-shrink-0">
+                            <p className="font-bold text-slate-900">RM {booking.total?.toLocaleString()}</p>
+                            <span className={`text-xs font-medium ${
+                              booking.status === 'paid' ? 'text-green-600' :
+                              booking.status === 'refund' ? 'text-orange-600' :
+                              booking.status === 'cancelled' ? 'text-red-600' :
+                              'text-yellow-600'
+                            }`}>
+                              {booking.status === 'paid' ? 'Selesai ✓' :
+                               booking.status === 'refund' ? 'Refund' :
+                               booking.status === 'cancelled' ? 'Batal' :
+                               'Belum'}
+                            </span>
+                          </div>
+                        </div>
+                        
+                        {/* Actions */}
+                        <div className="flex items-center gap-2 ml-11 mt-2 flex-wrap">
+                          <button
+                            onClick={() => generateReceipt(booking)}
+                            className="px-3 py-1.5 bg-slate-100 text-slate-700 rounded-lg text-xs font-medium hover:bg-slate-200 transition flex items-center gap-1"
+                          >
+                            <FileText className="w-3.5 h-3.5" />
+                            Resit
+                          </button>
+                          <a
+                            href={`https://wa.me/${booking.phone?.replace(/^0/, '60')}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-3 py-1.5 bg-green-100 text-green-700 rounded-lg text-xs font-medium hover:bg-green-200 transition flex items-center gap-1"
+                          >
+                            <Phone className="w-3 h-3" />
+                            WhatsApp
+                          </a>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+                {/* Summary */}
+                <div className="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm">
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-500 text-sm">Jumlah Sejarah Tempahan</span>
+                    <span className="font-bold text-slate-900">{getHistoryBookings().length} tempahan</span>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         )}
 
