@@ -1828,7 +1828,7 @@ export default function Admin() {
                     <ClipboardList className="w-5 h-5 text-purple-600" />
                   </div>
                 </div>
-                <p className="text-3xl font-bold text-slate-900">{getSelectedMonthBookingsByStatus('all')}</p>
+                <p className="text-3xl font-bold text-slate-900">{getSelectedMonthBookingsByStatus('paid')}</p>
                 <p className="text-slate-500 text-sm">Tempahan</p>
               </div>
               
