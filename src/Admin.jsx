@@ -985,7 +985,7 @@ export default function Admin() {
   };
 
   // Add new booking
-  const handleAddBooking = () => {
+  const handleAddBooking = async () => {
     if (!newBooking.name.trim()) {
       alert('Sila masukkan nama pelanggan');
       return;
@@ -1030,6 +1030,45 @@ export default function Admin() {
       status: newBooking.status,
       createdAt: new Date().toISOString()
     };
+
+    // Save to Supabase first
+    try {
+      // Get property ID from Supabase
+      const { data: prop } = await supabase
+        .from('properties')
+        .select('id')
+        .eq('slug', newBooking.property)
+        .single();
+      
+      if (prop) {
+        const { data: dbBooking, error } = await supabase
+          .from('bookings')
+          .insert({
+            booking_code: bookingId,
+            property_id: prop.id,
+            customer_name: newBooking.name.trim(),
+            customer_phone: newBooking.phone.trim(),
+            check_in: newBooking.checkIn,
+            check_out: newBooking.checkOut,
+            nights: nights,
+            guests: newBooking.guests,
+            total_amount: newBooking.total || 0,
+            special_requests: newBooking.message.trim(),
+            status: newBooking.status
+          })
+          .select()
+          .single();
+        
+        if (error) {
+          console.error('Error saving to Supabase:', error);
+        } else if (dbBooking) {
+          // Add the database ID to the booking
+          booking.dbId = dbBooking.id;
+        }
+      }
+    } catch (error) {
+      console.error('Error saving to Supabase:', error);
+    }
 
     const updatedBookings = [...bookings, booking];
     setBookings(updatedBookings);
