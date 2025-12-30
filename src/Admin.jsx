@@ -1560,16 +1560,23 @@ export default function Admin() {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      {/* Navigation */}
+      {/* Navigation - Same style as landing page */}
       <nav className="fixed top-2 sm:top-4 md:top-6 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-4xl px-2 sm:px-4">
-        <div className="bg-white/5 backdrop-blur-2xl rounded-full px-3 sm:px-6 md:px-8 py-2 sm:py-3 shadow-2xl border border-white/20 flex items-center justify-between">
+        <div className="bg-white/80 backdrop-blur-xl rounded-full px-3 sm:px-6 md:px-8 py-2 sm:py-3 shadow-lg shadow-slate-900/5 border border-white/50 flex items-center justify-between transition-all duration-300">
           <a href="/" className="flex items-center gap-1 sm:gap-2 cursor-pointer transition flex-shrink-0 group">
-            <div className="w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-gradient-to-br from-purple-400 to-purple-500 rounded-full flex items-center justify-center">
+            <div className="w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-gradient-to-br from-purple-400 to-purple-500 rounded-full flex items-center justify-center shadow-md shadow-purple-500/30 group-hover:shadow-lg group-hover:shadow-purple-500/40 transition-shadow">
               <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 text-white" />
             </div>
-            <span className="font-bold text-xs sm:text-sm md:text-base text-slate-900 tracking-tight hidden sm:inline">Lavender Villa Melaka</span>
+            <span className="font-bold text-xs sm:text-sm md:text-base text-slate-900 tracking-tight hidden sm:inline">Admin Panel</span>
           </a>
-          <button onClick={handleLogout} className="text-slate-700 transition font-semibold cursor-pointer text-xs sm:text-sm md:text-base whitespace-nowrap px-2 sm:px-3 py-1.5 rounded-full hover:bg-white/30">Log Keluar</button>
+          <div className="flex items-center gap-2">
+            <a href="/" className="text-slate-600 hover:text-purple-600 transition-colors font-semibold cursor-pointer text-xs sm:text-sm whitespace-nowrap px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-full hover:bg-purple-50 active:bg-purple-100 hidden sm:block">
+              Laman Utama
+            </a>
+            <button onClick={handleLogout} className="bg-gradient-to-r from-red-500 to-red-600 text-white font-semibold cursor-pointer text-xs sm:text-sm whitespace-nowrap px-3 sm:px-4 py-1.5 sm:py-2 rounded-full hover:from-red-600 hover:to-red-700 transition-all shadow-md shadow-red-500/30 active:scale-95">
+              Log Keluar
+            </button>
+          </div>
         </div>
       </nav>
 
@@ -1585,28 +1592,28 @@ export default function Admin() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
 
         {/* View Toggle - Scrollable on mobile */}
-        <div className="flex gap-2 mb-6 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 sm:overflow-visible">
+        <div className="flex gap-2 mb-6 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 sm:overflow-visible scrollbar-hide">
           <button
             onClick={() => setAdminView('dashboard')}
-            className={`px-4 py-2.5 rounded-full text-sm font-semibold transition whitespace-nowrap flex items-center gap-2 ${
+            className={`px-3 sm:px-4 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold transition whitespace-nowrap flex items-center gap-1.5 sm:gap-2 ${
               adminView === 'dashboard'
                 ? 'bg-purple-500 text-white shadow-lg shadow-purple-200'
                 : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
             }`}
           >
-            <TrendingUp className="w-4 h-4" />
+            <TrendingUp className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             <span className="hidden sm:inline">Dashboard</span>
             <span className="sm:hidden">Home</span>
           </button>
           <button
             onClick={() => setAdminView('bookings')}
-            className={`px-4 py-2.5 rounded-full text-sm font-semibold transition whitespace-nowrap flex items-center gap-2 ${
+            className={`px-3 sm:px-4 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold transition whitespace-nowrap flex items-center gap-1.5 sm:gap-2 ${
               adminView === 'bookings'
                 ? 'bg-purple-500 text-white shadow-lg shadow-purple-200'
                 : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
             }`}
           >
-            <ClipboardList className="w-4 h-4" />
+            <ClipboardList className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             Tempahan
             {(getPendingCount() > 0 || getRefundCount() > 0) && (
               <span className="px-1.5 py-0.5 bg-yellow-400 text-yellow-900 rounded-full text-xs font-bold">
@@ -1616,24 +1623,24 @@ export default function Admin() {
           </button>
           <button
             onClick={() => setAdminView('history')}
-            className={`px-4 py-2.5 rounded-full text-sm font-semibold transition whitespace-nowrap flex items-center gap-2 ${
+            className={`px-3 sm:px-4 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold transition whitespace-nowrap flex items-center gap-1.5 sm:gap-2 ${
               adminView === 'history'
                 ? 'bg-purple-500 text-white shadow-lg shadow-purple-200'
                 : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
             }`}
           >
-            <Clock className="w-4 h-4" />
+            <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             History
           </button>
           <button
             onClick={() => setAdminView('calendar')}
-            className={`px-4 py-2.5 rounded-full text-sm font-semibold transition whitespace-nowrap flex items-center gap-2 ${
+            className={`px-3 sm:px-4 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold transition whitespace-nowrap flex items-center gap-1.5 sm:gap-2 ${
               adminView === 'calendar'
                 ? 'bg-purple-500 text-white shadow-lg shadow-purple-200'
                 : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
             }`}
           >
-            <CalendarDays className="w-4 h-4" />
+            <CalendarDays className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             Kalendar
           </button>
         </div>
