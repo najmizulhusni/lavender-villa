@@ -2,13 +2,20 @@ import { useState, useEffect, useRef } from 'react';
 import { Wifi, Coffee, Tv, Wind, MapPin, Star, X, Play, Phone, CheckCircle, Users, Moon, Sun, Cloud, Instagram, Mic, ChevronLeft, ChevronRight, Calendar, Shield, Wallet, Utensils } from 'lucide-react';
 import { getBookedDates, getPublicHolidays, createBooking, getProperty, getManuallyBlockedDates } from './lib/database';
 
-// Custom Villa Icon Component - looks like a house with pool
+// Custom Villa Icon - Two storey villa with pool
 const VillaIcon = ({ className }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-    <polyline points="9 22 9 12 15 12 15 22" />
-    <path d="M7 8h.01" />
-    <path d="M17 8h.01" />
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+    {/* Roof */}
+    <path d="M12 2L2 9h2v11h16V9h2L12 2z" fill="currentColor" />
+    {/* Upper windows */}
+    <rect x="7" y="10" width="3" height="3" rx="0.5" fill="white" opacity="0.9" />
+    <rect x="14" y="10" width="3" height="3" rx="0.5" fill="white" opacity="0.9" />
+    {/* Door */}
+    <rect x="10" y="14" width="4" height="6" rx="0.5" fill="white" opacity="0.9" />
+    {/* Door handle */}
+    <circle cx="13" cy="17" r="0.5" fill="currentColor" />
+    {/* Pool indicator at bottom */}
+    <path d="M3 21h18v1c0 .5-.5 1-1 1H4c-.5 0-1-.5-1-1v-1z" fill="currentColor" opacity="0.6" />
   </svg>
 );
 
