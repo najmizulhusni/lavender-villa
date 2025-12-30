@@ -298,7 +298,12 @@ export default function HomestayExperience() {
       return;
     }
 
-    // Validate phone
+    // Validate name - no special characters that could be used for injection
+    const nameRegex = /^[a-zA-Z\s\-'@.]+$/;
+    if (!nameRegex.test(customerName.trim()) || customerName.length > 100) {
+      alert('Nama tidak sah. Sila gunakan huruf sahaja (maksimum 100 aksara)');
+      return;
+    }    // Validate phone
     if (!customerPhone.trim()) {
       alert('Sila masukkan nombor telefon anda');
       return;
@@ -361,10 +366,10 @@ export default function HomestayExperience() {
       day: 'numeric'
     });
 
-    // Sanitize inputs
-    const sanitizedName = customerName.replace(/[<>]/g, '').trim();
-    const sanitizedPhone = cleanPhone;
-    const sanitizedMessage = message.replace(/[<>]/g, '').trim();
+    // Sanitize inputs - remove potential XSS/injection characters
+    const sanitizedName = customerName.replace(/[<>'"`;\\\/\{\}\[\]]/g, '').trim().substring(0, 100);
+    const sanitizedPhone = cleanPhone.replace(/[^0-9+]/g, '').substring(0, 15);
+    const sanitizedMessage = message.replace(/[<>'"`;\\\/\{\}\[\]]/g, '').trim().substring(0, 500);
 
     // Save booking to Supabase
     try {

@@ -24,26 +24,40 @@ export default function Admin() {
   const [showTemplateModal, setShowTemplateModal] = useState(false);
   const [editingTemplate, setEditingTemplate] = useState({ title: '', message: '' });
 
-  // Check if already logged in
+  // Check if already logged in with session token validation
   useEffect(() => {
     const session = sessionStorage.getItem('adminLoggedIn');
     const sessionTime = sessionStorage.getItem('adminSessionTime');
+    const sessionToken = sessionStorage.getItem('adminSessionToken');
     const now = Date.now();
     
     // Session timeout: 30 minutes
-    if (session === 'true' && sessionTime) {
+    if (session === 'true' && sessionTime && sessionToken) {
       const elapsed = now - parseInt(sessionTime);
-      if (elapsed > 30 * 60 * 1000) {
-        // Session expired
+      // Validate session token format (should be a hash)
+      const isValidToken = sessionToken && sessionToken.length === 64;
+      
+      if (elapsed > 30 * 60 * 1000 || !isValidToken) {
+        // Session expired or invalid
         sessionStorage.removeItem('adminLoggedIn');
         sessionStorage.removeItem('adminSessionTime');
+        sessionStorage.removeItem('adminSessionToken');
         sessionStorage.removeItem('adminUser');
         setIsLoggedIn(false);
       } else {
         setIsLoggedIn(true);
+        // Refresh session time on activity
+        sessionStorage.setItem('adminSessionTime', now.toString());
       }
     }
   }, []);
+
+  // Generate a simple session token
+  const generateSessionToken = () => {
+    const array = new Uint8Array(32);
+    crypto.getRandomValues(array);
+    return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -60,9 +74,11 @@ export default function Admin() {
     
     try {
       const admin = await adminLogin(username, password);
+      const sessionToken = generateSessionToken();
       setIsLoggedIn(true);
       sessionStorage.setItem('adminLoggedIn', 'true');
       sessionStorage.setItem('adminSessionTime', Date.now().toString());
+      sessionStorage.setItem('adminSessionToken', sessionToken);
       sessionStorage.setItem('adminUser', JSON.stringify(admin));
       setLoginError('');
       setUsername('');
@@ -73,9 +89,11 @@ export default function Admin() {
       // Fallback to localStorage if Supabase fails
       const storedPassword = localStorage.getItem('adminPassword') || 'lavendervilla2025';
       if (username === 'admin' && password === storedPassword) {
+        const sessionToken = generateSessionToken();
         setIsLoggedIn(true);
         sessionStorage.setItem('adminLoggedIn', 'true');
         sessionStorage.setItem('adminSessionTime', Date.now().toString());
+        sessionStorage.setItem('adminSessionToken', sessionToken);
         setLoginError('');
         setUsername('');
         setPassword('');
@@ -148,6 +166,7 @@ export default function Admin() {
     setIsLoggedIn(false);
     sessionStorage.removeItem('adminLoggedIn');
     sessionStorage.removeItem('adminSessionTime');
+    sessionStorage.removeItem('adminSessionToken');
     sessionStorage.removeItem('adminUser');
     setUsername('');
     setPassword('');
