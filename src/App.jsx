@@ -729,7 +729,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
             <div className="w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full overflow-hidden shadow-md shadow-purple-500/30 group-hover:shadow-lg group-hover:shadow-purple-500/40 transition-shadow border-2 border-purple-200">
               <VillaIcon className="w-full h-full" />
             </div>
-            <span className="font-bold text-xs sm:text-sm md:text-base text-slate-900 tracking-tight hidden sm:inline">Lavender Villa</span>
+            <span className="font-bold text-xs sm:text-sm md:text-base text-slate-900 tracking-tight hidden sm:inline">Lavender Villa Melaka</span>
           </button>
           <div className="h-4 sm:h-5 w-px bg-slate-200 mx-2 sm:mx-3 md:mx-4"></div>
           <div className="flex gap-0.5 sm:gap-1 md:gap-2 flex-shrink-0">
