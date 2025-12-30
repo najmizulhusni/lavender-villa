@@ -1295,6 +1295,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                           // For checkout: must be AFTER check-in date (not same day or before)
                           const isBeforeOrSameAsCheckIn = selectedDates.checkIn && dateStr <= selectedDates.checkIn;
                           const isHoliday = isPublicHoliday(date);
+                          const schoolHolidayName = isSchoolHoliday(dateStr);
                           // Check if this date is manually blocked (Cuti/Tutup) - NO checkout allowed
                           const isManuallyBlocked = manuallyBlockedDates.includes(dateStr);
                           // Check if there are blocked dates between check-in and this date (exclusive of checkout date)
@@ -1339,9 +1340,10 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                                 isPast || isBeforeOrSameAsCheckIn ? 'text-slate-300 cursor-not-allowed' :
                                 isBooked ? 'bg-green-50 text-green-600 hover:bg-green-100 font-medium' :
                                 isHoliday ? 'bg-orange-50 text-orange-600 hover:bg-orange-100 font-medium' :
+                                schoolHolidayName ? 'bg-yellow-50 text-yellow-700 hover:bg-yellow-100 font-medium' :
                                 'hover:bg-purple-100 text-slate-700'
                               }`}
-                              title={failsMinStay ? 'Min 3H2M' : (isManuallyBlocked ? 'Cuti/Tutup - tidak boleh checkout' : (isBooked && !isBlocked ? 'Boleh checkout hari ini' : ''))}
+                              title={failsMinStay ? 'Min 3H2M' : (isManuallyBlocked ? 'Cuti/Tutup - tidak boleh checkout' : (schoolHolidayName ? schoolHolidayName : (isBooked && !isBlocked ? 'Boleh checkout hari ini' : '')))}
                             >
                               {day}
                               {failsMinStay && (
@@ -1353,6 +1355,9 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                               {isHoliday && !isBooked && !isPast && !isBeforeOrSameAsCheckIn && !failsMinStay && (
                                 <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-orange-400 rounded-full"></span>
                               )}
+                              {schoolHolidayName && !isHoliday && !isBooked && !isPast && !isBeforeOrSameAsCheckIn && !failsMinStay && (
+                                <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-yellow-400 rounded-full"></span>
+                              )}
                             </button>
                           );
                         }
@@ -1363,7 +1368,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                     <div className="mt-3 pt-2 border-t border-slate-100 flex flex-wrap items-center justify-center gap-3 text-xs">
                       <div className="flex items-center gap-1.5">
                         <span className="w-4 h-4 bg-red-100 rounded"></span>
-                        <span className="text-slate-600">Tidak Tersedia</span>
+                        <span className="text-slate-600">Tiada Kekosongan</span>
                       </div>
                       <div className="flex items-center gap-1.5">
                         <span className="w-4 h-4 bg-amber-100 rounded flex items-center justify-center"><span className="w-3 h-3 bg-amber-500 rounded-full text-[6px] text-white font-bold flex items-center justify-center">2</span></span>
@@ -1374,6 +1379,12 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                           <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-green-400 rounded-full"></span>
                         </span>
                         <span className="text-slate-600">Boleh Checkout</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-4 h-4 bg-yellow-50 rounded relative">
+                          <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-yellow-400 rounded-full"></span>
+                        </span>
+                        <span className="text-slate-600">Cuti Sekolah</span>
                       </div>
                       <div className="flex items-center gap-1.5">
                         <span className="w-4 h-4 bg-orange-50 rounded relative">
@@ -1517,7 +1528,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                     </p>
                   </div>
                   <div className="bg-slate-100 px-3 py-1 rounded-full">
-                    <p className="text-slate-500 text-sm font-medium">Tidak Tersedia</p>
+                    <p className="text-slate-500 text-sm font-medium">Tiada Kekosongan</p>
                   </div>
                 </div>
                 <p className="text-slate-500 text-sm mb-4">Tarikh ini telah ditempah. Pilih tarikh lain atau lihat villa lain.</p>
@@ -1597,9 +1608,9 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                 {new Date(selectedDates.checkIn).toLocaleDateString('ms-MY', { day: 'numeric', month: 'long' })} - {new Date(selectedDates.checkOut).toLocaleDateString('ms-MY', { day: 'numeric', month: 'long', year: 'numeric' })}
               </p>
               
-              <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-3">Tarikh Tidak Tersedia</h3>
+              <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-3">Tarikh Tiada Kekosongan</h3>
               <p className="text-slate-600 mb-8 max-w-md mx-auto">
-                Lavender Villa Melaka tidak tersedia pada tarikh yang dipilih. Hubungi kami untuk bantuan mencari tarikh lain atau pilihan penginapan alternatif.
+                Lavender Villa Melaka tiada kekosongan pada tarikh yang dipilih. Hubungi kami untuk bantuan mencari tarikh lain atau pilihan penginapan alternatif.
               </p>
               
               {/* Action Buttons */}
@@ -1652,7 +1663,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
               
               <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-3">Tarikh Ini Telah Ditempah</h3>
               <p className="text-slate-600 mb-8 max-w-md mx-auto">
-                Lavender Villa Melaka tidak tersedia pada tarikh ini. Hubungi kami untuk bantuan mencari tarikh lain atau pilihan penginapan alternatif.
+                Lavender Villa Melaka tiada kekosongan pada tarikh ini. Hubungi kami untuk bantuan mencari tarikh lain atau pilihan penginapan alternatif.
               </p>
               
               {/* Action Buttons */}
