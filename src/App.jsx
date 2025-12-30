@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Wifi, Coffee, Tv, Wind, MapPin, Star, X, Play, Phone, CheckCircle, Users, Home, Moon, Sun, Cloud, Instagram, Mic, ChevronLeft, ChevronRight, Calendar, Shield } from 'lucide-react';
+import { Wifi, Coffee, Tv, Wind, MapPin, Star, X, Play, Phone, CheckCircle, Users, Home, Moon, Sun, Cloud, Instagram, Mic, ChevronLeft, ChevronRight, Calendar, Shield, Wallet, Utensils } from 'lucide-react';
 import { getBookedDates, getPublicHolidays, createBooking, getProperty, getManuallyBlockedDates } from './lib/database';
 
 export default function HomestayExperience() {
@@ -1718,15 +1718,15 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
             <h3 className="text-xl sm:text-2xl font-bold text-center mb-6 text-slate-900">Peraturan Penginapan</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-sm">
               <div className="flex items-start gap-3 bg-white rounded-xl p-4">
-                <Shield className="w-5 h-5 text-purple-500 flex-shrink-0 mt-0.5" />
+                <Users className="w-5 h-5 text-purple-500 flex-shrink-0 mt-0.5" />
                 <p className="text-slate-600">Tetamu mestilah ahli keluarga mahram atau kumpulan rakan sama jantina sahaja</p>
               </div>
               <div className="flex items-start gap-3 bg-white rounded-xl p-4">
-                <CheckCircle className="w-5 h-5 text-purple-500 flex-shrink-0 mt-0.5" />
+                <Utensils className="w-5 h-5 text-purple-500 flex-shrink-0 mt-0.5" />
                 <p className="text-slate-600">Makanan dan minuman halal sahaja dibenarkan</p>
               </div>
               <div className="flex items-start gap-3 bg-white rounded-xl p-4">
-                <Calendar className="w-5 h-5 text-purple-500 flex-shrink-0 mt-0.5" />
+                <Wallet className="w-5 h-5 text-purple-500 flex-shrink-0 mt-0.5" />
                 <p className="text-slate-600">Deposit RM300 untuk tempahan biasa, RM500 untuk majlis (pertunangan/akikah)</p>
               </div>
               <div className="flex items-start gap-3 bg-white rounded-xl p-4">
