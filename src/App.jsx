@@ -1733,7 +1733,11 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
               </div>
               <div className="flex items-start gap-3 bg-white rounded-xl p-4">
                 <X className="w-5 h-5 text-purple-500 flex-shrink-0 mt-0.5" />
-                <p className="text-slate-600">Pembatalan tempahan akan mengakibatkan deposit tidak dikembalikan. Pertukaran tarikh hanya boleh dibuat sekurang-kurangnya SEBULAN sebelum check in. Pertukaran tarikh hanya dibenarkan sekali sahaja</p>
+                <div className="text-slate-600">
+                  <p className="mb-1">• Pembatalan = deposit <span className="font-semibold text-red-500">tidak dikembalikan</span></p>
+                  <p className="mb-1">• Pertukaran tarikh: <span className="font-semibold">SEBULAN</span> sebelum check-in</p>
+                  <p>• Pertukaran hanya dibenarkan <span className="font-semibold">sekali</span> sahaja</p>
+                </div>
               </div>
             </div>
           </div>
