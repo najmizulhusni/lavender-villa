@@ -1723,6 +1723,9 @@ export default function Admin() {
                         <div>
                           <p className="font-semibold text-slate-900 text-sm">{booking.name}</p>
                           <p className="text-xs text-slate-500">{properties.find(p => p.id === booking.property)?.name || 'Lavender Villa'}</p>
+                          {booking.createdAt && (
+                            <p className="text-xs text-slate-400">Ditempah: {new Date(booking.createdAt).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short' })}</p>
+                          )}
                         </div>
                         <div className="text-right">
                           <p className="text-sm font-medium text-purple-600">{new Date(booking.checkIn).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short' })}</p>
@@ -2752,12 +2755,18 @@ export default function Admin() {
                                 <span className="text-slate-300 text-xs hidden sm:inline">•</span>
                                 <span className="text-slate-400 text-xs font-mono hidden sm:inline">{booking.id}</span>
                               </div>
-                              <div className="flex items-center gap-2 text-xs text-slate-500 mt-0.5">
+                              <div className="flex items-center gap-2 text-xs text-slate-500 mt-0.5 flex-wrap">
                                 <span className="text-purple-600 font-medium">{properties.find(p => p.id === booking.property)?.name?.replace(' Melaka', '') || 'Lavender Villa'}</span>
                                 <span>•</span>
                                 <span>{new Date(booking.checkIn).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short' })} - {new Date(booking.checkOut).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short' })}</span>
                                 <span>•</span>
                                 <span>{booking.nights} malam</span>
+                                {booking.createdAt && (
+                                  <>
+                                    <span className="hidden sm:inline">•</span>
+                                    <span className="text-slate-400 hidden sm:inline">Ditempah: {new Date(booking.createdAt).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                                  </>
+                                )}
                               </div>
                             </div>
                             
