@@ -171,21 +171,21 @@ export default function HomestayExperience() {
     return null;
   };
 
-  // Check if booking requires minimum 2 nights (weekend night during school holiday)
-  // Returns true if check-in is on Friday OR Saturday during school holiday
-  // Weekend NIGHTS are Friday (5) and Saturday (6)
+  // Check if booking requires minimum 2 nights (weekend during school holiday)
+  // Weekend during school holiday = must check-in Saturday, checkout Monday (3H2M)
+  // Returns true if check-in is on Saturday OR Sunday during school holiday
   const requiresMinStay = (checkInDateStr) => {
     const checkInDate = new Date(checkInDateStr + 'T00:00:00');
     const dayOfWeek = checkInDate.getDay();
-    const isWeekendNight = dayOfWeek === 5 || dayOfWeek === 6; // Friday = 5, Saturday = 6
+    const isWeekend = dayOfWeek === 0 || dayOfWeek === 6; // Saturday = 6, Sunday = 0
     const schoolHoliday = isSchoolHoliday(checkInDateStr);
     
-    // Weekend night check-in during school holiday requires min 2 nights
-    return isWeekendNight && schoolHoliday;
+    // Weekend check-in during school holiday requires min 2 nights
+    return isWeekend && schoolHoliday;
   };
   
   // Check if any night in booking range includes weekend during school holiday
-  // If yes, minimum 2 nights required
+  // If yes, minimum 2 nights required (3H2M)
   const bookingRequiresMinStay = (checkInStr, checkOutStr) => {
     if (!checkInStr || !checkOutStr) return false;
     
@@ -196,10 +196,11 @@ export default function HomestayExperience() {
     for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
       const dateStr = formatDateToLocal(d);
       const dayOfWeek = d.getDay();
-      const isWeekendNight = dayOfWeek === 5 || dayOfWeek === 6; // Friday & Saturday nights
+      // Weekend = Saturday (6) or Sunday (0)
+      const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
       const schoolHoliday = isSchoolHoliday(dateStr);
       
-      if (isWeekendNight && schoolHoliday) {
+      if (isWeekend && schoolHoliday) {
         return true;
       }
     }
