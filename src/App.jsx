@@ -1203,18 +1203,15 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                                 isSelected ? 'bg-purple-500 text-white font-bold' :
                                 isBooked ? 'bg-red-100 text-red-500 cursor-pointer hover:bg-red-200' :
                                 isPast ? 'text-slate-300 cursor-not-allowed' :
-                                isHoliday ? 'bg-orange-50 text-orange-600 hover:bg-orange-100 font-medium' :
+                                isHoliday ? 'bg-blue-50 text-blue-600 hover:bg-blue-100 font-medium' :
                                 schoolHolidayName ? 'bg-yellow-50 text-yellow-700 hover:bg-yellow-100 font-medium' :
                                 'hover:bg-purple-100 text-slate-700'
                               }`}
-                              title={isBooked ? 'Tiada Kekosongan' : (schoolHolidayName ? schoolHolidayName : (needsMinStay && !isPast ? 'Min 3H2M' : ''))}
+                              title={isBooked ? 'Tiada Kekosongan' : (isHoliday ? 'Cuti Umum' : (schoolHolidayName ? schoolHolidayName : ''))}
                             >
                               {day}
-                              {needsMinStay && !isBooked && !isPast && (
-                                <span className="absolute -top-1 -left-1 w-4 h-4 bg-amber-500 rounded-full text-[8px] text-white font-bold flex items-center justify-center">2</span>
-                              )}
                               {isHoliday && !isBooked && !isPast && (
-                                <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-orange-400 rounded-full"></span>
+                                <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-blue-400 rounded-full"></span>
                               )}
                               {schoolHolidayName && !isHoliday && !isBooked && !isPast && (
                                 <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-yellow-400 rounded-full"></span>
@@ -1232,20 +1229,19 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                         <span className="text-slate-500">Tiada Kekosongan</span>
                       </div>
                       <div className="flex items-center gap-1.5">
-                        <span className="w-3 h-3 bg-amber-100 rounded flex items-center justify-center"><span className="w-2 h-2 bg-amber-500 rounded-full text-[5px] text-white font-bold flex items-center justify-center">2</span></span>
-                        <span className="text-slate-500">Min 3H2M</span>
-                      </div>
-                      <div className="flex items-center gap-1.5">
                         <span className="w-3 h-3 bg-yellow-50 rounded relative">
                           <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-yellow-400 rounded-full"></span>
                         </span>
                         <span className="text-slate-500">Cuti Sekolah</span>
                       </div>
                       <div className="flex items-center gap-1.5">
-                        <span className="w-3 h-3 bg-orange-50 rounded relative">
-                          <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-orange-400 rounded-full"></span>
+                        <span className="w-3 h-3 bg-blue-50 rounded relative">
+                          <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-blue-400 rounded-full"></span>
                         </span>
                         <span className="text-slate-500">Cuti Umum</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-slate-400 text-[10px]">⚠️ Hujung Minggu: Min 3H2M</span>
                       </div>
                     </div>
                   </div>
@@ -1367,21 +1363,18 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                                 isBlocked ? 'bg-red-100 text-red-400 cursor-not-allowed' :
                                 isPast || isBeforeOrSameAsCheckIn ? 'text-slate-300 cursor-not-allowed' :
                                 isBooked ? 'bg-green-50 text-green-600 hover:bg-green-100 font-medium' :
-                                isHoliday ? 'bg-orange-50 text-orange-600 hover:bg-orange-100 font-medium' :
+                                isHoliday ? 'bg-blue-50 text-blue-600 hover:bg-blue-100 font-medium' :
                                 schoolHolidayName ? 'bg-yellow-50 text-yellow-700 hover:bg-yellow-100 font-medium' :
                                 'hover:bg-purple-100 text-slate-700'
                               }`}
-                              title={failsMinStay ? 'Min 3H2M' : (isManuallyBlocked ? 'Cuti/Tutup - tidak boleh checkout' : (schoolHolidayName ? schoolHolidayName : (isBooked && !isBlocked ? 'Boleh checkout hari ini' : '')))}
+                              title={failsMinStay ? 'Min 3H2M' : (isManuallyBlocked ? 'Cuti/Tutup - tidak boleh checkout' : (isHoliday ? 'Cuti Umum' : (schoolHolidayName ? schoolHolidayName : (isBooked && !isBlocked ? 'Boleh checkout hari ini' : ''))))}
                             >
                               {day}
-                              {failsMinStay && (
-                                <span className="absolute -top-1 -left-1 w-4 h-4 bg-amber-500 rounded-full text-[8px] text-white font-bold flex items-center justify-center">2</span>
-                              )}
                               {isBooked && !isBlocked && !isManuallyBlocked && !isPast && !isBeforeOrSameAsCheckIn && (
                                 <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-green-400 rounded-full"></span>
                               )}
                               {isHoliday && !isBooked && !isPast && !isBeforeOrSameAsCheckIn && !failsMinStay && (
-                                <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-orange-400 rounded-full"></span>
+                                <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-blue-400 rounded-full"></span>
                               )}
                               {schoolHolidayName && !isHoliday && !isBooked && !isPast && !isBeforeOrSameAsCheckIn && !failsMinStay && (
                                 <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-yellow-400 rounded-full"></span>
@@ -1399,10 +1392,6 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                         <span className="text-slate-500">Tiada Kekosongan</span>
                       </div>
                       <div className="flex items-center gap-1.5">
-                        <span className="w-3 h-3 bg-amber-100 rounded flex items-center justify-center"><span className="w-2 h-2 bg-amber-500 rounded-full text-[5px] text-white font-bold flex items-center justify-center">2</span></span>
-                        <span className="text-slate-500">Min 3H2M</span>
-                      </div>
-                      <div className="flex items-center gap-1.5">
                         <span className="w-3 h-3 bg-green-50 rounded relative">
                           <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-green-400 rounded-full"></span>
                         </span>
@@ -1414,11 +1403,14 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                         </span>
                         <span className="text-slate-500">Cuti Sekolah</span>
                       </div>
-                      <div className="flex items-center gap-1.5 col-span-2 justify-center">
-                        <span className="w-3 h-3 bg-orange-50 rounded relative">
-                          <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-orange-400 rounded-full"></span>
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-3 h-3 bg-blue-50 rounded relative">
+                          <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-blue-400 rounded-full"></span>
                         </span>
                         <span className="text-slate-500">Cuti Umum</span>
+                      </div>
+                      <div className="flex items-center gap-1.5 col-span-2 justify-center">
+                        <span className="text-slate-400 text-[10px]">⚠️ Hujung Minggu: Min 3H2M</span>
                       </div>
                     </div>
                   </div>
