@@ -3,6 +3,16 @@ import { Sparkles, X, Trash2, ChevronLeft, ChevronRight, MapPin, TrendingUp, Use
 import { adminLogin, updateAdminPassword, getAllBookings, updateBookingStatus, deleteBooking, getBookedDates, addBlockedDate, removeBlockedDate, getManuallyBlockedDates } from './lib/database';
 import { supabase } from './lib/supabase';
 
+// Villa Icon - using image from Flaticon (Freepik)
+const VillaIcon = ({ className }) => (
+  <img 
+    src="/images/villa-icon.png" 
+    alt="Villa" 
+    className={className}
+    style={{ filter: 'brightness(0) invert(1)' }}
+  />
+);
+
 export default function Admin() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState('');
@@ -1391,7 +1401,7 @@ export default function Admin() {
             {/* Logo */}
             <div className="flex items-center gap-2 mb-10">
               <div className="w-10 h-10 bg-gradient-to-br from-purple-400 to-purple-500 rounded-xl flex items-center justify-center">
-                <Sparkles className="w-5 h-5 text-white" />
+                <VillaIcon className="w-5 h-5 text-white" />
               </div>
               <span className="font-bold text-xl text-slate-900">Lavender Villa</span>
             </div>
@@ -1657,7 +1667,7 @@ export default function Admin() {
         <div className="bg-white/80 backdrop-blur-xl rounded-full px-3 sm:px-6 md:px-8 py-2 sm:py-3 shadow-lg shadow-slate-900/5 border border-white/50 flex items-center justify-between transition-all duration-300">
           <a href="/" className="flex items-center gap-1 sm:gap-2 cursor-pointer transition flex-shrink-0 group">
             <div className="w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-gradient-to-br from-purple-400 to-purple-500 rounded-full flex items-center justify-center shadow-md shadow-purple-500/30 group-hover:shadow-lg group-hover:shadow-purple-500/40 transition-shadow">
-              <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 text-white" />
+              <VillaIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 text-white" />
             </div>
             <span className="font-bold text-xs sm:text-sm md:text-base text-slate-900 tracking-tight hidden sm:inline">Admin Panel</span>
           </a>
