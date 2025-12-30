@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import { ChevronDown, Phone, Instagram } from 'lucide-react';
 
-// Villa Icon - using image from Flaticon (Freepik)
+// Villa Logo
 const VillaIcon = ({ className }) => (
   <img 
-    src="/images/villa-icon.png" 
-    alt="Villa" 
-    className={className}
-    style={{ filter: 'brightness(0) invert(1)' }}
+    src="/images/logo.jpg" 
+    alt="Lavender Villa" 
+    className={`${className} rounded-full object-cover`}
   />
 );
 
@@ -95,8 +94,8 @@ export default function FAQ() {
       <nav className="fixed top-2 sm:top-4 md:top-6 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-4xl px-2 sm:px-4">
         <div className="bg-white/5 backdrop-blur-2xl rounded-full px-3 sm:px-6 md:px-8 py-2 sm:py-3 shadow-2xl border border-white/20 flex items-center justify-between">
           <a href="/" className="flex items-center gap-1 sm:gap-2 cursor-pointer transition flex-shrink-0 group">
-            <div className="w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-gradient-to-br from-purple-400 to-purple-500 rounded-full flex items-center justify-center">
-              <VillaIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 text-white" />
+            <div className="w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full overflow-hidden border-2 border-purple-200">
+              <VillaIcon className="w-full h-full" />
             </div>
             <span className="font-bold text-xs sm:text-sm md:text-base text-slate-900 tracking-tight hidden sm:inline">Lavender Villa Melaka</span>
           </a>
@@ -165,8 +164,8 @@ export default function FAQ() {
             {/* Brand */}
             <div className="text-center sm:text-left">
               <div className="flex items-center justify-center sm:justify-start gap-2 mb-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-purple-400 to-purple-500 rounded-lg flex items-center justify-center">
-                  <VillaIcon className="w-4 h-4 text-white" />
+                <div className="w-8 h-8 rounded-lg overflow-hidden border-2 border-purple-300">
+                  <VillaIcon className="w-full h-full" />
                 </div>
                 <h3 className="text-lg font-bold text-white">Lavender Villa Melaka</h3>
               </div>
