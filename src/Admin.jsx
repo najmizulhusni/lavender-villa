@@ -3395,6 +3395,7 @@ export default function Admin() {
                               const date = new Date(addBookingMonth.getFullYear(), addBookingMonth.getMonth(), day);
                               const dateStr = formatDateStr(date);
                               const isBeforeCheckIn = dateStr <= newBooking.checkIn;
+                              const isBooked = isDateBookedForAdd(date, newBooking.property);
                               let hasBlockedBetween = false;
                               if (dateStr > newBooking.checkIn) {
                                 const start = new Date(newBooking.checkIn + 'T00:00:00');
@@ -3407,11 +3408,12 @@ export default function Admin() {
                                 }
                               }
                               const holidayName = isPublicHoliday(date);
+                              const isDisabled = isBeforeCheckIn || isBooked || hasBlockedBetween;
                               days.push(
                                 <button
                                   key={day}
                                   type="button"
-                                  disabled={isBeforeCheckIn || hasBlockedBetween}
+                                  disabled={isDisabled}
                                   onClick={() => {
                                     const price = calculateAddBookingPrice(newBooking.checkIn, dateStr, newBooking.property);
                                     setNewBooking({...newBooking, checkOut: dateStr, total: price});
@@ -3419,7 +3421,7 @@ export default function Admin() {
                                   }}
                                   className={`p-1.5 text-xs rounded-lg transition relative ${
                                     newBooking.checkOut === dateStr ? 'bg-purple-500 text-white font-bold' :
-                                    hasBlockedBetween ? 'bg-red-100 text-red-400 cursor-not-allowed' :
+                                    isBooked || hasBlockedBetween ? 'bg-red-100 text-red-400 cursor-not-allowed' :
                                     isBeforeCheckIn ? 'text-slate-300 cursor-not-allowed' :
                                     holidayName ? 'bg-purple-50 text-purple-600' :
                                     'hover:bg-purple-100 text-slate-700'
@@ -3427,7 +3429,7 @@ export default function Admin() {
                                   title={holidayName || ''}
                                 >
                                   {day}
-                                  {holidayName && !hasBlockedBetween && !isBeforeCheckIn && <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-purple-500 rounded-full"></span>}
+                                  {holidayName && !isBooked && !hasBlockedBetween && !isBeforeCheckIn && <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-purple-500 rounded-full"></span>}
                                 </button>
                               );
                             }
