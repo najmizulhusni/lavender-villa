@@ -341,8 +341,8 @@ export default function HomestayExperience() {
     }
 
     // Validate guests
-    if (guests < 1 || guests > 20) {
-      alert('Bilangan tetamu mesti antara 1 dan 20');
+    if (guests < 10 || guests > 20) {
+      alert('Bilangan tetamu mesti antara 10 dan 20');
       return;
     }
 
@@ -1402,7 +1402,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                         <X className="w-5 h-5 text-slate-500" />
                       </button>
                     </div>
-                    {[1, 2, 4, 6, 8, 10, 12, 15, 20].map(num => (
+                    {[10, 12, 14, 15, 16, 18, 20].map(num => (
                       <button
                         key={num}
                         onClick={() => { setGuests(num); setShowCalendar(null); }}

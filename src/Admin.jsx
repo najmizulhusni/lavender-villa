@@ -3066,14 +3066,15 @@ export default function Admin() {
                 <div className="grid grid-cols-3 gap-3">
                   <div>
                     <label className="block text-slate-500 text-xs mb-1">Tetamu</label>
-                    <input
-                      type="number"
-                      min="1"
-                      max="20"
+                    <select
                       value={newBooking.guests}
-                      onChange={(e) => setNewBooking({...newBooking, guests: parseInt(e.target.value) || 1})}
+                      onChange={(e) => setNewBooking({...newBooking, guests: parseInt(e.target.value) || 10})}
                       className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition text-sm text-center"
-                    />
+                    >
+                      {[10, 12, 14, 15, 16, 18, 20].map(num => (
+                        <option key={num} value={num}>{num}</option>
+                      ))}
+                    </select>
                   </div>
                   <div>
                     <label className="block text-slate-500 text-xs mb-1">Harga (RM)</label>
