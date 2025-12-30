@@ -164,9 +164,7 @@ export default function FAQ() {
             {/* Brand */}
             <div className="text-center sm:text-left">
               <div className="flex items-center justify-center sm:justify-start gap-2 mb-2">
-                <div className="w-8 h-8 rounded-lg overflow-hidden border-2 border-purple-300">
-                  <VillaIcon className="w-full h-full" />
-                </div>
+                <img src="/images/logo.jpg" alt="Lavender Villa" className="h-8 w-auto" />
                 <h3 className="text-lg font-bold text-white">Lavender Villa Melaka</h3>
               </div>
               <p className="text-slate-400 text-sm">Villa Mewah di Bemban, Melaka</p>
