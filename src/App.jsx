@@ -1822,6 +1822,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
           <div className="border-t border-slate-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-slate-500 text-sm">© 2025 Lavender Villa Melaka. Hak Cipta Terpelihara.</p>
             <div className="flex items-center gap-4 text-sm text-slate-400">
+              <a href="/faq" className="hover:text-white transition">FAQ</a>
               <span className="flex items-center gap-1.5">
                 <Moon className="w-4 h-4 text-purple-400" />
                 Penginapan Muslim Sahaja

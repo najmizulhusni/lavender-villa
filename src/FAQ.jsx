@@ -148,31 +148,37 @@ export default function FAQ() {
       </div>
 
       {/* Footer */}
-      <footer className="bg-slate-900 text-white py-8">
+      <footer className="bg-gradient-to-b from-slate-900 to-slate-950 text-white py-10 sm:py-12">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           {/* Main Footer Content */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-6 mb-6">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-6 mb-8">
             {/* Brand */}
             <div className="text-center sm:text-left">
-              <h3 className="text-lg font-bold text-white mb-1">Lavender Villa Melaka</h3>
-              <p className="text-slate-400 text-xs">Villa Mewah di Bemban, Melaka</p>
+              <div className="flex items-center justify-center sm:justify-start gap-2 mb-2">
+                <div className="w-8 h-8 bg-gradient-to-br from-purple-400 to-purple-500 rounded-lg flex items-center justify-center">
+                  <Home className="w-4 h-4 text-white" />
+                </div>
+                <h3 className="text-lg font-bold text-white">Lavender Villa Melaka</h3>
+              </div>
+              <p className="text-slate-400 text-sm">Villa Mewah di Bemban, Melaka</p>
             </div>
 
             {/* Contact & Social */}
-            <div className="flex items-center gap-6">
-              <a href="tel:+60193345686" className="text-slate-400 hover:text-white transition text-sm">
+            <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+              <a href="tel:+60193345686" className="text-slate-300 hover:text-white transition text-sm font-medium flex items-center gap-2">
+                <Phone className="w-4 h-4" />
                 +60 19 334 5686
               </a>
-              <div className="flex gap-3">
-                <a href="https://www.facebook.com/lavendervillamelaka" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white transition">
+              <div className="flex gap-4">
+                <a href="https://www.facebook.com/lavendervillamelaka" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-slate-800 hover:bg-purple-500 rounded-full flex items-center justify-center transition-all duration-300">
                   <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                   </svg>
                 </a>
-                <a href="https://www.instagram.com/lavendervillamelaka" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white transition">
+                <a href="https://www.instagram.com/lavendervillamelaka" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-slate-800 hover:bg-gradient-to-br hover:from-purple-500 hover:to-pink-500 rounded-full flex items-center justify-center transition-all duration-300">
                   <Instagram className="w-5 h-5" />
                 </a>
-                <a href="https://www.tiktok.com/@lavendervillamelaka" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white transition">
+                <a href="https://www.tiktok.com/@lavendervillamelaka" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-slate-800 hover:bg-slate-700 rounded-full flex items-center justify-center transition-all duration-300">
                   <TikTokIcon />
                 </a>
               </div>
@@ -180,11 +186,12 @@ export default function FAQ() {
           </div>
 
           {/* Bottom Bar */}
-          <div className="border-t border-slate-800 pt-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <p className="text-slate-500 text-xs">© 2025 Lavender Villa Melaka</p>
-            <div className="flex items-center gap-4 text-xs text-slate-500">
-              <span>Penginapan Muslim Sahaja</span>
+          <div className="border-t border-slate-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p className="text-slate-500 text-sm">© 2025 Lavender Villa Melaka. Hak Cipta Terpelihara.</p>
+            <div className="flex items-center gap-4 text-sm text-slate-400">
               <a href="/" className="hover:text-white transition">Utama</a>
+              <span className="text-slate-600">|</span>
+              <span>Penginapan Muslim Sahaja</span>
             </div>
           </div>
         </div>
