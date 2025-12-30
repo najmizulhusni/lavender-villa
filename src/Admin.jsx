@@ -2422,8 +2422,9 @@ export default function Admin() {
                       }`}
                     >
                       <span className="font-bold">{day}</span>
-                      {activeTab === 'lavender' && !isPaidBooking && !isManual && (
+                      {activeTab === 'lavender' && !isManual && (
                         <span className={`text-[9px] sm:text-[10px] mt-0.5 ${
+                          isPaidBooking ? 'text-white/80' :
                           priceInfo.isCustom ? 'text-orange-600 font-bold' : 'text-slate-400'
                         }`}>
                           RM{priceInfo.price >= 1000 ? (priceInfo.price/1000).toFixed(1) + 'k' : priceInfo.price}
