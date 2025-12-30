@@ -765,19 +765,20 @@ export default function Admin() {
     }
     
     // Calculate based on day type
+    // Weekend NIGHTS are Friday (5) and Saturday (6) - these are the nights you stay
     const dayOfWeek = date.getDay();
-    const isWeekend = dayOfWeek === 0 || dayOfWeek === 6; // Saturday = 6, Sunday = 0
+    const isWeekendNight = dayOfWeek === 5 || dayOfWeek === 6; // Friday & Saturday nights
     const isHoliday = publicHolidays[dateStr];
     const isFestive = festiveDates.includes(dateStr);
     const schoolHoliday = isSchoolHoliday(date);
     
     // Check if weekend during school holiday (requires min 3H2M)
-    const isWeekendSchoolHoliday = isWeekend && schoolHoliday;
+    const isWeekendSchoolHoliday = isWeekendNight && schoolHoliday;
     
     if (isFestive) {
       return { price: 1700, isCustom: false, type: 'festive', minStay: isWeekendSchoolHoliday ? 2 : 1 };
     }
-    if (isWeekend || isHoliday) {
+    if (isWeekendNight || isHoliday) {
       return { price: 1590, isCustom: false, type: 'weekend', minStay: isWeekendSchoolHoliday ? 2 : 1 };
     }
     return { price: 1300, isCustom: false, type: 'weekday', minStay: 1 };
@@ -786,9 +787,9 @@ export default function Admin() {
   // Check if a date requires minimum 2 nights (weekend during school holiday)
   const requiresMinStay = (date) => {
     const dayOfWeek = date.getDay();
-    const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+    const isWeekendNight = dayOfWeek === 5 || dayOfWeek === 6; // Friday & Saturday nights
     const schoolHoliday = isSchoolHoliday(date);
-    return isWeekend && schoolHoliday;
+    return isWeekendNight && schoolHoliday;
   };
 
   // Set custom price for a date
@@ -885,7 +886,8 @@ export default function Admin() {
       const dateStr = formatDateStr(d);
       if (festiveDates.includes(dateStr)) hasFestive = true;
       const dayOfWeek = d.getDay();
-      if (dayOfWeek === 0 || dayOfWeek === 6 || publicHolidays[dateStr]) hasWeekendOrHoliday = true;
+      // Weekend NIGHTS are Friday (5) and Saturday (6) - these are the nights you stay
+      if (dayOfWeek === 5 || dayOfWeek === 6 || publicHolidays[dateStr]) hasWeekendOrHoliday = true;
     }
 
     if (hasFestive) {
@@ -2431,11 +2433,11 @@ export default function Admin() {
                         Harga asal: RM{(() => {
                           const date = new Date(editingPriceDate + 'T00:00:00');
                           const dayOfWeek = date.getDay();
-                          const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+                          const isWeekendNight = dayOfWeek === 5 || dayOfWeek === 6; // Friday & Saturday nights
                           const isHoliday = publicHolidays[editingPriceDate];
                           const isFestive = festiveDates.includes(editingPriceDate);
                           if (isFestive) return '1,700';
-                          if (isWeekend || isHoliday) return '1,590';
+                          if (isWeekendNight || isHoliday) return '1,590';
                           return '1,300';
                         })()}
                       </p>

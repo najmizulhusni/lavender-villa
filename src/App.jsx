@@ -171,19 +171,20 @@ export default function HomestayExperience() {
     return null;
   };
 
-  // Check if booking requires minimum 2 nights (weekend during school holiday)
-  // Returns true if check-in is on Saturday OR Sunday during school holiday
+  // Check if booking requires minimum 2 nights (weekend night during school holiday)
+  // Returns true if check-in is on Friday OR Saturday during school holiday
+  // Weekend NIGHTS are Friday (5) and Saturday (6)
   const requiresMinStay = (checkInDateStr) => {
     const checkInDate = new Date(checkInDateStr + 'T00:00:00');
     const dayOfWeek = checkInDate.getDay();
-    const isWeekend = dayOfWeek === 0 || dayOfWeek === 6; // Saturday = 6, Sunday = 0
+    const isWeekendNight = dayOfWeek === 5 || dayOfWeek === 6; // Friday = 5, Saturday = 6
     const schoolHoliday = isSchoolHoliday(checkInDateStr);
     
-    // Weekend check-in during school holiday requires min 2 nights
-    return isWeekend && schoolHoliday;
+    // Weekend night check-in during school holiday requires min 2 nights
+    return isWeekendNight && schoolHoliday;
   };
   
-  // Check if any date in booking range includes weekend during school holiday
+  // Check if any night in booking range includes weekend during school holiday
   // If yes, minimum 2 nights required
   const bookingRequiresMinStay = (checkInStr, checkOutStr) => {
     if (!checkInStr || !checkOutStr) return false;
@@ -191,14 +192,14 @@ export default function HomestayExperience() {
     const start = new Date(checkInStr + 'T00:00:00');
     const end = new Date(checkOutStr + 'T00:00:00');
     
-    // Check each date in the booking range (excluding checkout date)
+    // Check each night in the booking range (excluding checkout date)
     for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
       const dateStr = formatDateToLocal(d);
       const dayOfWeek = d.getDay();
-      const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+      const isWeekendNight = dayOfWeek === 5 || dayOfWeek === 6; // Friday & Saturday nights
       const schoolHoliday = isSchoolHoliday(dateStr);
       
-      if (isWeekend && schoolHoliday) {
+      if (isWeekendNight && schoolHoliday) {
         return true;
       }
     }
@@ -535,7 +536,9 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
     // Calculate number of nights
     const nights = Math.round((end - start) / (1000 * 60 * 60 * 24));
     
-    // Check if any date in the range is festive, weekend, or public holiday
+    // Check if any NIGHT in the range is festive, weekend, or public holiday
+    // A night is determined by the check-in date (e.g., Friday check-in = Friday night = weekend)
+    // Weekend nights are: Friday night (day 5) and Saturday night (day 6)
     let hasFestive = false;
     let hasWeekendOrHoliday = false;
     
@@ -544,9 +547,10 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
         hasFestive = true;
       }
       const dayOfWeek = d.getDay();
-      const isWeekend = dayOfWeek === 0 || dayOfWeek === 6; // Saturday & Sunday
+      // Weekend NIGHTS are Friday (5) and Saturday (6) - these are the nights you stay
+      const isWeekendNight = dayOfWeek === 5 || dayOfWeek === 6; // Friday & Saturday nights
       const isHoliday = isPublicHoliday(d);
-      if (isWeekend || isHoliday) {
+      if (isWeekendNight || isHoliday) {
         hasWeekendOrHoliday = true;
       }
     }
