@@ -713,18 +713,18 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
     <div className="min-h-screen bg-slate-50">
       {/* Floating Navigation */}
       <nav className="fixed top-2 sm:top-4 md:top-6 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-4xl px-2 sm:px-4">
-        <div className="bg-white/5 backdrop-blur-2xl rounded-full px-3 sm:px-6 md:px-8 py-2 sm:py-3 shadow-2xl border border-white/20 flex items-center justify-between">
+        <div className="bg-white/80 backdrop-blur-xl rounded-full px-3 sm:px-6 md:px-8 py-2 sm:py-3 shadow-lg shadow-slate-900/5 border border-white/50 flex items-center justify-between transition-all duration-300">
           <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center gap-1 sm:gap-2 cursor-pointer transition flex-shrink-0 group">
-            <div className="w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-gradient-to-br from-purple-400 to-purple-500 rounded-full flex items-center justify-center">
+            <div className="w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-gradient-to-br from-purple-400 to-purple-500 rounded-full flex items-center justify-center shadow-md shadow-purple-500/30 group-hover:shadow-lg group-hover:shadow-purple-500/40 transition-shadow">
               <Home className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 text-white" />
             </div>
-            <span className="font-bold text-xs sm:text-sm md:text-base text-slate-900 tracking-tight hidden sm:inline">Lavender Villa Melaka</span>
+            <span className="font-bold text-xs sm:text-sm md:text-base text-slate-900 tracking-tight hidden sm:inline">Lavender Villa</span>
           </button>
           <div className="h-4 sm:h-5 w-px bg-slate-200 mx-2 sm:mx-3 md:mx-4"></div>
-          <div className="flex gap-1 sm:gap-2 md:gap-6 flex-shrink-0">
-            <button onClick={() => handleScrollTo('experience')} className="text-slate-700 transition font-semibold cursor-pointer text-xs sm:text-sm md:text-base whitespace-nowrap px-2 sm:px-3 py-1.5 rounded-full hover:bg-slate-100">Info</button>
-            <button onClick={() => handleScrollTo('spaces')} className="text-slate-700 transition font-semibold cursor-pointer text-xs sm:text-sm md:text-base whitespace-nowrap px-2 sm:px-3 py-1.5 rounded-full hover:bg-slate-100">Ruang</button>
-            <button onClick={() => handleScrollTo('booking')} className="text-slate-700 transition font-semibold cursor-pointer text-xs sm:text-sm md:text-base whitespace-nowrap px-2 sm:px-3 py-1.5 rounded-full hover:bg-slate-100">Tempah</button>
+          <div className="flex gap-0.5 sm:gap-1 md:gap-2 flex-shrink-0">
+            <button onClick={() => handleScrollTo('experience')} className="text-slate-700 hover:text-purple-600 transition-colors font-semibold cursor-pointer text-xs sm:text-sm md:text-base whitespace-nowrap px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-full hover:bg-purple-50 active:bg-purple-100">Info</button>
+            <button onClick={() => handleScrollTo('spaces')} className="text-slate-700 hover:text-purple-600 transition-colors font-semibold cursor-pointer text-xs sm:text-sm md:text-base whitespace-nowrap px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-full hover:bg-purple-50 active:bg-purple-100">Ruang</button>
+            <button onClick={() => handleScrollTo('booking')} className="bg-gradient-to-r from-purple-500 to-purple-600 text-white font-semibold cursor-pointer text-xs sm:text-sm md:text-base whitespace-nowrap px-3 sm:px-4 py-1.5 sm:py-2 rounded-full hover:from-purple-600 hover:to-purple-700 transition-all shadow-md shadow-purple-500/30 active:scale-95">Tempah</button>
           </div>
         </div>
       </nav>
@@ -1750,31 +1750,37 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
       </div>
 
       {/* Footer */}
-      <footer className="bg-slate-900 text-white py-8">
+      <footer className="bg-gradient-to-b from-slate-900 to-slate-950 text-white py-10 sm:py-12">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           {/* Main Footer Content */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-6 mb-6">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-6 mb-8">
             {/* Brand */}
             <div className="text-center sm:text-left">
-              <h3 className="text-lg font-bold text-white mb-1">Lavender Villa Melaka</h3>
-              <p className="text-slate-400 text-xs">Villa Mewah di Bemban, Melaka</p>
+              <div className="flex items-center justify-center sm:justify-start gap-2 mb-2">
+                <div className="w-8 h-8 bg-gradient-to-br from-purple-400 to-purple-500 rounded-lg flex items-center justify-center">
+                  <Home className="w-4 h-4 text-white" />
+                </div>
+                <h3 className="text-lg font-bold text-white">Lavender Villa Melaka</h3>
+              </div>
+              <p className="text-slate-400 text-sm">Villa Mewah di Bemban, Melaka</p>
             </div>
 
             {/* Contact & Social */}
-            <div className="flex items-center gap-6">
-              <a href="tel:+60193345686" className="text-slate-400 hover:text-white transition text-sm">
+            <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+              <a href="tel:+60193345686" className="text-slate-300 hover:text-white transition text-sm font-medium flex items-center gap-2">
+                <Phone className="w-4 h-4" />
                 +60 19 334 5686
               </a>
-              <div className="flex gap-3">
-                <a href="https://www.facebook.com/lavendervillamelaka" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white transition">
+              <div className="flex gap-4">
+                <a href="https://www.facebook.com/lavendervillamelaka" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-slate-800 hover:bg-purple-500 rounded-full flex items-center justify-center transition-all duration-300">
                   <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                   </svg>
                 </a>
-                <a href="https://www.instagram.com/lavendervillamelaka" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white transition">
+                <a href="https://www.instagram.com/lavendervillamelaka" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-slate-800 hover:bg-gradient-to-br hover:from-purple-500 hover:to-pink-500 rounded-full flex items-center justify-center transition-all duration-300">
                   <Instagram className="w-5 h-5" />
                 </a>
-                <a href="https://www.tiktok.com/@lavendervillamelaka" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white transition">
+                <a href="https://www.tiktok.com/@lavendervillamelaka" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-slate-800 hover:bg-slate-700 rounded-full flex items-center justify-center transition-all duration-300">
                   <TikTokIcon />
                 </a>
               </div>
@@ -1782,11 +1788,13 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
           </div>
 
           {/* Bottom Bar */}
-          <div className="border-t border-slate-800 pt-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <p className="text-slate-500 text-xs">© 2025 Lavender Villa Melaka</p>
-            <div className="flex items-center gap-4 text-xs text-slate-500">
-              <span>Penginapan Muslim Sahaja</span>
-              <a href="/faq" className="hover:text-white transition">FAQ</a>
+          <div className="border-t border-slate-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p className="text-slate-500 text-sm">© 2025 Lavender Villa Melaka. Hak Cipta Terpelihara.</p>
+            <div className="flex items-center gap-4 text-sm text-slate-400">
+              <span className="flex items-center gap-1.5">
+                <Shield className="w-4 h-4 text-purple-400" />
+                Penginapan Muslim Sahaja
+              </span>
             </div>
           </div>
         </div>
