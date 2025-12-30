@@ -1,5 +1,15 @@
 import { useState } from 'react';
-import { ChevronDown, Phone, Home, Instagram } from 'lucide-react';
+import { ChevronDown, Phone, Instagram } from 'lucide-react';
+
+// Custom Villa Icon Component
+const VillaIcon = ({ className }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+    <polyline points="9 22 9 12 15 12 15 22" />
+    <path d="M7 8h.01" />
+    <path d="M17 8h.01" />
+  </svg>
+);
 
 export default function FAQ() {
   const [openIndex, setOpenIndex] = useState(null);
@@ -86,7 +96,7 @@ export default function FAQ() {
         <div className="bg-white/5 backdrop-blur-2xl rounded-full px-3 sm:px-6 md:px-8 py-2 sm:py-3 shadow-2xl border border-white/20 flex items-center justify-between">
           <a href="/" className="flex items-center gap-1 sm:gap-2 cursor-pointer transition flex-shrink-0 group">
             <div className="w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-gradient-to-br from-purple-400 to-purple-500 rounded-full flex items-center justify-center">
-              <Home className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 text-white" />
+              <VillaIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 text-white" />
             </div>
             <span className="font-bold text-xs sm:text-sm md:text-base text-slate-900 tracking-tight hidden sm:inline">Lavender Villa Melaka</span>
           </a>
@@ -156,7 +166,7 @@ export default function FAQ() {
             <div className="text-center sm:text-left">
               <div className="flex items-center justify-center sm:justify-start gap-2 mb-2">
                 <div className="w-8 h-8 bg-gradient-to-br from-purple-400 to-purple-500 rounded-lg flex items-center justify-center">
-                  <Home className="w-4 h-4 text-white" />
+                  <VillaIcon className="w-4 h-4 text-white" />
                 </div>
                 <h3 className="text-lg font-bold text-white">Lavender Villa Melaka</h3>
               </div>

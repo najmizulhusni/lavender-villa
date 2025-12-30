@@ -1,6 +1,16 @@
 import { useState, useEffect, useRef } from 'react';
-import { Wifi, Coffee, Tv, Wind, MapPin, Star, X, Play, Phone, CheckCircle, Users, Home, Moon, Sun, Cloud, Instagram, Mic, ChevronLeft, ChevronRight, Calendar, Shield, Wallet, Utensils } from 'lucide-react';
+import { Wifi, Coffee, Tv, Wind, MapPin, Star, X, Play, Phone, CheckCircle, Users, Moon, Sun, Cloud, Instagram, Mic, ChevronLeft, ChevronRight, Calendar, Shield, Wallet, Utensils } from 'lucide-react';
 import { getBookedDates, getPublicHolidays, createBooking, getProperty, getManuallyBlockedDates } from './lib/database';
+
+// Custom Villa Icon Component - looks like a house with pool
+const VillaIcon = ({ className }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+    <polyline points="9 22 9 12 15 12 15 22" />
+    <path d="M7 8h.01" />
+    <path d="M17 8h.01" />
+  </svg>
+);
 
 export default function HomestayExperience() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -24,6 +34,8 @@ export default function HomestayExperience() {
   const [showBookingSuccess, setShowBookingSuccess] = useState(false);
   const [bookingDetails, setBookingDetails] = useState(null);
   const [honeypot, setHoneypot] = useState(''); // Anti-bot honeypot field
+  const [heroImageLoaded, setHeroImageLoaded] = useState(false);
+  const [spaceImagesLoaded, setSpaceImagesLoaded] = useState({});
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
   const activeTouchTarget = useRef(null);
@@ -716,7 +728,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
         <div className="bg-white/80 backdrop-blur-xl rounded-full px-3 sm:px-6 md:px-8 py-2 sm:py-3 shadow-lg shadow-slate-900/5 border border-white/50 flex items-center justify-between transition-all duration-300">
           <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center gap-1 sm:gap-2 cursor-pointer transition flex-shrink-0 group">
             <div className="w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10 bg-gradient-to-br from-purple-400 to-purple-500 rounded-full flex items-center justify-center shadow-md shadow-purple-500/30 group-hover:shadow-lg group-hover:shadow-purple-500/40 transition-shadow">
-              <Home className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 text-white" />
+              <VillaIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5 text-white" />
             </div>
             <span className="font-bold text-xs sm:text-sm md:text-base text-slate-900 tracking-tight hidden sm:inline">Lavender Villa</span>
           </button>
@@ -737,15 +749,22 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
         onTouchEnd={handleTouchEnd}
       >
         <div className="absolute inset-0 transition-transform duration-300 bg-slate-900" style={{ transform: `translateY(${scrollY * 0.5}px)` }}>
+          {/* Loading Skeleton */}
+          {!heroImageLoaded && (
+            <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-900 animate-pulse">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-slate-700/30 to-transparent animate-shimmer" style={{ backgroundSize: '200% 100%' }}></div>
+            </div>
+          )}
           <img 
             src={images[currentImageIndex]} 
             alt="Lavender Villa Melaka" 
-            className="w-full h-full object-cover"
+            className={`w-full h-full object-cover transition-opacity duration-500 ${heroImageLoaded ? 'opacity-100' : 'opacity-0'}`}
             width={800}
             height={600}
             loading="eager"
             fetchPriority="high"
             style={{ aspectRatio: '4/3' }}
+            onLoad={() => setHeroImageLoaded(true)}
           />
           <div className="absolute inset-0 bg-gradient-to-b from-slate-900/40 via-slate-900/20 to-slate-900/60"></div>
         </div>
@@ -825,13 +844,20 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                   onTouchMove={handleTouchMove}
                   onTouchEnd={handleTouchEnd}
                 >
+                  {/* Loading Skeleton for Space Images */}
+                  {!spaceImagesLoaded[`${idx}-${currentImg}`] && (
+                    <div className="absolute inset-0 bg-gradient-to-br from-slate-200 to-slate-300 animate-pulse">
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer" style={{ backgroundSize: '200% 100%' }}></div>
+                    </div>
+                  )}
                   <img 
                     src={space.images[currentImg]} 
                     alt={space.name} 
-                    className="w-full h-full object-cover transition-transform duration-500" 
+                    className={`w-full h-full object-cover transition-all duration-500 ${spaceImagesLoaded[`${idx}-${currentImg}`] ? 'opacity-100' : 'opacity-0'}`}
                     loading="lazy"
                     width={600}
                     height={400}
+                    onLoad={() => setSpaceImagesLoaded(prev => ({ ...prev, [`${idx}-${currentImg}`]: true }))}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900/95 via-slate-900/40 to-transparent"></div>
                   
@@ -1789,7 +1815,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
             <div className="text-center sm:text-left">
               <div className="flex items-center justify-center sm:justify-start gap-2 mb-2">
                 <div className="w-8 h-8 bg-gradient-to-br from-purple-400 to-purple-500 rounded-lg flex items-center justify-center">
-                  <Home className="w-4 h-4 text-white" />
+                  <VillaIcon className="w-4 h-4 text-white" />
                 </div>
                 <h3 className="text-lg font-bold text-white">Lavender Villa Melaka</h3>
               </div>
