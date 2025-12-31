@@ -1661,9 +1661,9 @@ export default function Admin() {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      {/* Navigation - Same style as landing page */}
-      <nav className="fixed top-2 sm:top-4 md:top-6 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-4xl px-2 sm:px-4">
-        <div className="bg-white/80 backdrop-blur-xl rounded-full px-3 sm:px-6 md:px-8 py-2 sm:py-3 shadow-lg shadow-slate-900/5 border border-white/50 flex items-center justify-between transition-all duration-300">
+      {/* Navigation - Static header for admin */}
+      <nav className="w-full bg-white shadow-sm border-b border-slate-200 px-2 sm:px-4 py-2 sm:py-3">
+        <div className="max-w-4xl mx-auto flex items-center justify-between">
           <a href="/" className="flex items-center gap-1 sm:gap-2 cursor-pointer transition flex-shrink-0 group">
             <div className="w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full overflow-hidden shadow-md shadow-purple-500/30 group-hover:shadow-lg group-hover:shadow-purple-500/40 transition-shadow border-2 border-purple-200">
               <VillaIcon className="w-full h-full" />
@@ -1682,7 +1682,7 @@ export default function Admin() {
       </nav>
 
       {/* Header */}
-      <div className="py-12 sm:py-16 pt-20 sm:pt-28">
+      <div className="py-8 sm:py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center">
           <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-2">Pengurusan Tempahan</h1>
           <p className="text-slate-500 text-sm sm:text-base">Mengurus tempahan untuk semua villa & homestay</p>
@@ -2087,7 +2087,7 @@ export default function Admin() {
                 </button>
 
                 <button
-                  onClick={() => { setEditingTemplate({ title: 'Peringatan Check-in', message: `⏰ *PERINGATAN CHECK-IN*\n\nHai! Ini peringatan untuk check-in anda esok.\n\n📅 Check-in: 3:00 PM\n📍 Lokasi: Lavender Villa Melaka\n47, Jalan Anjung Lavender 1, Taman Anjung Gapam, 77200 Bemban\n\n🔑 Kod pintu akan dihantar pada hari check-in.\n\n📞 Hubungi 019-334 5686 jika ada pertanyaan.\n\nJumpa esok! 👋` }); setShowTemplateModal(true); }}
+                  onClick={() => { setEditingTemplate({ title: 'Peringatan Check-in', message: `⏰ *PERINGATAN CHECK-IN*\n\nHai! Ini peringatan untuk check-in anda esok.\n\n📅 Check-in: 3:00 PM\n📍 Lokasi: Lavender Villa Melaka\n47, Jalan Anjung Lavender 1, Taman Anjung Gapam, 77200 Bemban\n\n📞 Hubungi 019-334 5686 jika ada pertanyaan.\n\nJumpa esok! 👋` }); setShowTemplateModal(true); }}
                   className="flex flex-col items-center gap-2 p-4 bg-purple-50 border border-purple-200 rounded-xl hover:bg-purple-100 transition group"
                 >
                   <div className="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center group-hover:scale-110 transition">
@@ -2614,7 +2614,7 @@ export default function Admin() {
                 <div className="bg-gradient-to-r from-purple-500 to-purple-600 px-4 py-3">
                   <h3 className="text-white font-bold flex items-center gap-2">
                     <CalendarDays className="w-4 h-4" />
-                    Cuti Umum 2025/2026
+                    Cuti Umum 2026
                   </h3>
                   <p className="text-purple-100 text-xs mt-0.5">Kebangsaan & Melaka</p>
                 </div>
@@ -2647,24 +2647,12 @@ export default function Admin() {
                 <div className="bg-gradient-to-r from-sky-500 to-sky-600 px-4 py-3">
                   <h3 className="text-white font-bold flex items-center gap-2">
                     <Users className="w-4 h-4" />
-                    Cuti Sekolah 2025/2026
+                    Cuti Sekolah 2026
                   </h3>
                   <p className="text-sky-100 text-xs mt-0.5">Melaka</p>
                 </div>
                 <div className="p-4 max-h-80 overflow-y-auto">
                   <div className="space-y-2">
-                    <div className="bg-sky-50 rounded-lg p-2.5 border border-sky-200">
-                      <p className="text-sm font-medium text-slate-700">Cuti Penggal 1</p>
-                      <p className="text-xs text-sky-600">29 Mei - 9 Jun 2025</p>
-                    </div>
-                    <div className="bg-sky-50 rounded-lg p-2.5 border border-sky-200">
-                      <p className="text-sm font-medium text-slate-700">Cuti Penggal 2</p>
-                      <p className="text-xs text-sky-600">13 Sep - 21 Sep 2025</p>
-                    </div>
-                    <div className="bg-sky-50 rounded-lg p-2.5 border border-sky-200">
-                      <p className="text-sm font-medium text-slate-700">Cuti Akhir Tahun</p>
-                      <p className="text-xs text-sky-600">20 Dis 2025 - 11 Jan 2026</p>
-                    </div>
                     <div className="bg-sky-50 rounded-lg p-2.5 border border-sky-200">
                       <p className="text-sm font-medium text-slate-700">Cuti Tahun Baru Cina</p>
                       <p className="text-xs text-sky-600">16 Feb - 20 Feb 2026</p>
@@ -3571,7 +3559,7 @@ export default function Admin() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="text-center sm:text-left">
-              <p className="text-slate-500 text-sm">© 2025 Lavender Villa Melaka</p>
+              <p className="text-slate-500 text-sm">© 2026 Lavender Villa Melaka</p>
               <p className="text-slate-400 text-xs">Sistem Pengurusan Tempahan</p>
             </div>
             <div className="flex items-center gap-2 text-sm">

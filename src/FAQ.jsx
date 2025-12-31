@@ -194,7 +194,7 @@ export default function FAQ() {
 
           {/* Bottom Bar */}
           <div className="border-t border-slate-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-slate-500 text-sm">© 2025 Lavender Villa Melaka. Hak Cipta Terpelihara.</p>
+            <p className="text-slate-500 text-sm">© 2026 Lavender Villa Melaka. Hak Cipta Terpelihara.</p>
             <div className="flex items-center gap-4 text-sm text-slate-400">
               <a href="/" className="hover:text-white transition">Utama</a>
               <span className="text-slate-600">|</span>
