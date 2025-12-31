@@ -2374,7 +2374,7 @@ export default function Admin() {
         {adminView === 'history' && (
           <div className="space-y-4">
             {/* Filter Panel - Always visible */}
-            <div className="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-sm">
+            <div className="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-sm overflow-visible">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-bold text-slate-900 flex items-center gap-2">
                   <Clock className="w-4 h-4 text-purple-500" />
@@ -3240,7 +3240,7 @@ export default function Admin() {
             )}
 
             {/* Filter Panel */}
-            <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-sm">
+            <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-sm overflow-visible">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-bold text-slate-900 flex items-center gap-2">
                   <ClipboardList className="w-4 h-4 text-purple-500" />
