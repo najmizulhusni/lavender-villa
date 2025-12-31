@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Sparkles, X, Trash2, ChevronLeft, ChevronRight, MapPin, TrendingUp, Users, CalendarDays, Lock, Eye, EyeOff, Phone, CheckCircle, Clock, XCircle, ClipboardList, Plus, FileText, Send, Navigation, ScrollText, Bell, Key, Heart, Copy, Wallet } from 'lucide-react';
+import { Sparkles, X, Trash2, ChevronLeft, ChevronRight, MapPin, TrendingUp, Users, CalendarDays, Lock, Eye, EyeOff, Phone, CheckCircle, Clock, XCircle, ClipboardList, Plus, FileText, Send, Navigation, ScrollText, Bell, Key, Heart, Copy, Wallet, Edit3 } from 'lucide-react';
 import { adminLogin, updateAdminPassword, getAllBookings, updateBookingStatus, deleteBooking, getBookedDates, addBlockedDate, removeBlockedDate, getManuallyBlockedDates } from './lib/database';
 import { supabase } from './lib/supabase';
 
@@ -32,6 +32,12 @@ export default function Admin() {
   const [bookings, setBookings] = useState([]);
   const [showTemplateModal, setShowTemplateModal] = useState(false);
   const [editingTemplate, setEditingTemplate] = useState({ title: '', message: '' });
+  const [showEditDateModal, setShowEditDateModal] = useState(false);
+  const [editingBooking, setEditingBooking] = useState(null);
+  const [newCheckIn, setNewCheckIn] = useState('');
+  const [newCheckOut, setNewCheckOut] = useState('');
+  const [editDateCalendarMonth, setEditDateCalendarMonth] = useState(new Date());
+  const [editDateStep, setEditDateStep] = useState('checkIn'); // 'checkIn' or 'checkOut'
 
   // Check if already logged in with session token validation
   useEffect(() => {
@@ -751,6 +757,89 @@ export default function Admin() {
         console.error('Error reloading booked dates:', error);
       }
     }
+  };
+
+  // Open edit date modal
+  const openEditDateModal = (booking) => {
+    setEditingBooking(booking);
+    setNewCheckIn(booking.checkIn);
+    setNewCheckOut(booking.checkOut);
+    setEditDateCalendarMonth(new Date(booking.checkIn));
+    setEditDateStep('checkIn');
+    setShowEditDateModal(true);
+  };
+
+  // Calculate nights for edit date
+  const calculateEditNights = () => {
+    if (newCheckIn && newCheckOut) {
+      const start = new Date(newCheckIn);
+      const end = new Date(newCheckOut);
+      const nights = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+      return nights > 0 ? nights : 0;
+    }
+    return 0;
+  };
+
+  // Check if new dates are available (excluding current booking's dates)
+  const checkEditDateAvailability = () => {
+    if (!newCheckIn || !newCheckOut || !editingBooking) return false;
+    
+    const newDates = getDatesBetween(newCheckIn, newCheckOut);
+    const currentDates = getDatesBetween(editingBooking.checkIn, editingBooking.checkOut);
+    const propertyId = editingBooking.property || 'lavender';
+    
+    // Get all booked dates except current booking's dates
+    const otherBookedDates = (bookedDates[propertyId] || []).filter(d => !currentDates.includes(d));
+    
+    // Check if any new date conflicts
+    return !newDates.some(d => otherBookedDates.includes(d));
+  };
+
+  // Handle edit date save
+  const handleEditDateSave = async () => {
+    if (!editingBooking || !newCheckIn || !newCheckOut) return;
+    
+    if (!checkEditDateAvailability()) {
+      alert('Tarikh yang dipilih tidak tersedia. Sila pilih tarikh lain.');
+      return;
+    }
+
+    const nights = calculateEditNights();
+    if (nights < 1) {
+      alert('Sila pilih tarikh yang sah.');
+      return;
+    }
+
+    try {
+      // Update in Supabase if we have dbId
+      if (editingBooking.dbId) {
+        await supabase
+          .from('bookings')
+          .update({ 
+            check_in: newCheckIn, 
+            check_out: newCheckOut,
+            nights: nights,
+            date_changed: true
+          })
+          .eq('id', editingBooking.dbId);
+      }
+    } catch (error) {
+      console.error('Error updating dates in Supabase:', error);
+    }
+
+    // Update local state
+    const updatedBookings = bookings.map(b => 
+      b.id === editingBooking.id 
+        ? { ...b, checkIn: newCheckIn, checkOut: newCheckOut, nights: nights, dateChanged: true } 
+        : b
+    );
+    setBookings(updatedBookings);
+    localStorage.setItem('bookings', JSON.stringify(updatedBookings));
+    syncBookedDates(updatedBookings);
+
+    // Close modal
+    setShowEditDateModal(false);
+    setEditingBooking(null);
   };
 
   // Get bookings count by status
@@ -3404,6 +3493,23 @@ export default function Admin() {
                               </button>
                             )}
                             
+                            {/* Edit Date - Only for deposit/pending, and only if not already changed */}
+                            {(booking.status === 'deposit' || booking.status === 'pending') && !booking.dateChanged && (
+                              <button
+                                onClick={() => openEditDateModal(booking)}
+                                className="px-3 py-2 bg-purple-100 text-purple-700 rounded-xl text-xs font-medium hover:bg-purple-200 transition flex items-center gap-1.5"
+                              >
+                                <Edit3 className="w-3.5 h-3.5" />
+                                <span className="hidden sm:inline">Tukar Tarikh</span>
+                              </button>
+                            )}
+                            {booking.dateChanged && (
+                              <span className="px-3 py-2 bg-slate-50 text-slate-400 rounded-xl text-xs font-medium flex items-center gap-1.5">
+                                <Edit3 className="w-3.5 h-3.5" />
+                                <span className="hidden sm:inline">Tarikh Ditukar</span>
+                              </span>
+                            )}
+                            
                             {/* Contact Actions */}
                             <a
                               href={`https://wa.me/${booking.phone?.replace(/^0/, '60')}`}
@@ -3752,6 +3858,201 @@ export default function Admin() {
                 className="flex-1 py-3 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-xl font-semibold hover:from-purple-600 hover:to-purple-700 transition shadow-lg shadow-purple-500/30"
               >
                 <Plus className="w-4 h-4 inline mr-2" />
+                Simpan
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Date Modal */}
+      {showEditDateModal && editingBooking && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl w-full max-w-md max-h-[90vh] overflow-hidden shadow-2xl">
+            {/* Header */}
+            <div className="bg-purple-500 p-4 text-white flex items-center justify-between">
+              <div>
+                <h3 className="font-bold">Tukar Tarikh</h3>
+                <p className="text-purple-100 text-xs">{editingBooking.name}</p>
+              </div>
+              <button onClick={() => setShowEditDateModal(false)} className="p-1 hover:bg-white/20 rounded-lg transition">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            
+            {/* Current vs New Dates */}
+            <div className="p-4 bg-slate-50 border-b border-slate-200">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-xs text-slate-500 mb-1">Tarikh Asal</p>
+                  <p className="text-sm font-semibold text-slate-700">
+                    {new Date(editingBooking.checkIn).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short' })} → {new Date(editingBooking.checkOut).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short' })}
+                  </p>
+                  <p className="text-xs text-slate-400">{editingBooking.nights} malam</p>
+                </div>
+                <div>
+                  <p className="text-xs text-slate-500 mb-1">Tarikh Baru</p>
+                  <p className={`text-sm font-semibold ${newCheckIn && newCheckOut ? 'text-purple-600' : 'text-slate-400'}`}>
+                    {newCheckIn && newCheckOut 
+                      ? `${new Date(newCheckIn).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short' })} → ${new Date(newCheckOut).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short' })}`
+                      : 'Pilih tarikh'}
+                  </p>
+                  <p className="text-xs text-slate-400">{calculateEditNights() > 0 ? `${calculateEditNights()} malam` : '-'}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Step Indicator */}
+            <div className="p-4 border-b border-slate-100">
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setEditDateStep('checkIn')}
+                  className={`flex-1 py-2 rounded-xl text-sm font-semibold transition ${editDateStep === 'checkIn' ? 'bg-purple-500 text-white' : 'bg-slate-100 text-slate-600'}`}
+                >
+                  Check-in
+                </button>
+                <button
+                  onClick={() => setEditDateStep('checkOut')}
+                  className={`flex-1 py-2 rounded-xl text-sm font-semibold transition ${editDateStep === 'checkOut' ? 'bg-purple-500 text-white' : 'bg-slate-100 text-slate-600'}`}
+                >
+                  Check-out
+                </button>
+              </div>
+            </div>
+
+            {/* Calendar */}
+            <div className="p-4">
+              {/* Month Navigation */}
+              <div className="flex items-center justify-between mb-4">
+                <button 
+                  onClick={() => setEditDateCalendarMonth(new Date(editDateCalendarMonth.getFullYear(), editDateCalendarMonth.getMonth() - 1))} 
+                  className="p-2 hover:bg-slate-100 rounded-lg transition"
+                >
+                  <ChevronLeft className="w-5 h-5 text-slate-600" />
+                </button>
+                <span className="font-bold text-slate-900">
+                  {editDateCalendarMonth.toLocaleDateString('ms-MY', { month: 'long', year: 'numeric' })}
+                </span>
+                <button 
+                  onClick={() => setEditDateCalendarMonth(new Date(editDateCalendarMonth.getFullYear(), editDateCalendarMonth.getMonth() + 1))} 
+                  className="p-2 hover:bg-slate-100 rounded-lg transition"
+                >
+                  <ChevronRight className="w-5 h-5 text-slate-600" />
+                </button>
+              </div>
+
+              {/* Day Headers */}
+              <div className="grid grid-cols-7 gap-1 mb-2">
+                {['Ah', 'Is', 'Se', 'Ra', 'Kh', 'Ju', 'Sa'].map(day => (
+                  <div key={day} className="text-center text-xs font-semibold text-slate-500 py-1">{day}</div>
+                ))}
+              </div>
+
+              {/* Calendar Grid */}
+              <div className="grid grid-cols-7 gap-1">
+                {(() => {
+                  const year = editDateCalendarMonth.getFullYear();
+                  const month = editDateCalendarMonth.getMonth();
+                  const firstDay = new Date(year, month, 1).getDay();
+                  const daysInMonth = new Date(year, month + 1, 0).getDate();
+                  const days = [];
+                  
+                  // Empty cells for days before first day of month
+                  for (let i = 0; i < firstDay; i++) {
+                    days.push(<div key={`empty-${i}`} />);
+                  }
+                  
+                  // Days of month
+                  for (let day = 1; day <= daysInMonth; day++) {
+                    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                    const date = new Date(year, month, day);
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    const isPast = date < today;
+                    
+                    // Check if date is booked (excluding current booking's dates)
+                    const currentDates = getDatesBetween(editingBooking.checkIn, editingBooking.checkOut);
+                    const propertyId = editingBooking.property || 'lavender';
+                    const isBookedByOthers = (bookedDates[propertyId] || []).includes(dateStr) && !currentDates.includes(dateStr);
+                    
+                    const isSelected = dateStr === newCheckIn || dateStr === newCheckOut;
+                    const isInRange = newCheckIn && newCheckOut && dateStr > newCheckIn && dateStr < newCheckOut;
+                    const isDisabled = isPast || isBookedByOthers;
+                    
+                    days.push(
+                      <button
+                        key={day}
+                        onClick={() => {
+                          if (isDisabled) return;
+                          if (editDateStep === 'checkIn') {
+                            setNewCheckIn(dateStr);
+                            if (newCheckOut && dateStr >= newCheckOut) {
+                              setNewCheckOut('');
+                            }
+                            setEditDateStep('checkOut');
+                          } else {
+                            if (dateStr > newCheckIn) {
+                              setNewCheckOut(dateStr);
+                            }
+                          }
+                        }}
+                        disabled={isDisabled}
+                        className={`aspect-square flex items-center justify-center text-sm rounded-lg transition ${
+                          isDisabled 
+                            ? 'text-slate-300 cursor-not-allowed' 
+                            : isSelected 
+                              ? 'bg-purple-500 text-white font-bold' 
+                              : isInRange
+                                ? 'bg-purple-100 text-purple-700'
+                                : 'hover:bg-purple-50 text-slate-700'
+                        } ${isBookedByOthers ? 'bg-red-50 text-red-300' : ''}`}
+                      >
+                        {day}
+                      </button>
+                    );
+                  }
+                  return days;
+                })()}
+              </div>
+
+              {/* Legend */}
+              <div className="flex items-center justify-center gap-4 mt-4 text-xs text-slate-500">
+                <div className="flex items-center gap-1.5">
+                  <div className="w-3 h-3 bg-purple-500 rounded"></div>
+                  <span>Dipilih</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <div className="w-3 h-3 bg-red-50 border border-red-200 rounded"></div>
+                  <span>Tidak Tersedia</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Warning */}
+            <div className="px-4 pb-2">
+              <p className="text-xs text-orange-600 bg-orange-50 p-2 rounded-lg text-center">
+                ⚠️ Pertukaran tarikh hanya dibenarkan sekali sahaja
+              </p>
+            </div>
+
+            {/* Actions */}
+            <div className="p-4 bg-slate-50 border-t border-slate-200 flex gap-3">
+              <button
+                onClick={() => setShowEditDateModal(false)}
+                className="flex-1 py-3 bg-white text-slate-700 rounded-xl font-semibold hover:bg-slate-100 transition border border-slate-200"
+              >
+                Batal
+              </button>
+              <button
+                onClick={handleEditDateSave}
+                disabled={!newCheckIn || !newCheckOut || !checkEditDateAvailability() || calculateEditNights() < 1}
+                className={`flex-1 py-3 rounded-xl font-semibold transition flex items-center justify-center gap-2 ${
+                  newCheckIn && newCheckOut && checkEditDateAvailability() && calculateEditNights() >= 1
+                    ? 'bg-purple-500 text-white hover:bg-purple-600'
+                    : 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                }`}
+              >
+                <CheckCircle className="w-4 h-4" />
                 Simpan
               </button>
             </div>
