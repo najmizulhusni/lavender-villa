@@ -912,7 +912,8 @@ export default function Admin() {
     guests: 15,
     total: 0,
     message: '',
-    status: 'pending'
+    status: 'pending',
+    referralSource: ''
   });
 
   // Custom prices state (host can override default pricing)
@@ -1130,6 +1131,7 @@ export default function Admin() {
       total: newBooking.total || 0,
       message: newBooking.message.trim(),
       status: newBooking.status,
+      referralSource: newBooking.referralSource,
       createdAt: new Date().toISOString()
     };
 
@@ -1156,6 +1158,7 @@ export default function Admin() {
             guests: newBooking.guests,
             total_amount: newBooking.total || 0,
             special_requests: newBooking.message.trim(),
+            referral_source: newBooking.referralSource,
             status: newBooking.status
           })
           .select()
@@ -1189,7 +1192,8 @@ export default function Admin() {
       guests: 15,
       total: 0,
       message: '',
-      status: 'pending'
+      status: 'pending',
+      referralSource: ''
     });
     setShowAddBooking(false);
   };
@@ -3750,6 +3754,39 @@ export default function Admin() {
                       placeholder="0123456789"
                       className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 placeholder-slate-300 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition text-sm"
                     />
+                  </div>
+                </div>
+                {/* Referral Source - Dari Mana Tahu */}
+                <div className="mt-3">
+                  <label className="block text-slate-500 text-xs mb-1">Dari Mana Tahu?</label>
+                  <div className="grid grid-cols-4 sm:grid-cols-7 gap-2">
+                    {[
+                      { id: 'tiktok', label: 'TikTok', color: 'pink' },
+                      { id: 'instagram', label: 'IG', color: 'purple' },
+                      { id: 'facebook', label: 'FB', color: 'blue' },
+                      { id: 'google', label: 'Google', color: 'red' },
+                      { id: 'kawan', label: 'Kawan', color: 'green' },
+                      { id: 'saudara', label: 'Saudara', color: 'orange' },
+                      { id: 'lain', label: 'Lain', color: 'slate' }
+                    ].map(source => (
+                      <button
+                        key={source.id}
+                        type="button"
+                        onClick={() => setNewBooking({...newBooking, referralSource: newBooking.referralSource === source.id ? '' : source.id})}
+                        className={`px-2 py-2 rounded-xl text-xs font-semibold transition border-2 ${
+                          newBooking.referralSource === source.id
+                            ? `bg-${source.color}-500 border-${source.color}-500 text-white`
+                            : `bg-white border-slate-200 text-slate-600 hover:border-${source.color}-300`
+                        }`}
+                        style={newBooking.referralSource === source.id ? {
+                          backgroundColor: source.color === 'pink' ? '#ec4899' : source.color === 'purple' ? '#a855f7' : source.color === 'blue' ? '#3b82f6' : source.color === 'red' ? '#ef4444' : source.color === 'green' ? '#22c55e' : source.color === 'orange' ? '#f97316' : '#64748b',
+                          borderColor: source.color === 'pink' ? '#ec4899' : source.color === 'purple' ? '#a855f7' : source.color === 'blue' ? '#3b82f6' : source.color === 'red' ? '#ef4444' : source.color === 'green' ? '#22c55e' : source.color === 'orange' ? '#f97316' : '#64748b',
+                          color: 'white'
+                        } : {}}
+                      >
+                        {source.label}
+                      </button>
+                    ))}
                   </div>
                 </div>
               </div>
