@@ -614,7 +614,7 @@ export default function Admin() {
     return dates;
   };
 
-  // Sync booked dates based on paid bookings + manual blocked dates
+  // Sync booked dates based on paid/deposit bookings + manual blocked dates
   const syncBookedDates = (allBookings, manualDates = manualBlockedDates) => {
     const newBookedDates = {};
     properties.forEach(p => {
@@ -622,9 +622,9 @@ export default function Admin() {
       newBookedDates[p.id] = [...(manualDates[p.id] || [])];
     });
     
-    // Add dates from all PAID bookings
+    // Add dates from all PAID or DEPOSIT bookings (both block dates)
     allBookings.forEach(booking => {
-      if (booking.status === 'paid' && booking.checkIn && booking.checkOut) {
+      if ((booking.status === 'paid' || booking.status === 'deposit') && booking.checkIn && booking.checkOut) {
         const dates = getDatesBetween(booking.checkIn, booking.checkOut);
         const propertyId = booking.property || 'lavender';
         newBookedDates[propertyId] = [...new Set([...newBookedDates[propertyId], ...dates])].sort();
@@ -2053,7 +2053,7 @@ export default function Admin() {
               
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 <button
-                  onClick={() => { setEditingTemplate({ title: 'Pengesahan Tempahan', message: `🏡 *PENGESAHAN TEMPAHAN*\n\nTerima kasih kerana memilih Lavender Villa Melaka!\n\n✅ Tempahan anda telah disahkan.\n\n📅 Check-in: 3:00 PM\n📅 Check-out: 12:00 PM\n\n💰 Deposit: RM300 (RM500 untuk majlis)\n💳 Bayaran penuh: 3 hari sebelum check-in\n\nKami akan hantar maklumat lokasi dan peraturan villa sebelum tarikh check-in.\n\nSebarang pertanyaan, hubungi kami.\n\nTerima kasih! 🙏` }); setShowTemplateModal(true); }}
+                  onClick={() => { setEditingTemplate({ title: 'Pengesahan Tempahan', message: `🏡 *PENGESAHAN TEMPAHAN*\n\nTerima kasih kerana memilih Lavender Villa Melaka!\n\n✅ Tempahan anda telah disahkan.\n\n📅 Check-in: 3:00 PM\n📅 Check-out: 12:00 PM\n\n💰 *BAYARAN*\n• Deposit: RM300 (RM500 untuk majlis)\n• Bayaran penuh: Selewat-lewatnya 5 hari sebelum check-in\n\n⚠️ *PERATURAN PENTING*\n\n*PEMBATALAN TEMPAHAN*\nPembatalan tempahan akan menyebabkan deposit tidak dipulangkan.\n\n*PERTUKARAN TARIKH*\n• Hendaklah dibuat sebulan sebelum tarikh check-in\n• Hanya sekali sahaja pertukaran tarikh dibenarkan\n\nKami akan hantar maklumat lokasi dan peraturan villa sebelum tarikh check-in.\n\nSebarang pertanyaan, hubungi kami.\n\nTerima kasih! 🙏` }); setShowTemplateModal(true); }}
                   className="flex flex-col items-center gap-2 p-4 bg-purple-50 border border-purple-200 rounded-xl hover:bg-purple-100 transition group"
                 >
                   <div className="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center group-hover:scale-110 transition">
@@ -2073,7 +2073,7 @@ export default function Admin() {
                 </button>
 
                 <button
-                  onClick={() => { setEditingTemplate({ title: 'Peraturan Villa', message: `📋 *PERATURAN VILLA*\n\n👨‍👩‍👧‍👦 TETAMU:\n• Ahli keluarga mahram atau kumpulan sama jantina sahaja\n• Percampuran lelaki & wanita bukan mahram TIDAK dibenarkan\n• Ideal 15 orang, maksimum 20 orang\n\n🍽️ MAKANAN:\n• Makanan & minuman HALAL sahaja\n\n✅ DIBENARKAN:\n• Masak di dapur\n• BBQ di luar\n• Karaoke (sehingga 10PM)\n• Kolam renang (tiada lifeguard)\n\n❌ TIDAK DIBENARKAN:\n• Haiwan peliharaan\n• Merokok dalam rumah\n• Parti bising selepas 11PM\n\n💰 DEPOSIT:\n• RM300 tempahan biasa\n• RM500 untuk majlis (pertunangan/akikah)\n• Dipulangkan dalam 24 jam selepas check-out\n\n⚠️ PEMBATALAN:\n• Mestilah 4 minggu sebelum check-in\n• Jika tidak, deposit tidak dipulangkan\n\nTerima kasih! 🙏` }); setShowTemplateModal(true); }}
+                  onClick={() => { setEditingTemplate({ title: 'Peraturan Villa', message: `📋 *PERATURAN VILLA*\n\n👨‍👩‍👧‍👦 *TETAMU*\n• Ahli keluarga mahram atau kumpulan sama jantina sahaja\n• Percampuran lelaki & wanita bukan mahram TIDAK dibenarkan\n• Ideal 15 orang, maksimum 20 orang\n\n🍽️ *MAKANAN*\n• Makanan & minuman HALAL sahaja\n\n✅ *DIBENARKAN*\n• Masak di dapur\n• BBQ di luar\n• Karaoke (sehingga 10PM)\n• Kolam renang (tiada lifeguard)\n\n❌ *TIDAK DIBENARKAN*\n• Haiwan peliharaan\n• Merokok dalam rumah\n• Parti bising selepas 11PM\n\n💰 *DEPOSIT*\n• RM300 tempahan biasa\n• RM500 untuk majlis (pertunangan/akikah)\n• Dipulangkan dalam 24 jam selepas check-out\n\n💳 *BAYARAN PENUH*\n• Selewat-lewatnya 5 hari sebelum check-in\n\n⚠️ *PEMBATALAN TEMPAHAN*\nPembatalan tempahan akan menyebabkan deposit tidak dipulangkan.\n\n📅 *PERTUKARAN TARIKH*\n• Hendaklah dibuat sebulan sebelum tarikh check-in\n• Hanya sekali sahaja pertukaran tarikh dibenarkan\n\nTerima kasih! 🙏` }); setShowTemplateModal(true); }}
                   className="flex flex-col items-center gap-2 p-4 bg-purple-50 border border-purple-200 rounded-xl hover:bg-purple-100 transition group"
                 >
                   <div className="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center group-hover:scale-110 transition">
@@ -2989,11 +2989,18 @@ export default function Admin() {
                   Belum
                 </button>
                 <button 
+                  onClick={() => setBookingFilter('deposit')}
+                  className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap flex items-center gap-1.5 ${bookingFilter === 'deposit' ? 'bg-blue-500 text-white shadow-md' : 'bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200'}`}
+                >
+                  <Wallet className="w-3.5 h-3.5" />
+                  Deposit
+                </button>
+                <button 
                   onClick={() => setBookingFilter('paid')}
                   className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap flex items-center gap-1.5 ${bookingFilter === 'paid' ? 'bg-green-500 text-white shadow-md' : 'bg-green-50 text-green-700 hover:bg-green-100 border border-green-200'}`}
                 >
                   <CheckCircle className="w-3.5 h-3.5" />
-                  Bayar
+                  Full
                 </button>
                 <button 
                   onClick={() => setBookingFilter('refund')}
@@ -3213,6 +3220,7 @@ export default function Admin() {
                         key={booking.id} 
                         className={`bg-white rounded-2xl border-2 shadow-sm overflow-hidden transition-all hover:shadow-md ${
                           booking.status === 'pending' ? 'border-yellow-300' :
+                          booking.status === 'deposit' ? 'border-blue-300' :
                           booking.status === 'refund' ? 'border-orange-300' :
                           booking.status === 'paid' ? 'border-green-200' :
                           'border-slate-200'
@@ -3221,6 +3229,7 @@ export default function Admin() {
                         {/* Status Header Bar */}
                         <div className={`px-4 py-2 flex items-center justify-between ${
                           booking.status === 'pending' ? 'bg-yellow-50' :
+                          booking.status === 'deposit' ? 'bg-blue-50' :
                           booking.status === 'refund' ? 'bg-orange-50' :
                           booking.status === 'paid' ? 'bg-green-50' :
                           'bg-slate-50'
@@ -3228,17 +3237,20 @@ export default function Admin() {
                           <div className="flex items-center gap-2">
                             <span className={`w-2 h-2 rounded-full ${
                               booking.status === 'pending' ? 'bg-yellow-500 animate-pulse' :
+                              booking.status === 'deposit' ? 'bg-blue-500' :
                               booking.status === 'refund' ? 'bg-orange-500 animate-pulse' :
                               booking.status === 'paid' ? 'bg-green-500' :
                               'bg-slate-400'
                             }`}></span>
                             <span className={`text-xs font-bold uppercase tracking-wide ${
                               booking.status === 'pending' ? 'text-yellow-700' :
+                              booking.status === 'deposit' ? 'text-blue-700' :
                               booking.status === 'refund' ? 'text-orange-700' :
                               booking.status === 'paid' ? 'text-green-700' :
                               'text-slate-500'
                             }`}>
                               {booking.status === 'pending' ? 'Menunggu Bayaran' :
+                               booking.status === 'deposit' ? 'Deposit Dibayar' :
                                booking.status === 'refund' ? 'Perlu Refund' :
                                booking.status === 'paid' ? 'Telah Bayar' :
                                'Dibatalkan'}
@@ -3254,12 +3266,14 @@ export default function Admin() {
                             <div className="flex items-start gap-3 min-w-0 flex-1">
                               <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${
                                 booking.status === 'pending' ? 'bg-yellow-100' :
+                                booking.status === 'deposit' ? 'bg-blue-100' :
                                 booking.status === 'refund' ? 'bg-orange-100' :
                                 booking.status === 'paid' ? 'bg-green-100' :
                                 'bg-slate-100'
                               }`}>
                                 <span className={`text-lg font-bold ${
                                   booking.status === 'pending' ? 'text-yellow-600' :
+                                  booking.status === 'deposit' ? 'text-blue-600' :
                                   booking.status === 'refund' ? 'text-orange-600' :
                                   booking.status === 'paid' ? 'text-green-600' :
                                   'text-slate-500'
@@ -3319,12 +3333,30 @@ export default function Admin() {
                           <div className="flex items-center gap-2 flex-wrap">
                             {/* Primary Action based on status */}
                             {booking.status === 'pending' && (
+                              <>
+                                <button
+                                  onClick={() => handleUpdateBookingStatus(booking.id, 'deposit')}
+                                  className="flex-1 sm:flex-none px-4 py-2.5 bg-blue-500 text-white rounded-xl text-sm font-bold hover:bg-blue-600 transition shadow-md shadow-blue-500/30 flex items-center justify-center gap-2"
+                                >
+                                  <Wallet className="w-4 h-4" />
+                                  Deposit
+                                </button>
+                                <button
+                                  onClick={() => handleUpdateBookingStatus(booking.id, 'paid')}
+                                  className="flex-1 sm:flex-none px-4 py-2.5 bg-green-500 text-white rounded-xl text-sm font-bold hover:bg-green-600 transition shadow-md shadow-green-500/30 flex items-center justify-center gap-2"
+                                >
+                                  <CheckCircle className="w-4 h-4" />
+                                  Full
+                                </button>
+                              </>
+                            )}
+                            {booking.status === 'deposit' && (
                               <button
                                 onClick={() => handleUpdateBookingStatus(booking.id, 'paid')}
                                 className="flex-1 sm:flex-none px-4 py-2.5 bg-green-500 text-white rounded-xl text-sm font-bold hover:bg-green-600 transition shadow-md shadow-green-500/30 flex items-center justify-center gap-2"
                               >
                                 <CheckCircle className="w-4 h-4" />
-                                Sahkan Bayaran
+                                Bayaran Penuh
                               </button>
                             )}
                             {booking.status === 'refund' && (
@@ -3353,6 +3385,14 @@ export default function Admin() {
                                 className="px-3 py-2 bg-slate-100 text-slate-600 rounded-xl text-xs font-medium hover:bg-slate-200 transition"
                               >
                                 Batal
+                              </button>
+                            )}
+                            {booking.status === 'deposit' && (
+                              <button
+                                onClick={() => handleUpdateBookingStatus(booking.id, 'refund')}
+                                className="px-3 py-2 bg-orange-100 text-orange-700 rounded-xl text-xs font-medium hover:bg-orange-200 transition"
+                              >
+                                Refund
                               </button>
                             )}
                             {booking.status === 'paid' && (

@@ -94,12 +94,12 @@ export async function getBookedDates(propertySlug = 'lavender') {
 
   if (!property) return [];
 
-  // Get confirmed/paid bookings
+  // Get confirmed/paid/deposit bookings
   const { data: bookings, error: bookingsError } = await supabase
     .from('bookings')
     .select('check_in, check_out')
     .eq('property_id', property.id)
-    .in('status', ['confirmed', 'paid']);
+    .in('status', ['confirmed', 'paid', 'deposit']);
 
   if (bookingsError) throw bookingsError;
 

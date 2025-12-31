@@ -33,6 +33,7 @@ export default function HomestayExperience() {
   const [showBookingSuccess, setShowBookingSuccess] = useState(false);
   const [bookingDetails, setBookingDetails] = useState(null);
   const [honeypot, setHoneypot] = useState(''); // Anti-bot honeypot field
+  const [referralSource, setReferralSource] = useState(''); // Where customer heard about us
   const [heroImageLoaded, setHeroImageLoaded] = useState(false);
   const [spaceImagesLoaded, setSpaceImagesLoaded] = useState({});
   const touchStartX = useRef(0);
@@ -407,6 +408,7 @@ export default function HomestayExperience() {
           guests: guests,
           total_amount: total,
           special_requests: sanitizedMessage,
+          referral_source: referralSource,
           status: 'pending'
         });
       }
@@ -425,6 +427,7 @@ export default function HomestayExperience() {
       guests: guests,
       total: total,
       message: sanitizedMessage,
+      referralSource: referralSource,
       status: 'pending',
       createdAt: new Date().toISOString(),
       property: 'lavender'
@@ -434,10 +437,22 @@ export default function HomestayExperience() {
     existingBookings.push(newBooking);
     localStorage.setItem('bookings', JSON.stringify(existingBookings));
 
+    // Map referral source to display text
+    const referralLabels = {
+      'tiktok': 'TikTok',
+      'instagram': 'Instagram',
+      'facebook': 'Facebook',
+      'google': 'Google Search',
+      'kawan': 'Kawan-kawan',
+      'saudara': 'Saudara Mara',
+      'lain': 'Lain-lain'
+    };
+
     const bookingMessage = `*LAVENDER VILLA MELAKA – PERMOHONAN TEMPAHAN*
 
 *Nama:* ${sanitizedName}
 *No. Telefon:* ${sanitizedPhone}
+${referralSource ? `*Dari Mana Tahu:* ${referralLabels[referralSource] || referralSource}` : ''}
 
 *Daftar Masuk:* ${checkIn}
 *Daftar Keluar:* ${checkOut}
@@ -478,6 +493,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
     setCustomerName('');
     setCustomerPhone('');
     setMessage('');
+    setReferralSource('');
     setGuests(15);
   };
 
@@ -1529,6 +1545,25 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                 className="w-full px-3 sm:px-4 py-3 sm:py-4 bg-white border-2 border-slate-200 rounded-xl sm:rounded-2xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition duration-300 font-semibold text-base resize-none"
                 rows={4}
               />
+            </div>
+
+            {/* Referral Source */}
+            <div className="mb-6 sm:mb-8">
+              <label className="block text-slate-900 font-bold mb-2 text-xs sm:text-sm uppercase tracking-widest">Dari Mana Anda Tahu Tentang Kami?</label>
+              <select
+                value={referralSource}
+                onChange={(e) => setReferralSource(e.target.value)}
+                className="w-full px-3 sm:px-4 py-3 sm:py-4 bg-white border-2 border-slate-200 rounded-xl sm:rounded-2xl text-slate-900 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition duration-300 font-semibold text-base appearance-none cursor-pointer"
+              >
+                <option value="">Pilih satu...</option>
+                <option value="tiktok">TikTok</option>
+                <option value="instagram">Instagram</option>
+                <option value="facebook">Facebook</option>
+                <option value="google">Google Search</option>
+                <option value="kawan">Kawan-kawan</option>
+                <option value="saudara">Saudara Mara</option>
+                <option value="lain">Lain-lain</option>
+              </select>
             </div>
 
             {/* Pricing Summary */}
