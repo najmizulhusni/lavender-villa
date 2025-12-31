@@ -16,6 +16,26 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Hide scrollbar but keep functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari and Opera */
+}
+
+/* Fix for horizontal scroll clipping on mobile */
+@media (max-width: 639px) {
+  .scroll-container-fix {
+    margin-left: -1rem;
+    margin-right: -1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
 /* Shimmer animation for loading skeleton */
 @keyframes shimmer {
   0% {
