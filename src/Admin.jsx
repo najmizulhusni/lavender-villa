@@ -3627,8 +3627,8 @@ export default function Admin() {
                               </button>
                             )}
                             
-                            {/* Edit Date - Only for deposit/pending, and only if not already changed */}
-                            {(booking.status === 'deposit' || booking.status === 'pending') && !booking.dateChanged && (
+                            {/* Edit Date - Only for deposit/pending/paid, and only if not already changed */}
+                            {(booking.status === 'deposit' || booking.status === 'pending' || booking.status === 'paid') && !booking.dateChanged && (
                               <button
                                 onClick={() => openEditDateModal(booking)}
                                 className="px-3 py-2 bg-purple-100 text-purple-700 rounded-xl text-xs font-medium hover:bg-purple-200 transition flex items-center gap-1.5"
