@@ -2137,32 +2137,33 @@ export default function Admin() {
                 )}
               </div>
               
-              {/* Status Filter Buttons - Sticky style */}
-              <div className="flex gap-2 flex-wrap mb-4">
-                <span className="text-slate-400 text-xs self-center mr-1 hidden sm:inline">Status:</span>
+              {/* Status Filter Buttons - Horizontal Scroll on Mobile */}
+              <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap scrollbar-hide mb-4">
                 <button 
                   onClick={() => setBookingFilter('all')}
-                  className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${bookingFilter === 'all' ? 'bg-purple-500 text-white shadow-md' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
+                  className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${bookingFilter === 'all' ? 'bg-purple-500 text-white shadow-md' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
                 >
                   Semua
                 </button>
                 <button 
                   onClick={() => setBookingFilter('paid')}
-                  className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${bookingFilter === 'paid' ? 'bg-green-500 text-white shadow-md' : 'bg-green-50 text-green-700 hover:bg-green-100 border border-green-200'}`}
+                  className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap flex items-center gap-1.5 ${bookingFilter === 'paid' ? 'bg-green-500 text-white shadow-md' : 'bg-green-50 text-green-700 hover:bg-green-100 border border-green-200'}`}
                 >
-                  ✓ Selesai ({getHistoryPaidCount()})
-                </button>
-                <button 
-                  onClick={() => setBookingFilter('cancelled')}
-                  className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${bookingFilter === 'cancelled' ? 'bg-red-500 text-white shadow-md' : 'bg-red-50 text-red-700 hover:bg-red-100 border border-red-200'}`}
-                >
-                  ✗ Batal ({getHistoryCancelledCount()})
+                  <CheckCircle className="w-3.5 h-3.5" />
+                  Selesai
                 </button>
                 <button 
                   onClick={() => setBookingFilter('refund')}
-                  className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${bookingFilter === 'refund' ? 'bg-orange-500 text-white shadow-md' : 'bg-orange-50 text-orange-700 hover:bg-orange-100 border border-orange-200'}`}
+                  className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap flex items-center gap-1.5 ${bookingFilter === 'refund' ? 'bg-orange-500 text-white shadow-md' : 'bg-orange-50 text-orange-700 hover:bg-orange-100 border border-orange-200'}`}
                 >
-                  ↩ Refund ({getHistoryRefundCount()})
+                  <Wallet className="w-3.5 h-3.5" />
+                  Refund
+                </button>
+                <button 
+                  onClick={() => setBookingFilter('cancelled')}
+                  className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${bookingFilter === 'cancelled' ? 'bg-red-500 text-white shadow-md' : 'bg-red-50 text-red-700 hover:bg-red-100 border border-red-200'}`}
+                >
+                  Batal
                 </button>
               </div>
               
@@ -2219,35 +2220,70 @@ export default function Admin() {
               </div>
             ) : (
               <>
-                {/* History List */}
-                <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-                  <div className="divide-y divide-slate-100">
-                    {getHistoryBookings().sort((a, b) => new Date(b.checkIn) - new Date(a.checkIn)).map(booking => (
-                      <div key={booking.id} className="p-3 sm:p-4 hover:bg-slate-50 transition active:bg-slate-100">
-                        <div className="flex items-start justify-between gap-2 sm:gap-3">
-                          <div className="flex items-start gap-2 sm:gap-3 min-w-0 flex-1">
-                            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-slate-100 rounded-full flex items-center justify-center flex-shrink-0">
-                              <span className="text-slate-500 text-xs sm:text-sm font-bold">{booking.name?.charAt(0)?.toUpperCase()}</span>
+                {/* History List - Improved Cards matching Bookings view */}
+                <div className="space-y-3">
+                  {getHistoryBookings().sort((a, b) => new Date(b.checkIn) - new Date(a.checkIn)).map(booking => (
+                    <div 
+                      key={booking.id} 
+                      className={`bg-white rounded-2xl border-2 shadow-sm overflow-hidden transition-all hover:shadow-md ${
+                        booking.status === 'paid' ? 'border-green-200' :
+                        booking.status === 'refund' ? 'border-orange-300' :
+                        booking.status === 'cancelled' ? 'border-red-200' :
+                        'border-slate-200'
+                      }`}
+                    >
+                      {/* Status Header Bar */}
+                      <div className={`px-4 py-2 flex items-center justify-between ${
+                        booking.status === 'paid' ? 'bg-green-50' :
+                        booking.status === 'refund' ? 'bg-orange-50' :
+                        booking.status === 'cancelled' ? 'bg-red-50' :
+                        'bg-slate-50'
+                      }`}>
+                        <div className="flex items-center gap-2">
+                          <span className={`w-2 h-2 rounded-full ${
+                            booking.status === 'paid' ? 'bg-green-500' :
+                            booking.status === 'refund' ? 'bg-orange-500' :
+                            booking.status === 'cancelled' ? 'bg-red-500' :
+                            'bg-slate-400'
+                          }`}></span>
+                          <span className={`text-xs font-bold uppercase tracking-wide ${
+                            booking.status === 'paid' ? 'text-green-700' :
+                            booking.status === 'refund' ? 'text-orange-700' :
+                            booking.status === 'cancelled' ? 'text-red-700' :
+                            'text-slate-500'
+                          }`}>
+                            {booking.status === 'paid' ? 'Selesai' :
+                             booking.status === 'refund' ? 'Refund' :
+                             booking.status === 'cancelled' ? 'Dibatalkan' :
+                             'Belum'}
+                          </span>
+                        </div>
+                        <span className="text-xs text-slate-400 font-mono">{booking.id}</span>
+                      </div>
+                      
+                      {/* Card Content */}
+                      <div className="p-4">
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="flex items-start gap-3 min-w-0 flex-1">
+                            <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center flex-shrink-0 ${
+                              booking.status === 'paid' ? 'bg-green-100' :
+                              booking.status === 'refund' ? 'bg-orange-100' :
+                              booking.status === 'cancelled' ? 'bg-red-100' :
+                              'bg-slate-100'
+                            }`}>
+                              <span className={`text-sm sm:text-base font-bold ${
+                                booking.status === 'paid' ? 'text-green-600' :
+                                booking.status === 'refund' ? 'text-orange-600' :
+                                booking.status === 'cancelled' ? 'text-red-600' :
+                                'text-slate-500'
+                              }`}>{booking.name?.charAt(0)?.toUpperCase()}</span>
                             </div>
                             <div className="min-w-0 flex-1">
-                              <div className="flex items-center gap-1 sm:gap-2 flex-wrap">
-                                <span className="font-semibold text-slate-900 text-sm sm:text-base">{booking.name}</span>
-                                <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                                  booking.status === 'paid' ? 'bg-green-100 text-green-700' :
-                                  booking.status === 'refund' ? 'bg-orange-100 text-orange-700' :
-                                  booking.status === 'cancelled' ? 'bg-red-100 text-red-700' :
-                                  'bg-yellow-100 text-yellow-700'
-                                }`}>
-                                  {booking.status === 'paid' ? '✓ Selesai' :
-                                   booking.status === 'refund' ? '↩ Refund' :
-                                   booking.status === 'cancelled' ? '✗ Batal' :
-                                   'Belum'}
-                                </span>
-                              </div>
+                              <h4 className="font-bold text-slate-900 text-base">{booking.name}</h4>
                               <div className="text-xs text-slate-500 mt-1">
                                 <span className="text-purple-600 font-medium">{properties.find(p => p.id === booking.property)?.name?.replace(' Melaka', '') || 'Lavender Villa'}</span>
                               </div>
-                              <div className="flex items-center gap-1 sm:gap-2 text-xs text-slate-500 mt-0.5 flex-wrap">
+                              <div className="flex items-center gap-2 text-xs text-slate-500 mt-1 flex-wrap">
                                 <span>{new Date(booking.checkIn).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
                                 <span>→</span>
                                 <span>{new Date(booking.checkOut).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short' })}</span>
@@ -2264,13 +2300,12 @@ export default function Admin() {
                           
                           {/* Price */}
                           <div className="text-right flex-shrink-0">
-                            <p className="font-bold text-slate-900 text-sm sm:text-base">RM {booking.total?.toLocaleString()}</p>
-                            <p className="text-xs text-slate-400 font-mono mt-0.5 hidden sm:block">{booking.id}</p>
+                            <p className="font-bold text-slate-900 text-base sm:text-lg">RM {booking.total?.toLocaleString()}</p>
                           </div>
                         </div>
                         
-                        {/* Actions - Touch friendly */}
-                        <div className="flex items-center gap-2 mt-3 pt-3 border-t border-slate-100">
+                        {/* Actions */}
+                        <div className="flex items-center gap-2 mt-4 pt-3 border-t border-slate-100">
                           <a
                             href={`tel:${booking.phone}`}
                             className="flex-1 sm:flex-none px-3 py-2 bg-slate-100 text-slate-700 rounded-xl text-xs font-medium hover:bg-slate-200 transition flex items-center justify-center gap-1.5"
@@ -2296,8 +2331,8 @@ export default function Admin() {
                           </button>
                         </div>
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  ))}
                 </div>
                 
                 {/* Summary */}
@@ -2930,34 +2965,34 @@ export default function Admin() {
                   onClick={() => setBookingFilter('all')}
                   className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${bookingFilter === 'all' ? 'bg-purple-500 text-white shadow-md' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
                 >
-                  Semua ({getFilteredBookings().length})
+                  Semua
                 </button>
                 <button 
                   onClick={() => setBookingFilter('pending')}
                   className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap flex items-center gap-1.5 ${bookingFilter === 'pending' ? 'bg-yellow-500 text-white shadow-md' : 'bg-yellow-50 text-yellow-700 hover:bg-yellow-100 border border-yellow-200'}`}
                 >
                   <Clock className="w-3.5 h-3.5" />
-                  Belum ({getActivePendingCount()})
+                  Belum
                 </button>
                 <button 
                   onClick={() => setBookingFilter('paid')}
                   className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap flex items-center gap-1.5 ${bookingFilter === 'paid' ? 'bg-green-500 text-white shadow-md' : 'bg-green-50 text-green-700 hover:bg-green-100 border border-green-200'}`}
                 >
                   <CheckCircle className="w-3.5 h-3.5" />
-                  Bayar ({getActivePaidCount()})
+                  Bayar
                 </button>
                 <button 
                   onClick={() => setBookingFilter('refund')}
                   className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap flex items-center gap-1.5 ${bookingFilter === 'refund' ? 'bg-orange-500 text-white shadow-md' : 'bg-orange-50 text-orange-700 hover:bg-orange-100 border border-orange-200'}`}
                 >
                   <Wallet className="w-3.5 h-3.5" />
-                  Refund ({getActiveRefundCount()})
+                  Refund
                 </button>
                 <button 
                   onClick={() => setBookingFilter('cancelled')}
                   className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${bookingFilter === 'cancelled' ? 'bg-red-500 text-white shadow-md' : 'bg-red-50 text-red-700 hover:bg-red-100 border border-red-200'}`}
                 >
-                  Batal ({getActiveCancelledCount()})
+                  Batal
                 </button>
               </div>
               
