@@ -3430,9 +3430,11 @@ export default function Admin() {
                 <div className="space-y-3">
                   {getFilteredBookings()
                     .sort((a, b) => {
-                      // Priority: pending first, then deposit, then refund, then by check-in date
+                      // Priority: pending first, then deposit, then refund, then by check-in date (soonest first)
                       const statusPriority = { pending: 0, deposit: 1, refund: 2, paid: 3, cancelled: 4 };
-                      const priorityDiff = (statusPriority[a.status] || 5) - (statusPriority[b.status] || 5);
+                      const aStatus = a.status || 'pending';
+                      const bStatus = b.status || 'pending';
+                      const priorityDiff = (statusPriority[aStatus] ?? 5) - (statusPriority[bStatus] ?? 5);
                       if (priorityDiff !== 0) return priorityDiff;
                       return new Date(a.checkIn) - new Date(b.checkIn);
                     })
