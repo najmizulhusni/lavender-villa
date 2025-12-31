@@ -60,11 +60,11 @@ export default function FAQ() {
     },
     {
       q: 'Berapa deposit untuk tempahan?',
-      a: 'Deposit RM300 untuk tempahan biasa. Untuk majlis ringkas seperti pertunangan atau akikah yang menjemput orang luar, deposit adalah RM500. Bayaran penuh perlu dijelaskan 3 hari sebelum check-in. Deposit akan dipulangkan dalam 24 jam selepas check-out jika tiada kerosakan.'
+      a: 'Deposit RM300 untuk tempahan biasa. Untuk majlis ringkas seperti pertunangan atau akikah yang menjemput orang luar, deposit adalah RM500. Bayaran penuh perlu dijelaskan 5 hari sebelum check-in. Deposit akan dipulangkan dalam 24 jam selepas check-out jika tiada kerosakan.'
     },
     {
       q: 'Apakah polisi pembatalan?',
-      a: 'Pembatalan atau perubahan tarikh mestilah 4 minggu sebelum check-in. Jika tidak, deposit tidak akan dipulangkan.'
+      a: 'Pembatalan tempahan akan menyebabkan deposit tidak dipulangkan. Pertukaran tarikh hendaklah dibuat sebulan sebelum tarikh check-in dan hanya dibenarkan sekali sahaja.'
     },
     {
       q: 'Apakah waktu check-in dan check-out?',
