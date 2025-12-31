@@ -2133,6 +2133,90 @@ export default function Admin() {
               })()}
             </div>
 
+            {/* Referral Source Chart */}
+            <div className="bg-white rounded-2xl p-5 border border-slate-200">
+              <div className="flex items-center gap-2 mb-4">
+                <Users className="w-5 h-5 text-purple-500" />
+                <h3 className="font-bold text-slate-900">Dari Mana Pelanggan Tahu?</h3>
+              </div>
+              
+              {(() => {
+                // Count referral sources from all bookings
+                const referralLabels = {
+                  'tiktok': { label: 'TikTok', color: 'bg-pink-500', bgLight: 'bg-pink-100', text: 'text-pink-600' },
+                  'instagram': { label: 'Instagram', color: 'bg-purple-500', bgLight: 'bg-purple-100', text: 'text-purple-600' },
+                  'facebook': { label: 'Facebook', color: 'bg-blue-500', bgLight: 'bg-blue-100', text: 'text-blue-600' },
+                  'google': { label: 'Google', color: 'bg-red-500', bgLight: 'bg-red-100', text: 'text-red-600' },
+                  'kawan': { label: 'Kawan', color: 'bg-green-500', bgLight: 'bg-green-100', text: 'text-green-600' },
+                  'saudara': { label: 'Saudara', color: 'bg-orange-500', bgLight: 'bg-orange-100', text: 'text-orange-600' },
+                  'lain': { label: 'Lain-lain', color: 'bg-slate-500', bgLight: 'bg-slate-100', text: 'text-slate-600' }
+                };
+                
+                const sourceCounts = {};
+                let totalWithSource = 0;
+                
+                bookings.forEach(b => {
+                  if (b.referralSource) {
+                    sourceCounts[b.referralSource] = (sourceCounts[b.referralSource] || 0) + 1;
+                    totalWithSource++;
+                  }
+                });
+                
+                // Sort by count descending
+                const sortedSources = Object.entries(sourceCounts)
+                  .sort((a, b) => b[1] - a[1]);
+                
+                const maxCount = sortedSources.length > 0 ? sortedSources[0][1] : 1;
+                
+                if (sortedSources.length === 0) {
+                  return (
+                    <div className="text-center py-8">
+                      <Users className="w-12 h-12 text-slate-200 mx-auto mb-3" />
+                      <p className="text-slate-400 text-sm">Tiada data sumber pelanggan</p>
+                      <p className="text-slate-300 text-xs mt-1">Data akan muncul apabila pelanggan mengisi borang tempahan</p>
+                    </div>
+                  );
+                }
+                
+                return (
+                  <div className="space-y-3">
+                    {sortedSources.map(([source, count]) => {
+                      const info = referralLabels[source] || referralLabels['lain'];
+                      const percentage = Math.round((count / totalWithSource) * 100);
+                      const barWidth = Math.round((count / maxCount) * 100);
+                      
+                      return (
+                        <div key={source} className="group">
+                          <div className="flex items-center justify-between mb-1">
+                            <div className="flex items-center gap-2">
+                              <div className={`w-3 h-3 rounded-full ${info.color}`}></div>
+                              <span className="text-sm font-medium text-slate-700">{info.label}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <span className={`text-sm font-bold ${info.text}`}>{count}</span>
+                              <span className="text-xs text-slate-400">({percentage}%)</span>
+                            </div>
+                          </div>
+                          <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+                            <div 
+                              className={`h-full ${info.color} rounded-full transition-all duration-500`}
+                              style={{ width: `${barWidth}%` }}
+                            ></div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                    
+                    {/* Total */}
+                    <div className="pt-3 mt-3 border-t border-slate-100 flex items-center justify-between">
+                      <span className="text-sm text-slate-500">Jumlah Respons</span>
+                      <span className="text-lg font-bold text-slate-900">{totalWithSource}</span>
+                    </div>
+                  </div>
+                );
+              })()}
+            </div>
+
             {/* WhatsApp Templates - Clean Grid */}
             <div className="bg-white rounded-2xl p-5 border border-slate-200">
               <div className="flex items-center gap-2 mb-4">
@@ -3445,7 +3529,7 @@ export default function Admin() {
                                 className="flex-1 sm:flex-none px-4 py-2.5 bg-green-500 text-white rounded-xl text-sm font-bold hover:bg-green-600 transition shadow-md shadow-green-500/30 flex items-center justify-center gap-2"
                               >
                                 <CheckCircle className="w-4 h-4" />
-                                Bayaran Penuh
+                                Full
                               </button>
                             )}
                             {booking.status === 'refund' && (
