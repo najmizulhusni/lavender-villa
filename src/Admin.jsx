@@ -1668,7 +1668,7 @@ export default function Admin() {
             <div className="w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full overflow-hidden shadow-md shadow-purple-500/30 group-hover:shadow-lg group-hover:shadow-purple-500/40 transition-shadow border-2 border-purple-200">
               <VillaIcon className="w-full h-full" />
             </div>
-            <span className="font-bold text-xs sm:text-sm md:text-base text-slate-900 tracking-tight hidden sm:inline">Admin Panel</span>
+            <span className="font-bold text-xs sm:text-sm md:text-base text-slate-900 tracking-tight hidden sm:inline">Pengurusan</span>
           </a>
           <div className="flex items-center gap-2">
             <a href="/" className="text-slate-600 hover:text-purple-600 transition-colors font-semibold cursor-pointer text-xs sm:text-sm whitespace-nowrap px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-full hover:bg-purple-50 active:bg-purple-100 hidden sm:block">
@@ -1684,7 +1684,7 @@ export default function Admin() {
       {/* Header */}
       <div className="py-12 sm:py-16 pt-20 sm:pt-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center">
-          <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-2">Admin Panel</h1>
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-2">Pengurusan Tempahan</h1>
           <p className="text-slate-500 text-sm sm:text-base">Mengurus tempahan untuk semua villa & homestay</p>
         </div>
       </div>
@@ -3565,6 +3565,25 @@ export default function Admin() {
           </div>
         </div>
       )}
+
+      {/* Footer */}
+      <footer className="bg-slate-100 border-t border-slate-200 py-6 mt-12">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="text-center sm:text-left">
+              <p className="text-slate-500 text-sm">© 2025 Lavender Villa Melaka</p>
+              <p className="text-slate-400 text-xs">Sistem Pengurusan Tempahan</p>
+            </div>
+            <div className="flex items-center gap-2 text-sm">
+              <span className="text-slate-400">Masalah teknikal?</span>
+              <a href="https://wa.me/6001111458752" target="_blank" rel="noopener noreferrer" className="text-purple-600 hover:text-purple-700 font-medium flex items-center gap-1">
+                <Phone className="w-3.5 h-3.5" />
+                Najmi (011-1145 8752)
+              </a>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
