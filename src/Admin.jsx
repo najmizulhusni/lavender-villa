@@ -853,6 +853,10 @@ export default function Admin() {
     const todayStr = getTodayStr();
     return bookings.filter(b => b.checkOut >= todayStr && (b.status || 'pending') === 'pending').length;
   };
+  const getActiveDepositCount = () => {
+    const todayStr = getTodayStr();
+    return bookings.filter(b => b.checkOut >= todayStr && b.status === 'deposit').length;
+  };
   const getActivePaidCount = () => {
     const todayStr = getTodayStr();
     return bookings.filter(b => b.checkOut >= todayStr && b.status === 'paid').length;
@@ -2320,6 +2324,20 @@ export default function Admin() {
                   Semua
                 </button>
                 <button 
+                  onClick={() => setBookingFilter('pending')}
+                  className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap flex items-center gap-1.5 ${bookingFilter === 'pending' ? 'bg-yellow-500 text-white shadow-md' : 'bg-yellow-50 text-yellow-700 hover:bg-yellow-100 border border-yellow-200'}`}
+                >
+                  <Clock className="w-3.5 h-3.5" />
+                  Belum
+                </button>
+                <button 
+                  onClick={() => setBookingFilter('deposit')}
+                  className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap flex items-center gap-1.5 ${bookingFilter === 'deposit' ? 'bg-blue-500 text-white shadow-md' : 'bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200'}`}
+                >
+                  <Wallet className="w-3.5 h-3.5" />
+                  Deposit
+                </button>
+                <button 
                   onClick={() => setBookingFilter('paid')}
                   className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap flex items-center gap-1.5 ${bookingFilter === 'paid' ? 'bg-green-500 text-white shadow-md' : 'bg-green-50 text-green-700 hover:bg-green-100 border border-green-200'}`}
                 >
@@ -2400,6 +2418,8 @@ export default function Admin() {
                     <div 
                       key={booking.id} 
                       className={`bg-white rounded-2xl border-2 shadow-sm overflow-hidden transition-all hover:shadow-md ${
+                        booking.status === 'pending' ? 'border-yellow-300' :
+                        booking.status === 'deposit' ? 'border-blue-300' :
                         booking.status === 'paid' ? 'border-green-200' :
                         booking.status === 'refund' ? 'border-orange-300' :
                         booking.status === 'cancelled' ? 'border-red-200' :
@@ -2408,6 +2428,8 @@ export default function Admin() {
                     >
                       {/* Status Header Bar */}
                       <div className={`px-4 py-2 flex items-center justify-between ${
+                        booking.status === 'pending' ? 'bg-yellow-50' :
+                        booking.status === 'deposit' ? 'bg-blue-50' :
                         booking.status === 'paid' ? 'bg-green-50' :
                         booking.status === 'refund' ? 'bg-orange-50' :
                         booking.status === 'cancelled' ? 'bg-red-50' :
@@ -2415,18 +2437,24 @@ export default function Admin() {
                       }`}>
                         <div className="flex items-center gap-2">
                           <span className={`w-2 h-2 rounded-full ${
+                            booking.status === 'pending' ? 'bg-yellow-500' :
+                            booking.status === 'deposit' ? 'bg-blue-500' :
                             booking.status === 'paid' ? 'bg-green-500' :
                             booking.status === 'refund' ? 'bg-orange-500' :
                             booking.status === 'cancelled' ? 'bg-red-500' :
                             'bg-slate-400'
                           }`}></span>
                           <span className={`text-xs font-bold uppercase tracking-wide ${
+                            booking.status === 'pending' ? 'text-yellow-700' :
+                            booking.status === 'deposit' ? 'text-blue-700' :
                             booking.status === 'paid' ? 'text-green-700' :
                             booking.status === 'refund' ? 'text-orange-700' :
                             booking.status === 'cancelled' ? 'text-red-700' :
                             'text-slate-500'
                           }`}>
-                            {booking.status === 'paid' ? 'Selesai' :
+                            {booking.status === 'pending' ? 'Belum Bayar' :
+                             booking.status === 'deposit' ? 'Deposit' :
+                             booking.status === 'paid' ? 'Selesai' :
                              booking.status === 'refund' ? 'Refund' :
                              booking.status === 'cancelled' ? 'Dibatalkan' :
                              'Belum'}
@@ -2440,12 +2468,16 @@ export default function Admin() {
                         <div className="flex items-start justify-between gap-3">
                           <div className="flex items-start gap-3 min-w-0 flex-1">
                             <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center flex-shrink-0 ${
+                              booking.status === 'pending' ? 'bg-yellow-100' :
+                              booking.status === 'deposit' ? 'bg-blue-100' :
                               booking.status === 'paid' ? 'bg-green-100' :
                               booking.status === 'refund' ? 'bg-orange-100' :
                               booking.status === 'cancelled' ? 'bg-red-100' :
                               'bg-slate-100'
                             }`}>
                               <span className={`text-sm sm:text-base font-bold ${
+                                booking.status === 'pending' ? 'text-yellow-600' :
+                                booking.status === 'deposit' ? 'text-blue-600' :
                                 booking.status === 'paid' ? 'text-green-600' :
                                 booking.status === 'refund' ? 'text-orange-600' :
                                 booking.status === 'cancelled' ? 'text-red-600' :
@@ -3037,12 +3069,12 @@ export default function Admin() {
         {adminView === 'bookings' && (
           <div className="space-y-4">
             {/* Quick Action Summary - Priority Tasks */}
-            {(getActivePendingCount() > 0 || getActiveRefundCount() > 0) && (
-              <div className="grid grid-cols-2 gap-3">
+            {(getActivePendingCount() > 0 || getActiveDepositCount() > 0 || getActiveRefundCount() > 0) && (
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {getActivePendingCount() > 0 && (
                   <button
                     onClick={() => setBookingFilter('pending')}
-                    className={`p-4 rounded-2xl border-2 transition-all ${
+                    className={`p-3 sm:p-4 rounded-2xl border-2 transition-all ${
                       bookingFilter === 'pending' 
                         ? 'bg-yellow-500 border-yellow-500 text-white shadow-lg' 
                         : 'bg-yellow-50 border-yellow-200 hover:border-yellow-400'
@@ -3050,17 +3082,43 @@ export default function Admin() {
                   >
                     <div className="flex items-center justify-between">
                       <div className="text-left">
-                        <p className={`text-2xl font-bold ${bookingFilter === 'pending' ? 'text-white' : 'text-yellow-600'}`}>
+                        <p className={`text-xl sm:text-2xl font-bold ${bookingFilter === 'pending' ? 'text-white' : 'text-yellow-600'}`}>
                           {getActivePendingCount()}
                         </p>
                         <p className={`text-xs font-medium ${bookingFilter === 'pending' ? 'text-yellow-100' : 'text-yellow-700'}`}>
-                          Menunggu Bayaran
+                          Belum Bayar
                         </p>
                       </div>
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                      <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center ${
                         bookingFilter === 'pending' ? 'bg-white/20' : 'bg-yellow-100'
                       }`}>
-                        <Clock className={`w-5 h-5 ${bookingFilter === 'pending' ? 'text-white' : 'text-yellow-600'}`} />
+                        <Clock className={`w-4 h-4 sm:w-5 sm:h-5 ${bookingFilter === 'pending' ? 'text-white' : 'text-yellow-600'}`} />
+                      </div>
+                    </div>
+                  </button>
+                )}
+                {getActiveDepositCount() > 0 && (
+                  <button
+                    onClick={() => setBookingFilter('deposit')}
+                    className={`p-3 sm:p-4 rounded-2xl border-2 transition-all ${
+                      bookingFilter === 'deposit' 
+                        ? 'bg-blue-500 border-blue-500 text-white shadow-lg' 
+                        : 'bg-blue-50 border-blue-200 hover:border-blue-400'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="text-left">
+                        <p className={`text-xl sm:text-2xl font-bold ${bookingFilter === 'deposit' ? 'text-white' : 'text-blue-600'}`}>
+                          {getActiveDepositCount()}
+                        </p>
+                        <p className={`text-xs font-medium ${bookingFilter === 'deposit' ? 'text-blue-100' : 'text-blue-700'}`}>
+                          Deposit
+                        </p>
+                      </div>
+                      <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center ${
+                        bookingFilter === 'deposit' ? 'bg-white/20' : 'bg-blue-100'
+                      }`}>
+                        <Wallet className={`w-4 h-4 sm:w-5 sm:h-5 ${bookingFilter === 'deposit' ? 'text-white' : 'text-blue-600'}`} />
                       </div>
                     </div>
                   </button>
@@ -3068,7 +3126,7 @@ export default function Admin() {
                 {getActiveRefundCount() > 0 && (
                   <button
                     onClick={() => setBookingFilter('refund')}
-                    className={`p-4 rounded-2xl border-2 transition-all ${
+                    className={`p-3 sm:p-4 rounded-2xl border-2 transition-all ${
                       bookingFilter === 'refund' 
                         ? 'bg-orange-500 border-orange-500 text-white shadow-lg' 
                         : 'bg-orange-50 border-orange-200 hover:border-orange-400'
@@ -3076,47 +3134,33 @@ export default function Admin() {
                   >
                     <div className="flex items-center justify-between">
                       <div className="text-left">
-                        <p className={`text-2xl font-bold ${bookingFilter === 'refund' ? 'text-white' : 'text-orange-600'}`}>
+                        <p className={`text-xl sm:text-2xl font-bold ${bookingFilter === 'refund' ? 'text-white' : 'text-orange-600'}`}>
                           {getActiveRefundCount()}
                         </p>
                         <p className={`text-xs font-medium ${bookingFilter === 'refund' ? 'text-orange-100' : 'text-orange-700'}`}>
-                          Perlu Refund
+                          Refund
                         </p>
                       </div>
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                      <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center ${
                         bookingFilter === 'refund' ? 'bg-white/20' : 'bg-orange-100'
                       }`}>
-                        <Wallet className={`w-5 h-5 ${bookingFilter === 'refund' ? 'text-white' : 'text-orange-600'}`} />
+                        <Wallet className={`w-4 h-4 sm:w-5 sm:h-5 ${bookingFilter === 'refund' ? 'text-white' : 'text-orange-600'}`} />
                       </div>
                     </div>
                   </button>
                 )}
-                {getActivePendingCount() === 0 && getActiveRefundCount() > 0 && (
-                  <div className="p-4 rounded-2xl bg-green-50 border-2 border-green-200">
-                    <div className="flex items-center justify-between">
-                      <div className="text-left">
-                        <p className="text-2xl font-bold text-green-600">{getActivePaidCount()}</p>
-                        <p className="text-xs font-medium text-green-700">Telah Bayar</p>
-                      </div>
-                      <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
-                        <CheckCircle className="w-5 h-5 text-green-600" />
-                      </div>
+                {/* Show Paid count as info card */}
+                <div className="p-3 sm:p-4 rounded-2xl bg-green-50 border-2 border-green-200">
+                  <div className="flex items-center justify-between">
+                    <div className="text-left">
+                      <p className="text-xl sm:text-2xl font-bold text-green-600">{getActivePaidCount()}</p>
+                      <p className="text-xs font-medium text-green-700">Full</p>
+                    </div>
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-green-100 flex items-center justify-center">
+                      <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
                     </div>
                   </div>
-                )}
-                {getActiveRefundCount() === 0 && getActivePendingCount() > 0 && (
-                  <div className="p-4 rounded-2xl bg-green-50 border-2 border-green-200">
-                    <div className="flex items-center justify-between">
-                      <div className="text-left">
-                        <p className="text-2xl font-bold text-green-600">{getActivePaidCount()}</p>
-                        <p className="text-xs font-medium text-green-700">Telah Bayar</p>
-                      </div>
-                      <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
-                        <CheckCircle className="w-5 h-5 text-green-600" />
-                      </div>
-                    </div>
-                  </div>
-                )}
+                </div>
               </div>
             )}
 
@@ -3382,9 +3426,9 @@ export default function Admin() {
                 <div className="space-y-3">
                   {getFilteredBookings()
                     .sort((a, b) => {
-                      // Priority: pending first, then refund, then by check-in date
-                      const statusPriority = { pending: 0, refund: 1, paid: 2, cancelled: 3 };
-                      const priorityDiff = (statusPriority[a.status] || 4) - (statusPriority[b.status] || 4);
+                      // Priority: pending first, then deposit, then refund, then by check-in date
+                      const statusPriority = { pending: 0, deposit: 1, refund: 2, paid: 3, cancelled: 4 };
+                      const priorityDiff = (statusPriority[a.status] || 5) - (statusPriority[b.status] || 5);
                       if (priorityDiff !== 0) return priorityDiff;
                       return new Date(a.checkIn) - new Date(b.checkIn);
                     })
