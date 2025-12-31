@@ -2284,7 +2284,20 @@ export default function Admin() {
                               <div className="text-xs text-slate-500 mt-1">
                                 <span className="text-purple-600 font-medium">{properties.find(p => p.id === booking.property)?.name?.replace(' Melaka', '') || 'Lavender Villa'}</span>
                               </div>
-                              <div className="flex items-center gap-2 text-xs text-slate-500 mt-1 flex-wrap">
+                              {/* Mobile: Stack vertically with icons */}
+                              <div className="flex flex-col gap-1 mt-2 sm:hidden">
+                                <div className="flex items-center gap-1.5 text-xs text-slate-500">
+                                  <CalendarDays className="w-3.5 h-3.5 text-slate-400" />
+                                  <span>{new Date(booking.checkIn).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short', year: 'numeric' })} → {new Date(booking.checkOut).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short' })}</span>
+                                </div>
+                                <div className="flex items-center gap-1.5 text-xs text-slate-500">
+                                  <Clock className="w-3.5 h-3.5 text-slate-400" />
+                                  <span>{booking.nights} malam</span>
+                                </div>
+                              </div>
+                              {/* Desktop: Single line */}
+                              <div className="hidden sm:flex items-center gap-2 text-xs text-slate-500 mt-1 flex-wrap">
+                                <CalendarDays className="w-3.5 h-3.5" />
                                 <span>{new Date(booking.checkIn).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
                                 <span>→</span>
                                 <span>{new Date(booking.checkOut).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short' })}</span>
@@ -3257,7 +3270,25 @@ export default function Admin() {
                                 <p className="text-sm text-purple-600 font-medium">
                                   {properties.find(p => p.id === booking.property)?.name?.replace(' Melaka', '') || 'Lavender Villa'}
                                 </p>
-                                <div className="flex items-center gap-2 text-xs text-slate-500 mt-1">
+                                {/* Mobile: Stack vertically with icons */}
+                                <div className="flex flex-col gap-1 mt-2 sm:hidden">
+                                  <div className="flex items-center gap-1.5 text-xs text-slate-500">
+                                    <CalendarDays className="w-3.5 h-3.5 text-slate-400" />
+                                    <span>{new Date(booking.checkIn).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short' })} → {new Date(booking.checkOut).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short' })}</span>
+                                  </div>
+                                  <div className="flex items-center gap-3 text-xs text-slate-500">
+                                    <span className="flex items-center gap-1">
+                                      <Clock className="w-3.5 h-3.5 text-slate-400" />
+                                      {booking.nights} malam
+                                    </span>
+                                    <span className="flex items-center gap-1">
+                                      <Users className="w-3.5 h-3.5 text-slate-400" />
+                                      {booking.guests} orang
+                                    </span>
+                                  </div>
+                                </div>
+                                {/* Desktop: Single line with icons */}
+                                <div className="hidden sm:flex items-center gap-2 text-xs text-slate-500 mt-1">
                                   <CalendarDays className="w-3.5 h-3.5" />
                                   <span>{new Date(booking.checkIn).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short' })}</span>
                                   <span>→</span>
