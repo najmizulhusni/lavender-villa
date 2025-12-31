@@ -1668,6 +1668,7 @@ export default function Admin() {
             <div className="w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full overflow-hidden shadow-md shadow-purple-500/30 group-hover:shadow-lg group-hover:shadow-purple-500/40 transition-shadow border-2 border-purple-200">
               <VillaIcon className="w-full h-full" />
             </div>
+            <span className="font-bold text-xs text-slate-900 tracking-tight sm:hidden">Admin</span>
             <span className="font-bold text-xs sm:text-sm md:text-base text-slate-900 tracking-tight hidden sm:inline">Pengurusan</span>
           </a>
           <div className="flex items-center gap-2">
