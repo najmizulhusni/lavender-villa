@@ -1550,20 +1550,59 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
             {/* Referral Source */}
             <div className="mb-6 sm:mb-8">
               <label className="block text-slate-900 font-bold mb-2 text-xs sm:text-sm uppercase tracking-widest">Dari Mana Anda Tahu Tentang Kami?</label>
-              <select
-                value={referralSource}
-                onChange={(e) => setReferralSource(e.target.value)}
-                className="w-full px-3 sm:px-4 py-3 sm:py-4 bg-white border-2 border-slate-200 rounded-xl sm:rounded-2xl text-slate-900 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition duration-300 font-semibold text-base appearance-none cursor-pointer"
-              >
-                <option value="">Pilih satu...</option>
-                <option value="tiktok">TikTok</option>
-                <option value="instagram">Instagram</option>
-                <option value="facebook">Facebook</option>
-                <option value="google">Google Search</option>
-                <option value="kawan">Kawan-kawan</option>
-                <option value="saudara">Saudara Mara</option>
-                <option value="lain">Lain-lain</option>
-              </select>
+              <div className="relative">
+                <button 
+                  type="button"
+                  onClick={() => setShowCalendar(showCalendar === 'referral' ? null : 'referral')}
+                  className="w-full px-3 sm:px-4 py-3 sm:py-4 bg-white border-2 border-slate-200 rounded-xl sm:rounded-2xl text-left focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition duration-300 flex items-center justify-between"
+                >
+                  <span className={`font-semibold text-sm ${referralSource ? 'text-slate-900' : 'text-slate-400'}`}>
+                    {referralSource ? {
+                      'tiktok': 'TikTok',
+                      'instagram': 'Instagram',
+                      'facebook': 'Facebook',
+                      'google': 'Google Search',
+                      'kawan': 'Kawan-kawan',
+                      'saudara': 'Saudara Mara',
+                      'lain': 'Lain-lain'
+                    }[referralSource] : 'Pilih satu...'}
+                  </span>
+                  <ChevronRight className={`w-5 h-5 text-slate-400 transition-transform ${showCalendar === 'referral' ? 'rotate-90' : ''}`} />
+                </button>
+                
+                {/* Referral Dropdown */}
+                {showCalendar === 'referral' && (
+                  <div className="fixed sm:absolute inset-x-4 sm:inset-x-auto top-1/2 sm:top-full left-auto sm:left-0 right-auto sm:right-0 -translate-y-1/2 sm:translate-y-0 sm:mt-2 bg-white rounded-2xl shadow-xl border border-slate-200 p-2 z-50 max-h-80 overflow-y-auto max-w-sm mx-auto sm:max-w-none">
+                    <div className="flex items-center justify-between mb-2 px-2 sm:hidden">
+                      <span className="font-bold text-slate-900 text-sm">Dari Mana Tahu?</span>
+                      <button onClick={() => setShowCalendar(null)} className="p-1 hover:bg-slate-100 rounded-lg transition">
+                        <X className="w-5 h-5 text-slate-500" />
+                      </button>
+                    </div>
+                    {[
+                      { value: 'tiktok', label: 'TikTok' },
+                      { value: 'instagram', label: 'Instagram' },
+                      { value: 'facebook', label: 'Facebook' },
+                      { value: 'google', label: 'Google Search' },
+                      { value: 'kawan', label: 'Kawan-kawan' },
+                      { value: 'saudara', label: 'Saudara Mara' },
+                      { value: 'lain', label: 'Lain-lain' }
+                    ].map(option => (
+                      <button
+                        key={option.value}
+                        onClick={() => { setReferralSource(option.value); setShowCalendar(null); }}
+                        className={`w-full px-4 py-3 text-left rounded-xl transition text-sm ${
+                          referralSource === option.value 
+                            ? 'bg-purple-500 text-white font-semibold' 
+                            : 'hover:bg-purple-50 text-slate-700'
+                        }`}
+                      >
+                        {option.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Pricing Summary */}
