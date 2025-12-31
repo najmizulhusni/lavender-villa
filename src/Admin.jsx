@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Sparkles, X, Trash2, ChevronLeft, ChevronRight, MapPin, TrendingUp, Users, CalendarDays, Lock, Eye, EyeOff, Phone, CheckCircle, Clock, XCircle, ClipboardList, Plus, FileText, Send, Navigation, ScrollText, Bell, Key, Heart, Copy } from 'lucide-react';
+import { Sparkles, X, Trash2, ChevronLeft, ChevronRight, MapPin, TrendingUp, Users, CalendarDays, Lock, Eye, EyeOff, Phone, CheckCircle, Clock, XCircle, ClipboardList, Plus, FileText, Send, Navigation, ScrollText, Bell, Key, Heart, Copy, Wallet } from 'lucide-react';
 import { adminLogin, updateAdminPassword, getAllBookings, updateBookingStatus, deleteBooking, getBookedDates, addBlockedDate, removeBlockedDate, getManuallyBlockedDates } from './lib/database';
 import { supabase } from './lib/supabase';
 
@@ -2814,12 +2814,96 @@ export default function Admin() {
         {/* Bookings View */}
         {adminView === 'bookings' && (
           <div className="space-y-4">
-            {/* Filter Panel - Always visible */}
-            <div className="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-sm">
+            {/* Quick Action Summary - Priority Tasks */}
+            {(getActivePendingCount() > 0 || getActiveRefundCount() > 0) && (
+              <div className="grid grid-cols-2 gap-3">
+                {getActivePendingCount() > 0 && (
+                  <button
+                    onClick={() => setBookingFilter('pending')}
+                    className={`p-4 rounded-2xl border-2 transition-all ${
+                      bookingFilter === 'pending' 
+                        ? 'bg-yellow-500 border-yellow-500 text-white shadow-lg' 
+                        : 'bg-yellow-50 border-yellow-200 hover:border-yellow-400'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="text-left">
+                        <p className={`text-2xl font-bold ${bookingFilter === 'pending' ? 'text-white' : 'text-yellow-600'}`}>
+                          {getActivePendingCount()}
+                        </p>
+                        <p className={`text-xs font-medium ${bookingFilter === 'pending' ? 'text-yellow-100' : 'text-yellow-700'}`}>
+                          Menunggu Bayaran
+                        </p>
+                      </div>
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                        bookingFilter === 'pending' ? 'bg-white/20' : 'bg-yellow-100'
+                      }`}>
+                        <Clock className={`w-5 h-5 ${bookingFilter === 'pending' ? 'text-white' : 'text-yellow-600'}`} />
+                      </div>
+                    </div>
+                  </button>
+                )}
+                {getActiveRefundCount() > 0 && (
+                  <button
+                    onClick={() => setBookingFilter('refund')}
+                    className={`p-4 rounded-2xl border-2 transition-all ${
+                      bookingFilter === 'refund' 
+                        ? 'bg-orange-500 border-orange-500 text-white shadow-lg' 
+                        : 'bg-orange-50 border-orange-200 hover:border-orange-400'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="text-left">
+                        <p className={`text-2xl font-bold ${bookingFilter === 'refund' ? 'text-white' : 'text-orange-600'}`}>
+                          {getActiveRefundCount()}
+                        </p>
+                        <p className={`text-xs font-medium ${bookingFilter === 'refund' ? 'text-orange-100' : 'text-orange-700'}`}>
+                          Perlu Refund
+                        </p>
+                      </div>
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                        bookingFilter === 'refund' ? 'bg-white/20' : 'bg-orange-100'
+                      }`}>
+                        <Wallet className={`w-5 h-5 ${bookingFilter === 'refund' ? 'text-white' : 'text-orange-600'}`} />
+                      </div>
+                    </div>
+                  </button>
+                )}
+                {getActivePendingCount() === 0 && getActiveRefundCount() > 0 && (
+                  <div className="p-4 rounded-2xl bg-green-50 border-2 border-green-200">
+                    <div className="flex items-center justify-between">
+                      <div className="text-left">
+                        <p className="text-2xl font-bold text-green-600">{getActivePaidCount()}</p>
+                        <p className="text-xs font-medium text-green-700">Telah Bayar</p>
+                      </div>
+                      <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
+                        <CheckCircle className="w-5 h-5 text-green-600" />
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {getActiveRefundCount() === 0 && getActivePendingCount() > 0 && (
+                  <div className="p-4 rounded-2xl bg-green-50 border-2 border-green-200">
+                    <div className="flex items-center justify-between">
+                      <div className="text-left">
+                        <p className="text-2xl font-bold text-green-600">{getActivePaidCount()}</p>
+                        <p className="text-xs font-medium text-green-700">Telah Bayar</p>
+                      </div>
+                      <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
+                        <CheckCircle className="w-5 h-5 text-green-600" />
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Filter Panel */}
+            <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-sm">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-bold text-slate-900 flex items-center gap-2">
-                  <CalendarDays className="w-4 h-4 text-purple-500" />
-                  Tempahan Aktif
+                  <ClipboardList className="w-4 h-4 text-purple-500" />
+                  Senarai Tempahan
                 </h3>
                 <div className="flex items-center gap-2">
                   {(bookingFilter !== 'all' || propertyFilter !== 'all' || dateFilterFrom || dateFilterTo) && (
@@ -2832,7 +2916,7 @@ export default function Admin() {
                   )}
                   <button
                     onClick={() => setShowAddBooking(true)}
-                    className="px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-green-500 text-white hover:bg-green-600 flex items-center gap-1.5 shadow-md"
+                    className="px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-purple-500 text-white hover:bg-purple-600 flex items-center gap-1.5 shadow-md"
                   >
                     <Plus className="w-4 h-4" />
                     <span className="hidden sm:inline">Tambah</span>
@@ -2840,38 +2924,40 @@ export default function Admin() {
                 </div>
               </div>
               
-              {/* Status Filter Buttons - Touch friendly */}
-              <div className="flex gap-2 flex-wrap mb-4">
-                <span className="text-slate-400 text-xs self-center mr-1 hidden sm:inline">Status:</span>
+              {/* Status Filter - Horizontal Scroll on Mobile */}
+              <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap scrollbar-hide mb-4">
                 <button 
                   onClick={() => setBookingFilter('all')}
-                  className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${bookingFilter === 'all' ? 'bg-purple-500 text-white shadow-md' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
+                  className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${bookingFilter === 'all' ? 'bg-purple-500 text-white shadow-md' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
                 >
-                  Semua
+                  Semua ({getFilteredBookings().length})
                 </button>
                 <button 
                   onClick={() => setBookingFilter('pending')}
-                  className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${bookingFilter === 'pending' ? 'bg-yellow-500 text-white shadow-md' : 'bg-yellow-50 text-yellow-700 hover:bg-yellow-100 border border-yellow-200'}`}
+                  className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap flex items-center gap-1.5 ${bookingFilter === 'pending' ? 'bg-yellow-500 text-white shadow-md' : 'bg-yellow-50 text-yellow-700 hover:bg-yellow-100 border border-yellow-200'}`}
                 >
-                  ⏳ Belum ({getActivePendingCount()})
+                  <Clock className="w-3.5 h-3.5" />
+                  Belum ({getActivePendingCount()})
                 </button>
                 <button 
                   onClick={() => setBookingFilter('paid')}
-                  className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${bookingFilter === 'paid' ? 'bg-green-500 text-white shadow-md' : 'bg-green-50 text-green-700 hover:bg-green-100 border border-green-200'}`}
+                  className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap flex items-center gap-1.5 ${bookingFilter === 'paid' ? 'bg-green-500 text-white shadow-md' : 'bg-green-50 text-green-700 hover:bg-green-100 border border-green-200'}`}
                 >
-                  ✓ Bayar ({getActivePaidCount()})
+                  <CheckCircle className="w-3.5 h-3.5" />
+                  Bayar ({getActivePaidCount()})
                 </button>
                 <button 
                   onClick={() => setBookingFilter('refund')}
-                  className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${bookingFilter === 'refund' ? 'bg-orange-500 text-white shadow-md' : 'bg-orange-50 text-orange-700 hover:bg-orange-100 border border-orange-200'}`}
+                  className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap flex items-center gap-1.5 ${bookingFilter === 'refund' ? 'bg-orange-500 text-white shadow-md' : 'bg-orange-50 text-orange-700 hover:bg-orange-100 border border-orange-200'}`}
                 >
-                  ↩ Refund ({getActiveRefundCount()})
+                  <Wallet className="w-3.5 h-3.5" />
+                  Refund ({getActiveRefundCount()})
                 </button>
                 <button 
                   onClick={() => setBookingFilter('cancelled')}
-                  className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${bookingFilter === 'cancelled' ? 'bg-red-500 text-white shadow-md' : 'bg-red-50 text-red-700 hover:bg-red-100 border border-red-200'}`}
+                  className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${bookingFilter === 'cancelled' ? 'bg-red-500 text-white shadow-md' : 'bg-red-50 text-red-700 hover:bg-red-100 border border-red-200'}`}
                 >
-                  ✗ Batal ({getActiveCancelledCount()})
+                  Batal ({getActiveCancelledCount()})
                 </button>
               </div>
               
@@ -3036,162 +3122,217 @@ export default function Admin() {
             {/* Bookings List or Empty State */}
             {getFilteredBookings().length === 0 ? (
               <div className="bg-white rounded-2xl p-8 sm:p-12 border border-slate-200 shadow-sm text-center">
-                <ClipboardList className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-                <p className="text-slate-500 text-sm sm:text-base">
+                <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <ClipboardList className="w-8 h-8 text-slate-300" />
+                </div>
+                <h3 className="font-bold text-slate-700 mb-2">Tiada Tempahan</h3>
+                <p className="text-slate-500 text-sm sm:text-base mb-4">
                   {bookingFilter !== 'all' 
                     ? `Tiada tempahan "${bookingFilter === 'pending' ? 'Belum Bayar' : bookingFilter === 'paid' ? 'Telah Bayar' : bookingFilter === 'cancelled' ? 'Dibatalkan' : 'Refund'}"`
-                    : 'Tiada tempahan aktif'}
+                    : 'Tiada tempahan aktif buat masa ini'}
                 </p>
-                {bookingFilter !== 'all' && (
+                {bookingFilter !== 'all' ? (
                   <button 
                     onClick={() => setBookingFilter('all')}
-                    className="mt-3 text-purple-600 text-sm font-medium hover:text-purple-700"
+                    className="text-purple-600 text-sm font-medium hover:text-purple-700"
                   >
                     Lihat semua tempahan →
+                  </button>
+                ) : (
+                  <button 
+                    onClick={() => setShowAddBooking(true)}
+                    className="px-4 py-2 bg-purple-500 text-white rounded-xl text-sm font-semibold hover:bg-purple-600 transition"
+                  >
+                    + Tambah Tempahan
                   </button>
                 )}
               </div>
             ) : (
               <>
-                {/* Bookings List - Mobile Optimized */}
-                <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-                  <div className="divide-y divide-slate-100">
-                    {getFilteredBookings().sort((a, b) => new Date(a.checkIn) - new Date(b.checkIn)).map(booking => (
-                      <div key={booking.id} className="p-3 sm:p-4 hover:bg-slate-50 transition active:bg-slate-100">
-                        <div className="flex items-start justify-between gap-2 sm:gap-3">
-                          <div className="flex items-start gap-2 sm:gap-3 min-w-0 flex-1">
-                            {/* Status Indicator */}
-                            <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
-                              booking.status === 'paid' ? 'bg-green-100' :
-                              booking.status === 'refund' ? 'bg-orange-100' :
-                              booking.status === 'cancelled' ? 'bg-red-100' :
-                              'bg-yellow-100'
+                {/* Bookings List - Improved Cards */}
+                <div className="space-y-3">
+                  {getFilteredBookings()
+                    .sort((a, b) => {
+                      // Priority: pending first, then refund, then by check-in date
+                      const statusPriority = { pending: 0, refund: 1, paid: 2, cancelled: 3 };
+                      const priorityDiff = (statusPriority[a.status] || 4) - (statusPriority[b.status] || 4);
+                      if (priorityDiff !== 0) return priorityDiff;
+                      return new Date(a.checkIn) - new Date(b.checkIn);
+                    })
+                    .map(booking => (
+                      <div 
+                        key={booking.id} 
+                        className={`bg-white rounded-2xl border-2 shadow-sm overflow-hidden transition-all hover:shadow-md ${
+                          booking.status === 'pending' ? 'border-yellow-300' :
+                          booking.status === 'refund' ? 'border-orange-300' :
+                          booking.status === 'paid' ? 'border-green-200' :
+                          'border-slate-200'
+                        }`}
+                      >
+                        {/* Status Header Bar */}
+                        <div className={`px-4 py-2 flex items-center justify-between ${
+                          booking.status === 'pending' ? 'bg-yellow-50' :
+                          booking.status === 'refund' ? 'bg-orange-50' :
+                          booking.status === 'paid' ? 'bg-green-50' :
+                          'bg-slate-50'
+                        }`}>
+                          <div className="flex items-center gap-2">
+                            <span className={`w-2 h-2 rounded-full ${
+                              booking.status === 'pending' ? 'bg-yellow-500 animate-pulse' :
+                              booking.status === 'refund' ? 'bg-orange-500 animate-pulse' :
+                              booking.status === 'paid' ? 'bg-green-500' :
+                              'bg-slate-400'
+                            }`}></span>
+                            <span className={`text-xs font-bold uppercase tracking-wide ${
+                              booking.status === 'pending' ? 'text-yellow-700' :
+                              booking.status === 'refund' ? 'text-orange-700' :
+                              booking.status === 'paid' ? 'text-green-700' :
+                              'text-slate-500'
                             }`}>
-                              <span className={`text-xs sm:text-sm font-bold ${
-                                booking.status === 'paid' ? 'text-green-600' :
-                                booking.status === 'refund' ? 'text-orange-600' :
-                                booking.status === 'cancelled' ? 'text-red-600' :
-                                'text-yellow-600'
-                              }`}>{booking.name?.charAt(0)?.toUpperCase()}</span>
+                              {booking.status === 'pending' ? 'Menunggu Bayaran' :
+                               booking.status === 'refund' ? 'Perlu Refund' :
+                               booking.status === 'paid' ? 'Telah Bayar' :
+                               'Dibatalkan'}
+                            </span>
+                          </div>
+                          <span className="text-xs text-slate-400 font-mono">{booking.id}</span>
+                        </div>
+
+                        {/* Main Content */}
+                        <div className="p-4">
+                          <div className="flex items-start justify-between gap-3">
+                            {/* Guest Info */}
+                            <div className="flex items-start gap-3 min-w-0 flex-1">
+                              <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${
+                                booking.status === 'pending' ? 'bg-yellow-100' :
+                                booking.status === 'refund' ? 'bg-orange-100' :
+                                booking.status === 'paid' ? 'bg-green-100' :
+                                'bg-slate-100'
+                              }`}>
+                                <span className={`text-lg font-bold ${
+                                  booking.status === 'pending' ? 'text-yellow-600' :
+                                  booking.status === 'refund' ? 'text-orange-600' :
+                                  booking.status === 'paid' ? 'text-green-600' :
+                                  'text-slate-500'
+                                }`}>{booking.name?.charAt(0)?.toUpperCase()}</span>
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <h4 className="font-bold text-slate-900 text-base truncate">{booking.name}</h4>
+                                <p className="text-sm text-purple-600 font-medium">
+                                  {properties.find(p => p.id === booking.property)?.name?.replace(' Melaka', '') || 'Lavender Villa'}
+                                </p>
+                                <div className="flex items-center gap-2 text-xs text-slate-500 mt-1">
+                                  <CalendarDays className="w-3.5 h-3.5" />
+                                  <span>{new Date(booking.checkIn).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short' })}</span>
+                                  <span>→</span>
+                                  <span>{new Date(booking.checkOut).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short' })}</span>
+                                  <span className="text-slate-300">•</span>
+                                  <span>{booking.nights} malam</span>
+                                  <span className="text-slate-300">•</span>
+                                  <Users className="w-3.5 h-3.5" />
+                                  <span>{booking.guests}</span>
+                                </div>
+                              </div>
                             </div>
                             
-                            {/* Name & Details */}
-                            <div className="min-w-0 flex-1">
-                              <div className="flex items-center gap-1 sm:gap-2 flex-wrap">
-                                <span className="font-semibold text-slate-900 text-sm sm:text-base">{booking.name}</span>
-                                <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
-                                  booking.status === 'paid' ? 'bg-green-100 text-green-700' :
-                                  booking.status === 'refund' ? 'bg-orange-100 text-orange-700' :
-                                  booking.status === 'cancelled' ? 'bg-red-100 text-red-700' :
-                                  'bg-yellow-100 text-yellow-700'
-                                }`}>
-                                  {booking.status === 'paid' ? '✓ Bayar' :
-                                   booking.status === 'refund' ? '↩ Refund' :
-                                   booking.status === 'cancelled' ? '✗ Batal' :
-                                   '⏳ Belum'}
-                                </span>
-                              </div>
-                              <div className="text-xs text-slate-500 mt-1">
-                                <span className="text-purple-600 font-medium">{properties.find(p => p.id === booking.property)?.name?.replace(' Melaka', '') || 'Lavender Villa'}</span>
-                              </div>
-                              <div className="flex items-center gap-1 sm:gap-2 text-xs text-slate-500 mt-0.5 flex-wrap">
-                                <span>{new Date(booking.checkIn).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
-                                <span>→</span>
-                                <span>{new Date(booking.checkOut).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short' })}</span>
-                                <span className="text-slate-300">•</span>
-                                <span>{booking.nights} malam</span>
-                              </div>
+                            {/* Price */}
+                            <div className="text-right flex-shrink-0">
+                              <p className="text-xl font-bold text-slate-900">RM {booking.total?.toLocaleString()}</p>
                               {booking.createdAt && (
-                                <div className="text-xs text-slate-400 mt-1">
-                                  Ditempah: {new Date(booking.createdAt).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short', year: 'numeric' })} {new Date(booking.createdAt).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}
-                                </div>
+                                <p className="text-xs text-slate-400 mt-1">
+                                  {new Date(booking.createdAt).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short' })}
+                                </p>
                               )}
                             </div>
                           </div>
-                          
-                          {/* Price */}
-                          <div className="text-right flex-shrink-0">
-                            <p className="font-bold text-slate-900 text-sm sm:text-base">RM {booking.total?.toLocaleString()}</p>
-                            <p className="text-xs text-slate-400 font-mono mt-0.5 hidden sm:block">{booking.id}</p>
-                          </div>
                         </div>
-                        
-                        {/* Actions - Touch friendly */}
-                        <div className="flex items-center gap-2 mt-3 pt-3 border-t border-slate-100 flex-wrap">
-                          {booking.status === 'pending' && (
-                            <button
-                              onClick={() => handleUpdateBookingStatus(booking.id, 'paid')}
-                              className="flex-1 sm:flex-none px-3 py-2 bg-green-500 text-white rounded-xl text-xs font-semibold hover:bg-green-600 transition shadow-md"
-                            >
-                              ✓ Sahkan Bayaran
-                            </button>
-                          )}
-                          {booking.status === 'paid' && (
-                            <>
+
+                        {/* Action Buttons */}
+                        <div className="px-4 pb-4">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            {/* Primary Action based on status */}
+                            {booking.status === 'pending' && (
+                              <button
+                                onClick={() => handleUpdateBookingStatus(booking.id, 'paid')}
+                                className="flex-1 sm:flex-none px-4 py-2.5 bg-green-500 text-white rounded-xl text-sm font-bold hover:bg-green-600 transition shadow-md shadow-green-500/30 flex items-center justify-center gap-2"
+                              >
+                                <CheckCircle className="w-4 h-4" />
+                                Sahkan Bayaran
+                              </button>
+                            )}
+                            {booking.status === 'refund' && (
+                              <button
+                                onClick={() => handleUpdateBookingStatus(booking.id, 'cancelled')}
+                                className="flex-1 sm:flex-none px-4 py-2.5 bg-green-500 text-white rounded-xl text-sm font-bold hover:bg-green-600 transition shadow-md shadow-green-500/30 flex items-center justify-center gap-2"
+                              >
+                                <CheckCircle className="w-4 h-4" />
+                                Refund Selesai
+                              </button>
+                            )}
+                            {booking.status === 'paid' && (
                               <button
                                 onClick={() => generateReceipt(booking)}
-                                className="px-3 py-2 bg-purple-100 text-purple-700 rounded-xl text-xs font-medium hover:bg-purple-200 transition flex items-center gap-1.5"
+                                className="px-3 py-2 bg-purple-100 text-purple-700 rounded-xl text-xs font-semibold hover:bg-purple-200 transition flex items-center gap-1.5"
                               >
                                 <FileText className="w-3.5 h-3.5" />
-                                <span className="hidden sm:inline">Resit</span>
+                                Resit
                               </button>
+                            )}
+                            
+                            {/* Secondary Actions */}
+                            {booking.status === 'pending' && (
+                              <button
+                                onClick={() => handleUpdateBookingStatus(booking.id, 'cancelled')}
+                                className="px-3 py-2 bg-slate-100 text-slate-600 rounded-xl text-xs font-medium hover:bg-slate-200 transition"
+                              >
+                                Batal
+                              </button>
+                            )}
+                            {booking.status === 'paid' && (
                               <button
                                 onClick={() => handleUpdateBookingStatus(booking.id, 'refund')}
                                 className="px-3 py-2 bg-orange-100 text-orange-700 rounded-xl text-xs font-medium hover:bg-orange-200 transition"
                               >
-                                ↩ Refund
+                                Refund
                               </button>
-                            </>
-                          )}
-                          {booking.status === 'refund' && (
-                            <button
-                              onClick={() => handleUpdateBookingStatus(booking.id, 'cancelled')}
-                              className="px-3 py-2 bg-green-500 text-white rounded-xl text-xs font-semibold hover:bg-green-600 transition"
+                            )}
+                            
+                            {/* Contact Actions */}
+                            <a
+                              href={`https://wa.me/${booking.phone?.replace(/^0/, '60')}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="px-3 py-2 bg-green-100 text-green-700 rounded-xl text-xs font-medium hover:bg-green-200 transition flex items-center gap-1.5"
                             >
-                              ✓ Refund Selesai
-                            </button>
-                          )}
-                          {booking.status === 'pending' && (
-                            <button
-                              onClick={() => handleUpdateBookingStatus(booking.id, 'cancelled')}
-                              className="px-3 py-2 bg-slate-100 text-slate-600 rounded-xl text-xs font-medium hover:bg-slate-200 transition"
+                              <Send className="w-3.5 h-3.5" />
+                              <span className="hidden sm:inline">WhatsApp</span>
+                            </a>
+                            <a
+                              href={`tel:${booking.phone}`}
+                              className="px-3 py-2 bg-slate-100 text-slate-700 rounded-xl text-xs font-medium hover:bg-slate-200 transition flex items-center gap-1.5"
                             >
-                              ✗ Batal
+                              <Phone className="w-3.5 h-3.5" />
+                              <span className="hidden sm:inline">{booking.phone}</span>
+                            </a>
+                            
+                            {/* Delete */}
+                            <button
+                              onClick={() => handleDeleteBooking(booking.id)}
+                              className="px-2.5 py-2 bg-red-50 text-red-500 rounded-xl text-xs font-medium hover:bg-red-100 transition ml-auto"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
                             </button>
-                          )}
-                          <a
-                            href={`tel:${booking.phone}`}
-                            className="px-3 py-2 bg-slate-100 text-slate-700 rounded-xl text-xs font-medium hover:bg-slate-200 transition flex items-center gap-1.5"
-                          >
-                            <Phone className="w-3.5 h-3.5" />
-                            <span className="hidden sm:inline">{booking.phone}</span>
-                          </a>
-                          <a
-                            href={`https://wa.me/${booking.phone?.replace(/^0/, '60')}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="px-3 py-2 bg-green-100 text-green-700 rounded-xl text-xs font-medium hover:bg-green-200 transition flex items-center gap-1.5"
-                          >
-                            <Send className="w-3.5 h-3.5" />
-                            <span className="hidden sm:inline">WhatsApp</span>
-                          </a>
-                          <button
-                            onClick={() => handleDeleteBooking(booking.id)}
-                            className="px-3 py-2 bg-red-50 text-red-600 rounded-xl text-xs font-medium hover:bg-red-100 transition"
-                          >
-                            <Trash2 className="w-3.5 h-3.5" />
-                          </button>
+                          </div>
                         </div>
                       </div>
                     ))}
-                  </div>
                 </div>
                 
-                {/* Summary */}
+                {/* Summary Footer */}
                 <div className="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm">
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-500 text-sm">Jumlah</span>
-                    <span className="font-bold text-slate-900">{getFilteredBookings().length} tempahan</span>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-slate-500">Jumlah Tempahan</span>
+                    <span className="font-bold text-slate-900">{getFilteredBookings().length}</span>
                   </div>
                 </div>
               </>
