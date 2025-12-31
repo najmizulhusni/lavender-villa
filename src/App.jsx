@@ -143,13 +143,13 @@ export default function HomestayExperience() {
       title: 'Check-In (3:00 PM)',
       time: 'mornings',
       icon: <Sun className="w-6 h-6" />,
-      desc: 'Tiba dan terus berehat dengan selesa. Kolam renang siap untuk digunakan, dan anak-anak boleh berseronok di ruang permainan. Kawasan parking luas, muat sehingga 3 buah kereta.'
+      desc: 'Tiba dan terus berehat dengan selesa. Kolam renang siap untuk digunakan, dan anak-anak boleh berseronok di ruang permainan. Kawasan parkir untuk 5 buah kereta (3 di dalam, 2 di luar).'
     },
     {
       title: 'Aktiviti Siang',
       time: 'afternoons',
       icon: <Cloud className="w-6 h-6" />,
-      desc: 'Nikmati BBQ di luar, karaoke di ruang tamu, atau Netflix/Astro untuk hiburan santai. Dapur yang lengkap memudahkan tetamu memasak sendiri.'
+      desc: 'Nikmati BBQ di luar, karaoke di ruang keluarga, atau Netflix/Astro untuk hiburan santai. Dapur yang lengkap memudahkan tetamu memasak sendiri.'
     },
     {
       title: 'Malam yang Tenang',
