@@ -265,11 +265,59 @@ export async function updateAdminPassword(username, newPassword) {
 // ==================== WHATSAPP TEMPLATES ====================
 
 export async function getWhatsAppTemplates() {
-  const { data, error } = await supabase
-    .from('whatsapp_templates')
-    .select('*')
-    .eq('is_active', true);
+  try {
+    const { data, error } = await supabase
+      .from('whatsapp_templates')
+      .select('*');
 
-  if (error) throw error;
-  return data;
+    if (error) throw error;
+    
+    // Convert array to object keyed by template_key
+    const templates = {};
+    data?.forEach(t => {
+      templates[t.template_key] = t.message;
+    });
+    return templates;
+  } catch (error) {
+    console.error('Error loading templates from Supabase:', error);
+    return {};
+  }
+}
+
+export async function saveWhatsAppTemplate(templateKey, message) {
+  try {
+    // Upsert - insert or update if exists
+    const { data, error } = await supabase
+      .from('whatsapp_templates')
+      .upsert({
+        template_key: templateKey,
+        message: message,
+        updated_at: new Date().toISOString()
+      }, {
+        onConflict: 'template_key'
+      })
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.error('Error saving template to Supabase:', error);
+    throw error;
+  }
+}
+
+export async function deleteWhatsAppTemplate(templateKey) {
+  try {
+    const { error } = await supabase
+      .from('whatsapp_templates')
+      .delete()
+      .eq('template_key', templateKey);
+
+    if (error) throw error;
+    return true;
+  } catch (error) {
+    console.error('Error deleting template from Supabase:', error);
+    throw error;
+  }
 }
