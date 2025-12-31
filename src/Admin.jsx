@@ -1716,11 +1716,6 @@ export default function Admin() {
           >
             <ClipboardList className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             Tempahan
-            {(getPendingCount() > 0 || getRefundCount() > 0) && (
-              <span className="px-1.5 py-0.5 bg-yellow-400 text-yellow-900 rounded-full text-xs font-bold">
-                {getPendingCount() + getRefundCount()}
-              </span>
-            )}
           </button>
           <button
             onClick={() => setAdminView('history')}
@@ -1877,7 +1872,7 @@ export default function Admin() {
                           <p className="font-semibold text-slate-900 text-sm">{booking.name}</p>
                           <p className="text-xs text-slate-500">{properties.find(p => p.id === booking.property)?.name || 'Lavender Villa'}</p>
                           {booking.createdAt && (
-                            <p className="text-xs text-slate-400">Ditempah: {new Date(booking.createdAt).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short' })}</p>
+                            <p className="text-xs text-slate-400">Ditempah: {new Date(booking.createdAt).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short' })} {new Date(booking.createdAt).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}</p>
                           )}
                         </div>
                         <div className="text-right">
@@ -2261,7 +2256,7 @@ export default function Admin() {
                               </div>
                               {booking.createdAt && (
                                 <div className="text-xs text-slate-400 mt-1">
-                                  Ditempah: {new Date(booking.createdAt).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short', year: 'numeric' })}
+                                  Ditempah: {new Date(booking.createdAt).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short', year: 'numeric' })} {new Date(booking.createdAt).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}
                                 </div>
                               )}
                             </div>
@@ -3108,7 +3103,7 @@ export default function Admin() {
                               </div>
                               {booking.createdAt && (
                                 <div className="text-xs text-slate-400 mt-1">
-                                  Ditempah: {new Date(booking.createdAt).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short', year: 'numeric' })}
+                                  Ditempah: {new Date(booking.createdAt).toLocaleDateString('ms-MY', { day: 'numeric', month: 'short', year: 'numeric' })} {new Date(booking.createdAt).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}
                                 </div>
                               )}
                             </div>
