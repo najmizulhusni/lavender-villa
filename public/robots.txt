@@ -1,5 +1,15 @@
+# Robots.txt for Lavender Villa Melaka
+# https://www.lavendervillamelaka.com/
+
 User-agent: *
 Allow: /
-Disallow: /admin
 
-Sitemap: https://lavender-villa.vercel.app/sitemap.xml
+# Block Vercel preview/app URL from being indexed
+User-agent: *
+Disallow: https://lavender-villa.vercel.app/
+
+# Sitemap
+Sitemap: https://www.lavendervillamelaka.com/sitemap.xml
+
+# Host
+Host: https://www.lavendervillamelaka.com
