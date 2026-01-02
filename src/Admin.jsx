@@ -1076,14 +1076,17 @@ export default function Admin() {
     setEditingPrice('');
   };
 
-  // Festive dates for pricing
+  // Festive dates for pricing - ONLY major Malaysian festivals
+  // CNY, Hari Raya Aidilfitri, Hari Raya Aidiladha, Deepavali, Christmas
   const festiveDates = [
-    '2025-03-30', '2025-03-31', '2025-04-01', // Hari Raya 2025
-    '2025-06-06', '2025-06-07', // Hari Raya Haji 2025
+    '2025-01-29', '2025-01-30', // CNY 2025
+    '2025-03-30', '2025-03-31', '2025-04-01', // Hari Raya Aidilfitri 2025
+    '2025-06-06', '2025-06-07', // Hari Raya Aidiladha 2025
     '2025-10-20', // Deepavali 2025
     '2025-12-24', '2025-12-25', // Christmas 2025
-    '2026-01-29', '2026-01-30', // CNY 2026
-    '2026-03-20', '2026-03-21', '2026-03-22', // Hari Raya 2026
+    '2026-02-17', '2026-02-18', // CNY 2026
+    '2026-03-20', '2026-03-21', // Hari Raya Aidilfitri 2026
+    '2026-06-06', '2026-06-07', // Hari Raya Aidiladha 2026
     '2026-11-08', // Deepavali 2026
     '2026-12-24', '2026-12-25' // Christmas 2026
   ];
