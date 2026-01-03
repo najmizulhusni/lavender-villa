@@ -331,11 +331,11 @@ export default function Admin() {
         <style>
           * { margin: 0; padding: 0; box-sizing: border-box; }
           body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; background: white; font-size: 14px; color: #000; }
-          .receipt { max-width: 700px; margin: 0 auto; background: white; }
+          .receipt { max-width: 700px; margin: 0 auto; background: white; border: 1px solid #000; }
           .header { padding: 25px 30px; border-bottom: 2px solid #000; }
           .header-top { display: flex; justify-content: space-between; align-items: flex-start; }
           .company-info { display: flex; align-items: center; gap: 15px; }
-          .company-logo { width: 80px; height: auto; }
+          .company-logo { width: 80px; height: auto; border: none; box-shadow: none; }
           .company-details h1 { font-size: 22px; color: #000; margin-bottom: 5px; font-weight: 700; }
           .company-details p { color: #333; font-size: 12px; line-height: 1.6; }
           .receipt-title { text-align: right; }
@@ -350,20 +350,21 @@ export default function Admin() {
           .info-label { color: #555; font-size: 12px; display: block; }
           .info-value { color: #000; font-weight: 600; font-size: 14px; }
           .table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-          .table th { background: #f5f5f5; padding: 12px 15px; text-align: left; font-size: 11px; color: #000; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #000; }
-          .table td { padding: 12px 15px; border-bottom: 1px solid #ddd; color: #000; }
+          .table th { background: #f5f5f5; padding: 12px 15px; text-align: left; font-size: 11px; color: #000; text-transform: uppercase; letter-spacing: 0.5px; border: 1px solid #000; }
+          .table td { padding: 12px 15px; border: 1px solid #ccc; color: #000; }
           .table .text-right { text-align: right; }
-          .table .total-row td { border-top: 2px solid #000; border-bottom: none; font-weight: 700; font-size: 16px; background: #f5f5f5; }
+          .table .total-row td { border: 1px solid #000; font-weight: 700; font-size: 16px; background: #f5f5f5; }
           .table .total-row .amount { font-size: 18px; }
           .status-text { font-weight: 600; text-transform: uppercase; }
-          .footer { background: #f5f5f5; padding: 20px 30px; border-top: 1px solid #ddd; }
+          .footer { background: #f5f5f5; padding: 20px 30px; border-top: 1px solid #000; }
           .footer-content { text-align: center; }
           .footer-left { font-size: 11px; color: #333; line-height: 1.6; }
-          .terms { margin-top: 20px; padding: 15px; background: #fafafa; }
+          .terms { margin-top: 20px; padding: 15px; border: 1px solid #ccc; }
           .terms h4 { font-size: 11px; color: #000; margin-bottom: 8px; text-transform: uppercase; font-weight: 700; }
           .terms ul { font-size: 11px; color: #333; padding-left: 15px; line-height: 1.6; }
           @media print { 
             body { padding: 0; } 
+            .receipt { border: 1px solid #000; }
             .no-print { display: none; }
           }
         </style>
