@@ -18,7 +18,8 @@ export async function createBooking(bookingData) {
       guests: bookingData.guests,
       total_amount: bookingData.total,
       special_requests: bookingData.message,
-      status: 'pending'
+      status: 'pending',
+      created_at: new Date().toISOString()
     })
     .select()
     .single();

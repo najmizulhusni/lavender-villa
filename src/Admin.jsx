@@ -1236,7 +1236,8 @@ export default function Admin() {
             total_amount: newBooking.total || 0,
             special_requests: newBooking.message.trim(),
             referral_source: newBooking.referralSource,
-            status: newBooking.status
+            status: newBooking.status,
+            created_at: new Date().toISOString()
           })
           .select()
           .single();
