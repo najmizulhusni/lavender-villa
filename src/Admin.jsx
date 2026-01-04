@@ -602,10 +602,15 @@ export default function Admin() {
           status: b.status,
           message: b.special_requests,
           property: b.properties?.slug || 'lavender',
-          createdAt: b.created_at
+          createdAt: b.created_at,
+          referralSource: b.referral_source,
+          dateChanged: b.date_changed
         }));
         
         setBookings(formattedBookings);
+        
+        // Sync localStorage with Supabase data (so fallback is always up-to-date)
+        localStorage.setItem('bookings', JSON.stringify(formattedBookings));
         
         // Load booked dates - only for lavender (the only property in database for now)
         const newBookedDates = {};
@@ -614,6 +619,9 @@ export default function Admin() {
         try {
           const lavenderDates = await getBookedDates('lavender');
           newBookedDates['lavender'] = lavenderDates;
+          
+          // Sync localStorage
+          localStorage.setItem('bookedDates_lavender', JSON.stringify(lavenderDates));
           
           // Also load manually blocked dates from Supabase
           const manualBlocked = await getManuallyBlockedDates('lavender');
