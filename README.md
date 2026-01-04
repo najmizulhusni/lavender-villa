@@ -8,7 +8,7 @@
 
 Lavender Villa is a modern, full-featured website and booking management system for a luxury villa rental property located in Bemban, Melaka. The platform enables guests to browse, book, and manage their stays while providing administrators with comprehensive tools to manage bookings, pricing, and communications.
 
-**Live Website:** [https://lavender-villa.vercel.app/](https://www.lavendervillamelaka.com/)
+**Live Website:** [(https://www.lavendervillamelaka.com)](https://www.lavendervillamelaka.com/)
 
 ---
 
