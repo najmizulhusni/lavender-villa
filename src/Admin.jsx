@@ -984,6 +984,7 @@ export default function Admin() {
   // Add booking modal state
   const [showAddBooking, setShowAddBooking] = useState(false);
   const [addBookingCalendar, setAddBookingCalendar] = useState(null); // 'checkIn' or 'checkOut'
+  const [addBookingDropdown, setAddBookingDropdown] = useState(null); // 'guests' or 'status'
   const [addBookingMonth, setAddBookingMonth] = useState(new Date());
   const [newBooking, setNewBooking] = useState({
     name: '',
@@ -4049,18 +4050,31 @@ export default function Admin() {
                     </div>
                   </div>
                 )}
-                <div className="grid grid-cols-3 gap-3">
-                  <div>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div className="relative">
                     <label className="block text-slate-500 text-xs mb-1">Tetamu</label>
-                    <select
-                      value={newBooking.guests}
-                      onChange={(e) => setNewBooking({...newBooking, guests: parseInt(e.target.value) || 10})}
-                      className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition text-sm text-center"
+                    <button
+                      type="button"
+                      onClick={() => setAddBookingDropdown(addBookingDropdown === 'guests' ? null : 'guests')}
+                      className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-purple-400 transition text-sm flex items-center justify-between"
                     >
-                      {[10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20].map(num => (
-                        <option key={num} value={num}>{num} orang</option>
-                      ))}
-                    </select>
+                      <span className="font-medium">{newBooking.guests} orang</span>
+                      <Users className="w-4 h-4 text-slate-400" />
+                    </button>
+                    {addBookingDropdown === 'guests' && (
+                      <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-slate-200 p-2 z-50 max-h-48 overflow-y-auto">
+                        {[10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20].map(num => (
+                          <button
+                            key={num}
+                            type="button"
+                            onClick={() => { setNewBooking({...newBooking, guests: num}); setAddBookingDropdown(null); }}
+                            className={`w-full px-3 py-2 rounded-lg text-left text-sm font-medium transition ${newBooking.guests === num ? 'bg-purple-100 text-purple-700' : 'hover:bg-slate-50 text-slate-700'}`}
+                          >
+                            {num} orang
+                          </button>
+                        ))}
+                      </div>
+                    )}
                   </div>
                   <div>
                     <label className="block text-slate-500 text-xs mb-1">Harga (RM)</label>
@@ -4073,12 +4087,12 @@ export default function Admin() {
                       className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 placeholder-slate-300 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition text-sm text-center"
                     />
                   </div>
-                  <div>
+                  <div className="relative">
                     <label className="block text-slate-500 text-xs mb-1">Status</label>
-                    <select
-                      value={newBooking.status}
-                      onChange={(e) => setNewBooking({...newBooking, status: e.target.value})}
-                      className={`w-full px-3 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-100 transition text-sm font-medium ${
+                    <button
+                      type="button"
+                      onClick={() => setAddBookingDropdown(addBookingDropdown === 'status' ? null : 'status')}
+                      className={`w-full px-3 py-3 border rounded-xl text-sm font-medium flex items-center justify-between transition ${
                         newBooking.status === 'pending' ? 'bg-amber-50 border-amber-200 text-amber-700' :
                         newBooking.status === 'deposit' ? 'bg-blue-50 border-blue-200 text-blue-700' :
                         newBooking.status === 'paid' ? 'bg-emerald-50 border-emerald-200 text-emerald-700' :
@@ -4087,12 +4101,55 @@ export default function Admin() {
                         'bg-white border-slate-200 text-slate-900'
                       }`}
                     >
-                      <option value="pending">Menunggu</option>
-                      <option value="deposit">Deposit</option>
-                      <option value="paid">Full</option>
-                      <option value="refund">Refund</option>
-                      <option value="cancelled">Batal</option>
-                    </select>
+                      <span className="flex items-center gap-1.5">
+                        {newBooking.status === 'pending' && <Clock className="w-3.5 h-3.5" />}
+                        {newBooking.status === 'deposit' && <Wallet className="w-3.5 h-3.5" />}
+                        {newBooking.status === 'paid' && <CheckCircle className="w-3.5 h-3.5" />}
+                        {newBooking.status === 'refund' && <Wallet className="w-3.5 h-3.5" />}
+                        {newBooking.status === 'cancelled' && <XCircle className="w-3.5 h-3.5" />}
+                        {newBooking.status === 'pending' ? 'Menunggu' : newBooking.status === 'deposit' ? 'Deposit' : newBooking.status === 'paid' ? 'Full' : newBooking.status === 'refund' ? 'Refund' : 'Batal'}
+                      </span>
+                      <ChevronRight className={`w-4 h-4 transition-transform ${addBookingDropdown === 'status' ? 'rotate-90' : ''}`} />
+                    </button>
+                    {addBookingDropdown === 'status' && (
+                      <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-xl border border-slate-200 p-2 z-50">
+                        <button
+                          type="button"
+                          onClick={() => { setNewBooking({...newBooking, status: 'pending'}); setAddBookingDropdown(null); }}
+                          className={`w-full px-3 py-2.5 rounded-lg text-left text-sm font-medium transition flex items-center gap-2 ${newBooking.status === 'pending' ? 'bg-amber-100 text-amber-700' : 'hover:bg-amber-50 text-amber-600'}`}
+                        >
+                          <Clock className="w-4 h-4" /> Menunggu
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => { setNewBooking({...newBooking, status: 'deposit'}); setAddBookingDropdown(null); }}
+                          className={`w-full px-3 py-2.5 rounded-lg text-left text-sm font-medium transition flex items-center gap-2 ${newBooking.status === 'deposit' ? 'bg-blue-100 text-blue-700' : 'hover:bg-blue-50 text-blue-600'}`}
+                        >
+                          <Wallet className="w-4 h-4" /> Deposit
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => { setNewBooking({...newBooking, status: 'paid'}); setAddBookingDropdown(null); }}
+                          className={`w-full px-3 py-2.5 rounded-lg text-left text-sm font-medium transition flex items-center gap-2 ${newBooking.status === 'paid' ? 'bg-emerald-100 text-emerald-700' : 'hover:bg-emerald-50 text-emerald-600'}`}
+                        >
+                          <CheckCircle className="w-4 h-4" /> Full
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => { setNewBooking({...newBooking, status: 'refund'}); setAddBookingDropdown(null); }}
+                          className={`w-full px-3 py-2.5 rounded-lg text-left text-sm font-medium transition flex items-center gap-2 ${newBooking.status === 'refund' ? 'bg-orange-100 text-orange-700' : 'hover:bg-orange-50 text-orange-600'}`}
+                        >
+                          <Wallet className="w-4 h-4" /> Refund
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => { setNewBooking({...newBooking, status: 'cancelled'}); setAddBookingDropdown(null); }}
+                          className={`w-full px-3 py-2.5 rounded-lg text-left text-sm font-medium transition flex items-center gap-2 ${newBooking.status === 'cancelled' ? 'bg-red-100 text-red-700' : 'hover:bg-red-50 text-red-600'}`}
+                        >
+                          <XCircle className="w-4 h-4" /> Batal
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
