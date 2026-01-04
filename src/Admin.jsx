@@ -4057,8 +4057,8 @@ export default function Admin() {
                       onChange={(e) => setNewBooking({...newBooking, guests: parseInt(e.target.value) || 10})}
                       className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition text-sm text-center"
                     >
-                      {[10, 12, 14, 15, 16, 18, 20].map(num => (
-                        <option key={num} value={num}>{num}</option>
+                      {[10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20].map(num => (
+                        <option key={num} value={num}>{num} orang</option>
                       ))}
                     </select>
                   </div>
@@ -4078,10 +4078,20 @@ export default function Admin() {
                     <select
                       value={newBooking.status}
                       onChange={(e) => setNewBooking({...newBooking, status: e.target.value})}
-                      className="w-full px-3 py-3 bg-white border border-slate-200 rounded-xl text-slate-900 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition text-sm"
+                      className={`w-full px-3 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-100 transition text-sm font-medium ${
+                        newBooking.status === 'pending' ? 'bg-amber-50 border-amber-200 text-amber-700' :
+                        newBooking.status === 'deposit' ? 'bg-blue-50 border-blue-200 text-blue-700' :
+                        newBooking.status === 'paid' ? 'bg-emerald-50 border-emerald-200 text-emerald-700' :
+                        newBooking.status === 'refund' ? 'bg-orange-50 border-orange-200 text-orange-700' :
+                        newBooking.status === 'cancelled' ? 'bg-red-50 border-red-200 text-red-700' :
+                        'bg-white border-slate-200 text-slate-900'
+                      }`}
                     >
-                      <option value="pending">Pending</option>
-                      <option value="paid">Paid</option>
+                      <option value="pending">Menunggu</option>
+                      <option value="deposit">Deposit</option>
+                      <option value="paid">Full</option>
+                      <option value="refund">Refund</option>
+                      <option value="cancelled">Batal</option>
                     </select>
                   </div>
                 </div>
