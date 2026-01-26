@@ -3,13 +3,7 @@
 
 User-agent: *
 Allow: /
-
-# Block Vercel preview/app URL from being indexed
-User-agent: *
-Disallow: https://lavender-villa.vercel.app/
+Disallow: /admin
 
 # Sitemap
 Sitemap: https://www.lavendervillamelaka.com/sitemap.xml
-
-# Host
-Host: https://www.lavendervillamelaka.com
