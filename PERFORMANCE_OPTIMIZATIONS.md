@@ -27,7 +27,7 @@ Fixed performance issues to improve Real Experience Score (RES) from 84 to 90+.
 
 ### 5. Build Optimizations (vite.config.js)
 - **Code splitting**: Separated React vendor and Lucide icons into separate chunks
-- **Minification**: Using Terser with console/debugger removal
+- **Minification**: Using esbuild (faster than terser, built-in)
 - **Chunk size optimization**: Set warning limit to 1000kb
 
 ### 6. Font Loading
