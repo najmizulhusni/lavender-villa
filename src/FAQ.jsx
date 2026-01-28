@@ -11,7 +11,7 @@ const VillaIcon = ({ className }) => (
 );
 
 export default function FAQ() {
-  const [openIndex, setOpenIndex] = useState(null);
+  const [openIndex, setOpenIndex] = useState(null); // All items open by default
 
   const TikTokIcon = () => (
     <svg className="w-5 h-5 sm:w-6 sm:h-6" viewBox="0 0 24 24" fill="currentColor">
@@ -126,15 +126,13 @@ export default function FAQ() {
                   }`}
                 />
               </button>
-              {openIndex === index && (
-                <div className="px-4 sm:px-6 py-3 sm:py-4 border-t border-slate-100 bg-slate-50">
-                  {item.component ? (
-                    <div className="text-slate-700 text-xs sm:text-base leading-relaxed">{item.component}</div>
-                  ) : (
-                    <p className="text-slate-700 text-xs sm:text-base leading-relaxed">{item.a}</p>
-                  )}
-                </div>
-              )}
+              <div className="px-4 sm:px-6 py-3 sm:py-4 border-t border-slate-100 bg-slate-50">
+                {item.component ? (
+                  <div className="text-slate-700 text-xs sm:text-base leading-relaxed">{item.component}</div>
+                ) : (
+                  <p className="text-slate-700 text-xs sm:text-base leading-relaxed">{item.a}</p>
+                )}
+              </div>
             </div>
           ))}
         </div>
