@@ -1247,13 +1247,13 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                               disabled={isPast}
                               className={`p-2 text-sm rounded-lg transition relative ${
                                 isSelected ? 'bg-purple-500 text-white font-bold' :
-                                isBooked ? 'bg-red-100 text-red-500 cursor-pointer hover:bg-red-200' :
                                 isPast ? 'text-slate-300 cursor-not-allowed' :
+                                isBooked ? 'bg-red-100 text-red-500 cursor-pointer hover:bg-red-200' :
                                 isHoliday ? 'bg-blue-50 text-blue-600 hover:bg-blue-100 font-medium' :
                                 schoolHolidayName ? 'bg-yellow-50 text-yellow-700 hover:bg-yellow-100 font-medium' :
                                 'hover:bg-purple-100 text-slate-700'
                               }`}
-                              title={isBooked ? 'Tiada Kekosongan' : (isHoliday ? 'Cuti Umum' : (schoolHolidayName ? schoolHolidayName : ''))}
+                              title={isPast ? '' : (isBooked ? 'Tiada Kekosongan' : (isHoliday ? 'Cuti Umum' : (schoolHolidayName ? schoolHolidayName : '')))}
                             >
                               {day}
                               {isHoliday && !isBooked && !isPast && (
