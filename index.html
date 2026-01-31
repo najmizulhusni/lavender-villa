@@ -100,24 +100,33 @@
     <!-- Preload critical resources -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://rybqolewawemajhhftzv.supabase.co" crossorigin />
     <link rel="dns-prefetch" href="https://www.google-analytics.com" />
     <link rel="dns-prefetch" href="https://wa.me" />
-    <link rel="dns-prefetch" href="https://rybqolewawemajhhftzv.supabase.co" />
     
     <!-- Preload critical hero image with responsive sizes -->
     <link rel="preload" as="image" href="/images/view_from_top_1_lanscape.jpg" fetchpriority="high" imagesrcset="/images/view_from_top_1_lanscape.jpg 800w" imagesizes="100vw" />
     
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6SZSRTK181"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-6SZSRTK181');
-    </script>
   </head>
   <body>
     <div id="root"></div>
+    
+    <!-- Defer Google Analytics to after page load -->
+    <script>
+      window.addEventListener('load', function() {
+        var script = document.createElement('script');
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=G-6SZSRTK181';
+        script.async = true;
+        document.head.appendChild(script);
+        
+        script.onload = function() {
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-6SZSRTK181');
+        };
+      });
+    </script>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

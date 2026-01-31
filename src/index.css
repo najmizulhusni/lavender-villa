@@ -17,6 +17,22 @@ body {
   font-display: swap;
 }
 
+/* Performance optimizations */
+.will-change-transform {
+  will-change: transform;
+}
+
+/* GPU acceleration for animations */
+.gpu-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Reduce paint on hover states */
+button, a {
+  contain: layout style;
+}
+
 /* Hide scrollbar but keep functionality */
 .scrollbar-hide {
   -ms-overflow-style: none;  /* IE and Edge */
@@ -49,4 +65,14 @@ body {
 
 .animate-shimmer {
   animation: shimmer 1.5s infinite linear;
+}
+
+/* Optimize calendar grid rendering */
+.calendar-grid {
+  contain: content;
+}
+
+/* Reduce repaints on modals */
+.modal-overlay {
+  contain: strict;
 }

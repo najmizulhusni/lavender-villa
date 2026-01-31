@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo, memo } from 'react';
 import { Wifi, Coffee, Tv, Wind, MapPin, Star, X, Play, Phone, CheckCircle, Users, Moon, Sun, Cloud, Instagram, Mic, ChevronLeft, ChevronRight, Calendar, Shield, Wallet, Utensils } from 'lucide-react';
 import { getBookedDates, getPublicHolidays, createBooking, getProperty, getManuallyBlockedDates } from './lib/database';
 import { useLanguage } from './LanguageContext';
@@ -21,7 +21,6 @@ export default function HomestayExperience() {
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [selectedDates, setSelectedDates] = useState({ checkIn: '', checkOut: '' });
   const [guests, setGuests] = useState(15);
-  const [scrollY, setScrollY] = useState(0);
   const [activeStory, setActiveStory] = useState(0);
   const [message, setMessage] = useState('');
   const [spaceImageIndex, setSpaceImageIndex] = useState({});
@@ -121,12 +120,17 @@ export default function HomestayExperience() {
     return () => clearInterval(interval);
   }, []);
 
+  // Optimized scroll handler - only update when needed for parallax
+  const parallaxRef = useRef(null);
+  
   useEffect(() => {
     let ticking = false;
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          setScrollY(window.scrollY);
+          if (parallaxRef.current) {
+            parallaxRef.current.style.transform = `translateY(${window.scrollY * 0.3}px)`;
+          }
           ticking = false;
         });
         ticking = true;
@@ -670,7 +674,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
     return { daysInMonth, startingDay };
   };
 
-  const handleDateSelect = (date) => {
+  const handleDateSelect = useCallback((date) => {
     if (isDatePast(date)) return;
     
     const dateStr = formatDateToLocal(date);
@@ -682,18 +686,18 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
         setClickedBookedDate(dateStr);
         setShowAlternatives(true);
         setShowCalendar(null);
-        setTimeout(() => {
+        requestAnimationFrame(() => {
           const element = document.getElementById('alternatives-clicked');
           if (element) {
             element.scrollIntoView({ behavior: 'smooth', block: 'start' });
           }
-        }, 100);
+        });
         return;
       }
       
       setShowAlternatives(false);
       setClickedBookedDate(null);
-      setSelectedDates({ ...selectedDates, checkIn: dateStr, checkOut: '' });
+      setSelectedDates(prev => ({ ...prev, checkIn: dateStr, checkOut: '' }));
       setShowCalendar('checkOut');
     } else {
       // For check-out: must be after check-in and no blocked dates in between (including checkout date)
@@ -729,11 +733,11 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
         
         setShowAlternatives(false);
         setClickedBookedDate(null);
-        setSelectedDates({ ...selectedDates, checkOut: dateStr });
+        setSelectedDates(prev => ({ ...prev, checkOut: dateStr }));
         setShowCalendar(null);
       }
     }
-  };
+  }, [showCalendar, selectedDates.checkIn, bookedDates]);
 
   const isDateInRange = (date) => {
     if (!selectedDates.checkIn || !selectedDates.checkOut) return false;
@@ -788,7 +792,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        <div className="absolute inset-0 transition-transform duration-300 bg-slate-900" style={{ transform: `translateY(${scrollY * 0.5}px)` }}>
+        <div ref={parallaxRef} className="absolute inset-0 bg-slate-900">
           {/* Loading Skeleton */}
           {!heroImageLoaded && (
             <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-900 animate-pulse">
