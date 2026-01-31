@@ -262,8 +262,8 @@ export default function FAQ() {
         {/* Tooltip */}
         <div className="absolute bottom-full right-0 mb-3 opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-y-0 translate-y-2 pointer-events-none">
           <div className="bg-white/90 backdrop-blur-md px-4 py-2 rounded-xl shadow-lg border border-white/50 whitespace-nowrap">
-            <p className="text-slate-800 text-sm font-medium">Perlukan bantuan?</p>
-            <p className="text-slate-500 text-xs">Chat dengan kami di WhatsApp</p>
+            <p className="text-slate-800 text-sm font-medium">{t.wa_need_help}</p>
+            <p className="text-slate-500 text-xs">{t.wa_chat}</p>
           </div>
           <div className="absolute -bottom-1 right-6 w-3 h-3 bg-white/90 rotate-45 border-r border-b border-white/50"></div>
         </div>
