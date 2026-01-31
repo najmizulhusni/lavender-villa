@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { ChevronDown, Phone, Instagram } from 'lucide-react';
+import { useLanguage } from './LanguageContext';
+import { translations } from './translations';
 
 // Villa Logo
 const VillaIcon = ({ className }) => (
@@ -11,6 +13,8 @@ const VillaIcon = ({ className }) => (
 );
 
 export default function FAQ() {
+  const { language } = useLanguage();
+  const t = translations[language];
   const [openIndex, setOpenIndex] = useState(null); // All items open by default
 
   const TikTokIcon = () => (
@@ -21,7 +25,7 @@ export default function FAQ() {
 
   const LocationAnswer = () => (
     <div className="space-y-4">
-      <p>Lavender Villa Melaka terletak di Bemban, Melaka. Alamat: 47, Jalan Anjung Lavender 1, Taman Anjung Gapam, 77200 Bemban, Melaka.</p>
+      <p>{language === 'ms' ? 'Lavender Villa Melaka terletak di Bemban, Melaka. Alamat: 47, Jalan Anjung Lavender 1, Taman Anjung Gapam, 77200 Bemban, Melaka.' : 'Lavender Villa Melaka is located in Bemban, Melaka. Address: 47, Jalan Anjung Lavender 1, Taman Anjung Gapam, 77200 Bemban, Melaka.'}</p>
       <div className="rounded-xl overflow-hidden h-64 border border-slate-200">
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3984.5234567890123!2d102.3521975!3d2.2915775!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31d1e73e8455d413%3A0x3fd97fe2de23d790!2sLavender%20Villa%20Malacca!5e0!3m2!1sen!2smy!4v1234567890"
@@ -36,7 +40,7 @@ export default function FAQ() {
     </div>
   );
 
-  const faqs = [
+  const faqs = language === 'ms' ? [
     {
       q: 'Di mana lokasi Lavender Villa Melaka?',
       a: null,
@@ -82,6 +86,52 @@ export default function FAQ() {
       q: 'Bagaimana cara menghubungi kami?',
       a: 'Hubungi kami melalui WhatsApp di +60 19 334 5686 atau telefon di nombor yang sama. Kami juga di Instagram @lavendervillamelaka.'
     }
+  ] : [
+    {
+      q: 'Where is Lavender Villa Melaka located?',
+      a: null,
+      component: <LocationAnswer />
+    },
+    {
+      q: 'What are the accommodation rates?',
+      a: 'Weekday: 2D1N RM1,300 | 3D2N RM2,400. Weekend/Public Holiday: 2D1N RM1,590 | 3D2N RM2,990. Festive Season (Hari Raya, CNY, Deepavali, Christmas): 2D1N RM1,700 | 3D2N RM3,200. Prices are for the entire villa.'
+    },
+    {
+      q: 'How many bedrooms are there?',
+      a: '5 bedrooms: Room 1 (King + 2 Single, aircond, bathroom), Room 2 (Queen, aircond, bathroom), Room 3 (Queen, aircond), Room 4 (Queen, aircond), Room 5 upstairs (King, aircond, bathroom). 12 pillows provided. Comfortable for 15 people, maximum 20 people.'
+    },
+    {
+      q: 'Is there a swimming pool?',
+      a: 'Yes, a private swimming pool measuring 30x12x4 feet with waterfall. No lifeguard - safety is the responsibility of guests.'
+    },
+    {
+      q: 'What amenities are provided at the villa?',
+      a: 'Living Room: Aircond, Smart TV 65", Astro Full Package, Netflix & Disney+, WiFi 300Mbps, Sofa, Karaoke. Kitchen: English Style Cabinet, Standing Stove with Oven, 2-Door Fridge, Rice Cooker, Toaster, Microwave, Air Fryer, Steamer, Dessini Pot Set, Coway Water Filter, Coffee Station. Laundry: Washer & Dryer. Others: BBQ Set, Iron & Ironing Board, 12 Towels, 24-hour CCTV (outdoor only).'
+    },
+    {
+      q: 'What is the deposit for booking?',
+      a: 'Deposit RM300 for regular bookings. For simple events like engagement or aqiqah inviting outside guests, deposit is RM500. Full payment must be made 5 days before check-in. Deposit will be refunded within 24 hours after check-out if no damage.'
+    },
+    {
+      q: 'What is the cancellation policy?',
+      a: 'Cancellation of booking will result in deposit not being refunded. Date changes must be made one month before check-in date and only allowed once.'
+    },
+    {
+      q: 'What are the check-in and check-out times?',
+      a: 'Check-in: 3:00 PM | Check-out: 12:00 PM'
+    },
+    {
+      q: 'What are the accommodation rules?',
+      a: 'Guests must be mahram family members or same-gender friend groups only. Mixing of non-mahram men and women is not allowed. Halal food and drinks only. Minimum 2 nights for weekends (except last minute booking and weekdays).'
+    },
+    {
+      q: 'What are nearby attractions?',
+      a: '4 min: Orna Golf Resort, Tiara Golf & Country Resort, Adam & Hawa Wedding Hall. 5 min: Mydin Jasin, Jasin Hot Springs. 7 min: Asam Pedas Pak Man (Viral), Leypark Food Truck. 8-10 min: MITC, Ayer Keroh Toll Plaza. 10 min: Melaka Zoo, Crocodile Park, Botanical Garden, Mini Malaysia Park, Melaka Wonderland. 15 min: MMU & UTEM. 25 min: Batu Berendam Airport.'
+    },
+    {
+      q: 'How can we contact you?',
+      a: 'Contact us via WhatsApp at +60 19 334 5686 or call the same number. We are also on Instagram @lavendervillamelaka.'
+    }
   ];
 
   const toggleFAQ = (index) => {
@@ -99,14 +149,14 @@ export default function FAQ() {
             </div>
             <span className="font-bold text-xs sm:text-sm md:text-base text-slate-900 tracking-tight hidden sm:inline">Lavender Villa Melaka</span>
           </a>
-          <a href="/" className="text-slate-700 transition font-semibold cursor-pointer text-xs sm:text-sm md:text-base whitespace-nowrap px-2 sm:px-3 py-1.5 rounded-full hover:bg-white/30">Kembali</a>
+          <a href="/" className="text-slate-700 transition font-semibold cursor-pointer text-xs sm:text-sm md:text-base whitespace-nowrap px-2 sm:px-3 py-1.5 rounded-full hover:bg-white/30">{t.nav_back}</a>
         </div>
       </nav>
 
       {/* Header */}
       <div className="bg-gradient-to-br from-purple-50 via-white to-purple-50 py-12 sm:py-20 pt-20 sm:pt-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center">
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-slate-900">Soalan Lazim & Jawapan</h1>
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-slate-900">{t.faq_title}</h1>
         </div>
       </div>
 
@@ -139,8 +189,8 @@ export default function FAQ() {
 
         {/* Contact Section */}
         <div className="mt-8 sm:mt-12 bg-gradient-to-br from-purple-50 via-white to-purple-50 rounded-2xl p-6 sm:p-10 border border-purple-200 shadow-md">
-          <h2 className="text-xl sm:text-3xl font-bold text-slate-900 mb-2 sm:mb-3">Masih ada soalan?</h2>
-          <p className="text-slate-600 text-xs sm:text-base mb-4 sm:mb-6">Hubungi kami melalui WhatsApp atau telefon. Kami sedia membantu 24/7.</p>
+          <h2 className="text-xl sm:text-3xl font-bold text-slate-900 mb-2 sm:mb-3">{t.faq_question}</h2>
+          <p className="text-slate-600 text-xs sm:text-base mb-4 sm:mb-6">{t.faq_help}</p>
           <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
             <a href="https://wa.me/60193345686" target="_blank" rel="noopener noreferrer" className="bg-gradient-to-r from-purple-400 to-purple-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full font-bold text-sm sm:text-base hover:shadow-lg transition flex items-center justify-center gap-2">
               <Phone className="w-4 sm:w-5 h-4 sm:h-5" />
@@ -148,7 +198,7 @@ export default function FAQ() {
             </a>
             <a href="tel:+60193345686" className="bg-white text-slate-900 px-4 sm:px-6 py-2 sm:py-3 rounded-full font-bold text-sm sm:text-base hover:bg-slate-50 transition border border-slate-200 flex items-center justify-center gap-2">
               <Phone className="w-4 sm:w-5 h-4 sm:h-5" />
-              Telefon
+              {language === 'ms' ? 'Telefon' : 'Phone'}
             </a>
           </div>
         </div>
@@ -165,7 +215,7 @@ export default function FAQ() {
                 <img src="/images/logo.jpg" alt="Lavender Villa" className="h-8 w-auto rounded-md border border-purple-300/50" />
                 <h3 className="text-lg font-bold text-white">Lavender Villa Melaka</h3>
               </div>
-              <p className="text-slate-400 text-sm">Villa Mewah di Bemban, Melaka</p>
+              <p className="text-slate-400 text-sm">{language === 'ms' ? 'Villa Mewah di Bemban, Melaka' : 'Luxury Villa in Bemban, Melaka'}</p>
             </div>
 
             {/* Contact & Social */}
@@ -192,11 +242,11 @@ export default function FAQ() {
 
           {/* Bottom Bar */}
           <div className="border-t border-slate-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-slate-500 text-sm">© 2026 Lavender Villa Melaka. Hak Cipta Terpelihara.</p>
+            <p className="text-slate-500 text-sm">{t.footer_copyright}</p>
             <div className="flex items-center gap-4 text-sm text-slate-400">
-              <a href="/" className="hover:text-white transition">Utama</a>
+              <a href="/" className="hover:text-white transition">{language === 'ms' ? 'Utama' : 'Home'}</a>
               <span className="text-slate-600">|</span>
-              <span>Penginapan Muslim Sahaja</span>
+              <span>{t.footer_muslim}</span>
             </div>
           </div>
         </div>

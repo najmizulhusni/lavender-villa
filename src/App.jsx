@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { Wifi, Coffee, Tv, Wind, MapPin, Star, X, Play, Phone, CheckCircle, Users, Moon, Sun, Cloud, Instagram, Mic, ChevronLeft, ChevronRight, Calendar, Shield, Wallet, Utensils } from 'lucide-react';
 import { getBookedDates, getPublicHolidays, createBooking, getProperty, getManuallyBlockedDates } from './lib/database';
+import { useLanguage } from './LanguageContext';
+import { translations } from './translations';
 
 // Villa Logo
 const VillaIcon = ({ className }) => (
@@ -12,6 +14,9 @@ const VillaIcon = ({ className }) => (
 );
 
 export default function HomestayExperience() {
+  const { language, toggleLanguage } = useLanguage();
+  const t = translations[language];
+  
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showVideoModal, setShowVideoModal] = useState(false);
   const [selectedDates, setSelectedDates] = useState({ checkIn: '', checkOut: '' });
@@ -141,22 +146,22 @@ export default function HomestayExperience() {
 
   const stories = [
     {
-      title: 'Check-In (3:00 PM)',
+      title: t.checkin_title,
       time: 'mornings',
       icon: <Sun className="w-6 h-6" />,
-      desc: 'Tiba dan terus berehat dengan selesa. Kolam renang siap untuk digunakan, dan anak-anak boleh berseronok di ruang permainan. Kawasan parkir untuk 5 buah kereta (3 di dalam, 2 di luar).'
+      desc: t.checkin_desc
     },
     {
-      title: 'Aktiviti Siang',
+      title: t.activity_title,
       time: 'afternoons',
       icon: <Cloud className="w-6 h-6" />,
-      desc: 'Nikmati BBQ di luar, karaoke di ruang keluarga, atau Netflix/Astro untuk hiburan santai. Dapur yang lengkap memudahkan tetamu memasak sendiri.'
+      desc: t.activity_desc
     },
     {
-      title: 'Malam yang Tenang',
+      title: t.evening_title,
       time: 'evenings',
       icon: <Moon className="w-6 h-6" />,
-      desc: 'Berehat di 5 bilik berhawa dingin untuk tidur yang nyaman. Dilengkapi WiFi laju 300Mbps untuk streaming atau kerja. Check-out esok pada 12:00 PM, jadi masih sempat bersarapan dengan tenang.'
+      desc: t.evening_desc
     },
   ];
 
@@ -753,10 +758,11 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
             <span className="font-bold text-xs sm:text-sm md:text-base text-slate-900 tracking-tight hidden sm:inline">Lavender Villa Melaka</span>
           </button>
           <div className="h-4 sm:h-5 w-px bg-slate-200 mx-2 sm:mx-3 md:mx-4"></div>
-          <div className="flex gap-0.5 sm:gap-1 md:gap-2 flex-shrink-0">
-            <button onClick={() => handleScrollTo('experience')} className="text-slate-700 hover:text-purple-600 transition-colors font-semibold cursor-pointer text-xs sm:text-sm md:text-base whitespace-nowrap px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-full hover:bg-purple-50 active:bg-purple-100">Info</button>
-            <button onClick={() => handleScrollTo('spaces')} className="text-slate-700 hover:text-purple-600 transition-colors font-semibold cursor-pointer text-xs sm:text-sm md:text-base whitespace-nowrap px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-full hover:bg-purple-50 active:bg-purple-100">Ruang</button>
-            <button onClick={() => handleScrollTo('booking')} className="bg-gradient-to-r from-purple-500 to-purple-600 text-white font-semibold cursor-pointer text-xs sm:text-sm md:text-base whitespace-nowrap px-3 sm:px-4 py-1.5 sm:py-2 rounded-full hover:from-purple-600 hover:to-purple-700 transition-all shadow-md shadow-purple-500/30 active:scale-95">Tempah</button>
+          <div className="flex gap-0.5 sm:gap-1 md:gap-2 flex-shrink-0 items-center">
+            <button onClick={() => handleScrollTo('experience')} className="text-slate-700 hover:text-purple-600 transition-colors font-semibold cursor-pointer text-xs sm:text-sm md:text-base whitespace-nowrap px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-full hover:bg-purple-50 active:bg-purple-100">{t.nav_info}</button>
+            <button onClick={() => handleScrollTo('spaces')} className="text-slate-700 hover:text-purple-600 transition-colors font-semibold cursor-pointer text-xs sm:text-sm md:text-base whitespace-nowrap px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-full hover:bg-purple-50 active:bg-purple-100">{t.nav_spaces}</button>
+            <button onClick={toggleLanguage} className="text-slate-600 hover:text-purple-600 transition-colors font-semibold cursor-pointer text-xs sm:text-sm whitespace-nowrap px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-full hover:bg-purple-50 active:bg-purple-100 border border-slate-200" title={language === 'ms' ? 'Switch to English' : 'Tukar ke Bahasa Melayu'}>{language === 'ms' ? '🇬🇧' : '🇲🇾'}</button>
+            <button onClick={() => handleScrollTo('booking')} className="bg-gradient-to-r from-purple-500 to-purple-600 text-white font-semibold cursor-pointer text-xs sm:text-sm md:text-base whitespace-nowrap px-3 sm:px-4 py-1.5 sm:py-2 rounded-full hover:from-purple-600 hover:to-purple-700 transition-all shadow-md shadow-purple-500/30 active:scale-95">{t.nav_book}</button>
           </div>
         </div>
       </nav>
@@ -790,18 +796,18 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
         </div>
 
         <div className="absolute inset-0 flex flex-col items-center justify-center text-white px-4 sm:px-6 pt-8 pb-20 sm:pb-8">
-          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-3 sm:mb-4 text-center tracking-tight drop-shadow-lg">Lavender Villa Melaka</h1>
-          <p className="text-sm sm:text-lg md:text-xl mb-6 sm:mb-12 text-center max-w-3xl text-white px-2 drop-shadow-md leading-relaxed">Villa Mewah di Bemban, Melaka<br className="sm:hidden" /> Homestay Keluarga dengan Kolam Renang</p>
+          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-3 sm:mb-4 text-center tracking-tight drop-shadow-lg">{t.hero_title}</h1>
+          <p className="text-sm sm:text-lg md:text-xl mb-6 sm:mb-12 text-center max-w-3xl text-white px-2 drop-shadow-md leading-relaxed">{t.hero_subtitle}<br className="sm:hidden" /> {t.hero_subtitle2}</p>
           
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-8 sm:mb-16 w-full sm:w-auto px-4 sm:px-0">
-            <button onClick={() => handleScrollTo('booking')} className="bg-white text-slate-900 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-bold hover:bg-slate-50 transition shadow-xl text-sm sm:text-base">Tempah Penginapan Anda</button>
-            <button onClick={() => setShowVideoModal(true)} className="bg-white/15 backdrop-blur-md text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-bold hover:bg-white/25 transition flex items-center justify-center gap-2 border border-white/30 text-sm sm:text-base"><Play className="w-4 h-4 sm:w-5 sm:h-5" />Virtual Tour</button>
+            <button onClick={() => handleScrollTo('booking')} className="bg-white text-slate-900 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-bold hover:bg-slate-50 transition shadow-xl text-sm sm:text-base">{t.hero_book_btn}</button>
+            <button onClick={() => setShowVideoModal(true)} className="bg-white/15 backdrop-blur-md text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-bold hover:bg-white/25 transition flex items-center justify-center gap-2 border border-white/30 text-sm sm:text-base"><Play className="w-4 h-4 sm:w-5 sm:h-5" />{t.hero_tour_btn}</button>
           </div>
           
           <div className="flex flex-wrap justify-center gap-4 sm:gap-10 text-xs sm:text-sm">
-            <div className="flex items-center gap-1.5 sm:gap-2 bg-black/20 backdrop-blur-sm px-3 py-1.5 rounded-full"><Star className="w-3.5 h-3.5 sm:w-5 sm:h-5 fill-yellow-300 text-yellow-300" /><span className="font-semibold">5.0 Google Reviews</span></div>
-            <div className="flex items-center gap-1.5 sm:gap-2 bg-black/20 backdrop-blur-sm px-3 py-1.5 rounded-full"><MapPin className="w-3.5 h-3.5 sm:w-5 sm:h-5" /><span className="whitespace-nowrap font-semibold">Bemban, Melaka</span></div>
-            <div className="flex items-center gap-1.5 sm:gap-2 bg-black/20 backdrop-blur-sm px-3 py-1.5 rounded-full"><CheckCircle className="w-3.5 h-3.5 sm:w-5 sm:h-5" /><span className="font-semibold">Tempahan Segera</span></div>
+            <div className="flex items-center gap-1.5 sm:gap-2 bg-black/20 backdrop-blur-sm px-3 py-1.5 rounded-full"><Star className="w-3.5 h-3.5 sm:w-5 sm:h-5 fill-yellow-300 text-yellow-300" /><span className="font-semibold">{t.hero_rating}</span></div>
+            <div className="flex items-center gap-1.5 sm:gap-2 bg-black/20 backdrop-blur-sm px-3 py-1.5 rounded-full"><MapPin className="w-3.5 h-3.5 sm:w-5 sm:h-5" /><span className="whitespace-nowrap font-semibold">{t.hero_location}</span></div>
+            <div className="flex items-center gap-1.5 sm:gap-2 bg-black/20 backdrop-blur-sm px-3 py-1.5 rounded-full"><CheckCircle className="w-3.5 h-3.5 sm:w-5 sm:h-5" /><span className="font-semibold">{t.hero_booking}</span></div>
           </div>
         </div>
 
@@ -830,8 +836,8 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
       {/* Story Timeline - Full Width */}
       <div id="experience" className="w-full bg-gradient-to-br from-purple-50 via-white to-purple-50 py-20 sm:py-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-center mb-4 text-slate-900">Apa Yang Anda Dapat</h2>
-          <p className="text-center text-slate-600 text-lg sm:text-xl mb-16 sm:mb-20">Dari check-in sampai check-out, semua dah ready untuk anda</p>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-center mb-4 text-slate-900">{t.experience_title}</h2>
+          <p className="text-center text-slate-600 text-lg sm:text-xl mb-16 sm:mb-20">{t.experience_subtitle}</p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-10">
             {stories.map((story, idx) => (
               <div key={idx} className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-purple-400 to-purple-500 shadow-lg">
@@ -851,8 +857,8 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
       {/* Explore Spaces */}
       <div id="spaces" className="bg-white py-16 sm:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-4 text-slate-900">Jelajahi Ruang Kami</h2>
-          <p className="text-center text-slate-600 text-lg mb-12 sm:mb-16">Ruang yang direka khas untuk keselesaan anda</p>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-4 text-slate-900">{t.spaces_title}</h2>
+          <p className="text-center text-slate-600 text-lg mb-12 sm:mb-16">{t.spaces_subtitle}</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
             {spaces.map((space, idx) => {
               const currentImg = spaceImageIndex[idx] || 0;
@@ -925,8 +931,8 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
       {/* Premium Amenities */}
       <div className="bg-slate-50 py-16 sm:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-4 text-slate-900">Kemudahan Premium</h2>
-          <p className="text-center text-slate-600 text-lg mb-12 sm:mb-16">Segala kemudahan disediakan untuk penginapan yang selesa dan eksklusif</p>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-4 text-slate-900">{t.amenities_title}</h2>
+          <p className="text-center text-slate-600 text-lg mb-12 sm:mb-16">{t.amenities_subtitle}</p>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {/* Wifi */}
@@ -934,8 +940,8 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
               <div className="w-14 h-14 bg-gradient-to-br from-purple-400 to-purple-500 rounded-xl flex items-center justify-center mb-6">
                 <Wifi className="w-7 h-7 text-white" />
               </div>
-              <h3 className="text-xl font-bold mb-2 text-slate-900">Unifi 300Mbps Percuma</h3>
-              <p className="text-slate-600 text-sm leading-relaxed">Internet pantas untuk streaming, kerja, dan berhubung</p>
+              <h3 className="text-xl font-bold mb-2 text-slate-900">{t.wifi}</h3>
+              <p className="text-slate-600 text-sm leading-relaxed">{t.wifi_desc}</p>
             </div>
 
             {/* TV */}
@@ -943,8 +949,8 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
               <div className="w-14 h-14 bg-gradient-to-br from-purple-400 to-purple-500 rounded-xl flex items-center justify-center mb-6">
                 <Tv className="w-7 h-7 text-white" />
               </div>
-              <h3 className="text-xl font-bold mb-2 text-slate-900">TV Premium</h3>
-              <p className="text-slate-600 text-sm leading-relaxed">Astro, Netflix, Disney+ di TV pintar 65 inci</p>
+              <h3 className="text-xl font-bold mb-2 text-slate-900">{t.tv}</h3>
+              <p className="text-slate-600 text-sm leading-relaxed">{t.tv_desc}</p>
             </div>
 
             {/* Kitchen */}
@@ -952,8 +958,8 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
               <div className="w-14 h-14 bg-gradient-to-br from-purple-400 to-purple-500 rounded-xl flex items-center justify-center mb-6">
                 <Coffee className="w-7 h-7 text-white" />
               </div>
-              <h3 className="text-xl font-bold mb-2 text-slate-900">Dapur Lengkap</h3>
-              <p className="text-slate-600 text-sm leading-relaxed">Serba lengkap dengan semua peralatan dan alat masak</p>
+              <h3 className="text-xl font-bold mb-2 text-slate-900">{t.kitchen}</h3>
+              <p className="text-slate-600 text-sm leading-relaxed">{t.kitchen_desc}</p>
             </div>
 
             {/* AC */}
@@ -961,8 +967,8 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
               <div className="w-14 h-14 bg-gradient-to-br from-purple-400 to-purple-500 rounded-xl flex items-center justify-center mb-6">
                 <Wind className="w-7 h-7 text-white" />
               </div>
-              <h3 className="text-xl font-bold mb-2 text-slate-900">Penghawa Dingin Penuh</h3>
-              <p className="text-slate-600 text-sm leading-relaxed">Sejuk dan selesa di semua 5 bilik tidur</p>
+              <h3 className="text-xl font-bold mb-2 text-slate-900">{t.ac}</h3>
+              <p className="text-slate-600 text-sm leading-relaxed">{t.ac_desc}</p>
             </div>
 
             {/* Play Area */}
@@ -970,8 +976,8 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
               <div className="w-14 h-14 bg-gradient-to-br from-purple-400 to-purple-500 rounded-xl flex items-center justify-center mb-6">
                 <Users className="w-7 h-7 text-white" />
               </div>
-              <h3 className="text-xl font-bold mb-2 text-slate-900">Kawasan Permainan Kanak-Kanak</h3>
-              <p className="text-slate-600 text-sm leading-relaxed">Playground, gelongsor, dan aktiviti luar</p>
+              <h3 className="text-xl font-bold mb-2 text-slate-900">{t.playground}</h3>
+              <p className="text-slate-600 text-sm leading-relaxed">{t.playground_desc}</p>
             </div>
 
             {/* Karaoke */}
@@ -979,8 +985,8 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
               <div className="w-14 h-14 bg-gradient-to-br from-purple-400 to-purple-500 rounded-xl flex items-center justify-center mb-6">
                 <Mic className="w-7 h-7 text-white" />
               </div>
-              <h3 className="text-xl font-bold mb-2 text-slate-900">Karaoke</h3>
-              <p className="text-slate-600 text-sm leading-relaxed">Sistem karaoke untuk hiburan bersama keluarga</p>
+              <h3 className="text-xl font-bold mb-2 text-slate-900">{t.karaoke}</h3>
+              <p className="text-slate-600 text-sm leading-relaxed">{t.karaoke_desc}</p>
             </div>
           </div>
         </div>
@@ -989,11 +995,11 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
       {/* Guest Reviews */}
       <div className="bg-white py-12 sm:py-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-3 text-slate-900">Apa Kata Tetamu Kami</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-3 text-slate-900">{t.reviews_title}</h2>
           <div className="flex items-center justify-center gap-2 mb-8 sm:mb-12">
             <Star className="w-5 h-5 fill-purple-300 text-purple-300" />
             <span className="text-lg sm:text-xl font-bold text-slate-900">5.0</span>
-            <span className="text-slate-600 text-sm sm:text-base">di Google Reviews</span>
+            <span className="text-slate-600 text-sm sm:text-base">{language === 'ms' ? 'di Google Reviews' : 'on Google Reviews'}</span>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
             <div className="bg-white rounded-2xl overflow-hidden shadow-md border border-slate-200 hover:shadow-lg transition">
@@ -1069,8 +1075,8 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
       {/* Location Section */}
       <div className="bg-slate-50 py-16 sm:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-4 text-slate-900">Cari Kami</h2>
-          <p className="text-center text-slate-600 text-lg mb-12 sm:mb-16">Terletak di kawasan Bemban, Melaka</p>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-4 text-slate-900">{t.location_title}</h2>
+          <p className="text-center text-slate-600 text-lg mb-12 sm:mb-16">{t.location_subtitle}</p>
           
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Map - Takes 2 columns */}
@@ -1083,6 +1089,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                 allowFullScreen=""
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
+                title="Lavender Villa Melaka Location"
               ></iframe>
             </div>
 
@@ -1094,7 +1101,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                     <MapPin className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-slate-900 mb-1">Alamat</h3>
+                    <h3 className="font-bold text-slate-900 mb-1">{t.address}</h3>
                     <p className="text-slate-600 text-sm leading-relaxed">47, Jalan Anjung Lavender 1, Taman Anjung Gapam, 77200 Bemban, Melaka</p>
                   </div>
                 </div>
@@ -1106,7 +1113,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                     <Phone className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-slate-900 mb-2">Hubungi</h3>
+                    <h3 className="font-bold text-slate-900 mb-2">{t.contact}</h3>
                     <a href="tel:+60193345686" className="text-purple-600 hover:text-purple-700 font-semibold text-sm transition">+60 19 334 5686</a>
                   </div>
                 </div>
@@ -1118,9 +1125,9 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                     <MapPin className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-slate-900 mb-2">Lihat Peta</h3>
+                    <h3 className="font-bold text-slate-900 mb-2">{t.view_map}</h3>
                     <a href="https://www.google.com/maps/place/Lavender+Villa+Malacca/@2.2915775,102.3521975,17z" target="_blank" rel="noopener noreferrer" className="text-purple-600 hover:text-purple-700 font-semibold text-sm transition">
-                      Buka di Google Maps
+                      {language === 'ms' ? 'Buka di Google Maps' : 'Open in Google Maps'}
                     </a>
                   </div>
                 </div>
@@ -1134,19 +1141,19 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
       <div id="booking" className="bg-white py-12 sm:py-20">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-8 sm:mb-12">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 text-slate-900">Tempah Penginapan Villa Anda</h2>
-            <p className="text-slate-600 text-sm sm:text-base md:text-lg mb-2">Sesuai untuk keluarga & kumpulan • Jumlah tetamu 15-20 pax (termasuk kanak-kanak berumur 5 tahun ke atas)</p>
-            <p className="text-purple-600 text-sm sm:text-base font-semibold mb-4">Penginapan Muslim Sahaja</p>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 text-slate-900">{t.booking_title}</h2>
+            <p className="text-slate-600 text-sm sm:text-base md:text-lg mb-2">{t.booking_subtitle}</p>
+            <p className="text-purple-600 text-sm sm:text-base font-semibold mb-4">{t.booking_muslim}</p>
             
             {/* Trust Badges */}
             <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-slate-500">
               <div className="flex items-center gap-1.5">
                 <Shield className="w-4 h-4 text-green-500" />
-                <span>Tempahan Selamat</span>
+                <span>{t.safe_booking}</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <CheckCircle className="w-4 h-4 text-green-500" />
-                <span>Pengesahan Segera</span>
+                <span>{t.instant_confirm}</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <Star className="w-4 h-4 text-yellow-500" />
@@ -1154,7 +1161,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
               </div>
               <div className="flex items-center gap-1.5">
                 <Users className="w-4 h-4 text-purple-500" />
-                <span>500+ Tetamu</span>
+                <span>{t.guests_count}</span>
               </div>
             </div>
           </div>
@@ -1172,7 +1179,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
               {/* Check In */}
               <div className="group relative">
-                <label className="block text-slate-900 font-bold mb-2 text-xs sm:text-sm uppercase tracking-widest">Daftar Masuk</label>
+                <label className="block text-slate-900 font-bold mb-2 text-xs sm:text-sm uppercase tracking-widest">{t.checkin_label}</label>
                 <div className="relative">
                   <button 
                     type="button"
@@ -1180,7 +1187,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                     className="w-full px-3 sm:px-4 py-3 sm:py-4 bg-white border-2 border-slate-200 rounded-xl sm:rounded-2xl text-left focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition duration-300 flex items-center justify-between"
                   >
                     <span className={`font-semibold text-sm ${selectedDates.checkIn ? 'text-slate-900' : 'text-slate-400'}`}>
-                      {selectedDates.checkIn ? formatDateForDisplay(selectedDates.checkIn) : 'Pilih tarikh'}
+                      {selectedDates.checkIn ? formatDateForDisplay(selectedDates.checkIn) : t.pick_date}
                     </span>
                     <Calendar className="w-5 h-5 text-slate-400" />
                   </button>
@@ -1203,7 +1210,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                 {showCalendar === 'checkIn' && (
                   <div className="fixed sm:absolute inset-x-4 sm:inset-x-auto top-1/2 sm:top-full left-auto sm:left-0 right-auto sm:right-0 -translate-y-1/2 sm:translate-y-0 sm:mt-2 bg-white rounded-2xl shadow-xl border border-slate-200 p-4 z-50 max-w-sm mx-auto sm:max-w-none">
                     <div className="flex items-center justify-between mb-2 sm:hidden">
-                      <span className="font-bold text-slate-900 text-sm">Pilih Tarikh Masuk</span>
+                      <span className="font-bold text-slate-900 text-sm">{language === 'ms' ? 'Pilih Tarikh Masuk' : 'Select Check-In Date'}</span>
                       <button onClick={() => setShowCalendar(null)} className="p-1 hover:bg-slate-100 rounded-lg transition">
                         <X className="w-5 h-5 text-slate-500" />
                       </button>
@@ -1435,28 +1442,28 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                     <div className="mt-3 pt-2 border-t border-slate-100 grid grid-cols-2 gap-2 text-xs">
                       <div className="flex items-center gap-1.5">
                         <span className="w-3 h-3 bg-red-100 rounded"></span>
-                        <span className="text-slate-500">Tiada Kekosongan</span>
+                        <span className="text-slate-500">{t.no_availability}</span>
                       </div>
                       <div className="flex items-center gap-1.5">
                         <span className="w-3 h-3 bg-green-50 rounded relative">
                           <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-green-400 rounded-full"></span>
                         </span>
-                        <span className="text-slate-500">Boleh Checkout</span>
+                        <span className="text-slate-500">{language === 'ms' ? 'Boleh Checkout' : 'Can Checkout'}</span>
                       </div>
                       <div className="flex items-center gap-1.5">
                         <span className="w-3 h-3 bg-yellow-50 rounded relative">
                           <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-yellow-400 rounded-full"></span>
                         </span>
-                        <span className="text-slate-500">Cuti Sekolah</span>
+                        <span className="text-slate-500">{t.school_holiday}</span>
                       </div>
                       <div className="flex items-center gap-1.5">
                         <span className="w-3 h-3 bg-blue-50 rounded relative">
                           <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-blue-400 rounded-full"></span>
                         </span>
-                        <span className="text-slate-500">Cuti Umum</span>
+                        <span className="text-slate-500">{t.public_holiday}</span>
                       </div>
                       <div className="flex items-center gap-1.5 col-span-2 justify-center">
-                        <span className="text-slate-400 text-[10px]">⚠️ Hujung Minggu: Min 3H2M</span>
+                        <span className="text-slate-400 text-[10px]">{t.weekend_min}</span>
                       </div>
                     </div>
                   </div>
@@ -1465,13 +1472,13 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
 
               {/* Tetamu */}
               <div className="group relative">
-                <label className="block text-slate-900 font-bold mb-2 text-xs sm:text-sm uppercase tracking-widest">Tetamu</label>
+                <label className="block text-slate-900 font-bold mb-2 text-xs sm:text-sm uppercase tracking-widest">{t.guests_label}</label>
                 <button 
                   type="button"
                   onClick={() => setShowCalendar(showCalendar === 'guests' ? null : 'guests')}
                   className="w-full px-3 sm:px-4 py-3 sm:py-4 bg-white border-2 border-slate-200 rounded-xl sm:rounded-2xl text-left focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition duration-300 flex items-center justify-between"
                 >
-                  <span className="font-semibold text-sm text-slate-900">{guests} Tetamu</span>
+                  <span className="font-semibold text-sm text-slate-900">{guests} {language === 'ms' ? 'Tetamu' : 'Guests'}</span>
                   <Users className="w-5 h-5 text-slate-400" />
                 </button>
                 
@@ -1479,7 +1486,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                 {showCalendar === 'guests' && (
                   <div className="fixed sm:absolute inset-x-4 sm:inset-x-auto top-1/2 sm:top-full left-auto sm:left-0 right-auto sm:right-0 -translate-y-1/2 sm:translate-y-0 sm:mt-2 bg-white rounded-2xl shadow-xl border border-slate-200 p-2 z-50 max-h-80 overflow-y-auto max-w-sm mx-auto sm:max-w-none">
                     <div className="flex items-center justify-between mb-2 px-2 sm:hidden">
-                      <span className="font-bold text-slate-900 text-sm">Pilih Bilangan Tetamu</span>
+                      <span className="font-bold text-slate-900 text-sm">{t.pick_guests}</span>
                       <button onClick={() => setShowCalendar(null)} className="p-1 hover:bg-slate-100 rounded-lg transition">
                         <X className="w-5 h-5 text-slate-500" />
                       </button>
@@ -1494,7 +1501,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                             : 'hover:bg-purple-50 text-slate-700'
                         }`}
                       >
-                        {num} Tetamu
+                        {num} {language === 'ms' ? 'Tetamu' : 'Guests'}
                       </button>
                     ))}
                   </div>
@@ -1519,22 +1526,22 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
             {/* Name and Phone */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
               <div>
-                <label className="block text-slate-900 font-bold mb-2 text-xs sm:text-sm uppercase tracking-widest">Nama Penuh</label>
+                <label className="block text-slate-900 font-bold mb-2 text-xs sm:text-sm uppercase tracking-widest">{t.name_label}</label>
                 <input 
                   type="text"
                   value={customerName} 
                   onChange={(e) => setCustomerName(e.target.value)} 
-                  placeholder="Masukkan nama penuh anda"
+                  placeholder={t.name_placeholder}
                   className="w-full px-3 sm:px-4 py-3 sm:py-4 bg-white border-2 border-slate-200 rounded-xl sm:rounded-2xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition duration-300 font-semibold text-base"
                 />
               </div>
               <div>
-                <label className="block text-slate-900 font-bold mb-2 text-xs sm:text-sm uppercase tracking-widest">No. Telefon</label>
+                <label className="block text-slate-900 font-bold mb-2 text-xs sm:text-sm uppercase tracking-widest">{t.phone_label}</label>
                 <input 
                   type="tel"
                   value={customerPhone} 
                   onChange={(e) => setCustomerPhone(e.target.value)} 
-                  placeholder="Contoh: 0123456789"
+                  placeholder={t.phone_placeholder}
                   className="w-full px-3 sm:px-4 py-3 sm:py-4 bg-white border-2 border-slate-200 rounded-xl sm:rounded-2xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition duration-300 font-semibold text-base"
                 />
               </div>
@@ -1542,11 +1549,11 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
 
             {/* Message/Request */}
             <div className="mb-6 sm:mb-8">
-              <label className="block text-slate-900 font-bold mb-2 text-xs sm:text-sm uppercase tracking-widest">Permintaan atau Pertanyaan (Pilihan)</label>
+              <label className="block text-slate-900 font-bold mb-2 text-xs sm:text-sm uppercase tracking-widest">{t.message_label}</label>
               <textarea 
                 value={message} 
                 onChange={(e) => setMessage(e.target.value)} 
-                placeholder="Beritahu kami apa yang anda ingin tanyakan atau minta..."
+                placeholder={t.message_placeholder}
                 className="w-full px-3 sm:px-4 py-3 sm:py-4 bg-white border-2 border-slate-200 rounded-xl sm:rounded-2xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-100 transition duration-300 font-semibold text-base resize-none"
                 rows={4}
               />
@@ -1554,7 +1561,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
 
             {/* Referral Source */}
             <div className="mb-6 sm:mb-8">
-              <label className="block text-slate-900 font-bold mb-2 text-xs sm:text-sm uppercase tracking-widest">Dari Mana Anda Tahu Tentang Kami?</label>
+              <label className="block text-slate-900 font-bold mb-2 text-xs sm:text-sm uppercase tracking-widest">{t.referral_label}</label>
               <div className="relative">
                 <button 
                   type="button"
@@ -1567,10 +1574,10 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                       'instagram': 'Instagram',
                       'facebook': 'Facebook',
                       'google': 'Google Search',
-                      'kawan': 'Kawan-kawan',
-                      'saudara': 'Saudara Mara',
-                      'lain': 'Lain-lain'
-                    }[referralSource] : 'Pilih satu...'}
+                      'kawan': language === 'ms' ? 'Kawan-kawan' : 'Friends',
+                      'saudara': language === 'ms' ? 'Saudara Mara' : 'Family',
+                      'lain': language === 'ms' ? 'Lain-lain' : 'Others'
+                    }[referralSource] : t.referral_pick}
                   </span>
                   <ChevronRight className={`w-5 h-5 text-slate-400 transition-transform ${showCalendar === 'referral' ? 'rotate-90' : ''}`} />
                 </button>
@@ -1579,7 +1586,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                 {showCalendar === 'referral' && (
                   <div className="fixed sm:absolute inset-x-4 sm:inset-x-auto top-1/2 sm:top-full left-auto sm:left-0 right-auto sm:right-0 -translate-y-1/2 sm:translate-y-0 sm:mt-2 bg-white rounded-2xl shadow-xl border border-slate-200 p-2 z-50 max-h-80 overflow-y-auto max-w-sm mx-auto sm:max-w-none">
                     <div className="flex items-center justify-between mb-2 px-2 sm:hidden">
-                      <span className="font-bold text-slate-900 text-sm">Dari Mana Tahu?</span>
+                      <span className="font-bold text-slate-900 text-sm">{language === 'ms' ? 'Dari Mana Tahu?' : 'How Did You Hear?'}</span>
                       <button onClick={() => setShowCalendar(null)} className="p-1 hover:bg-slate-100 rounded-lg transition">
                         <X className="w-5 h-5 text-slate-500" />
                       </button>
@@ -1589,9 +1596,9 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                       { value: 'instagram', label: 'Instagram' },
                       { value: 'facebook', label: 'Facebook' },
                       { value: 'google', label: 'Google Search' },
-                      { value: 'kawan', label: 'Kawan-kawan' },
-                      { value: 'saudara', label: 'Saudara Mara' },
-                      { value: 'lain', label: 'Lain-lain' }
+                      { value: 'kawan', label: language === 'ms' ? 'Kawan-kawan' : 'Friends' },
+                      { value: 'saudara', label: language === 'ms' ? 'Saudara Mara' : 'Family' },
+                      { value: 'lain', label: language === 'ms' ? 'Lain-lain' : 'Others' }
                     ].map(option => (
                       <button
                         key={option.value}
@@ -1615,7 +1622,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
               <div className="bg-white rounded-2xl p-6 mb-6 border border-slate-200 shadow-sm">
                 <div className="flex items-center justify-between mb-4">
                   <div>
-                    <p className="text-slate-500 text-sm">{calculateNights()} malam</p>
+                    <p className="text-slate-500 text-sm">{calculateNights()} {language === 'ms' ? 'malam' : 'nights'}</p>
                     <p className="text-slate-900 text-sm">
                       {formatDateForDisplay(selectedDates.checkIn)} - {formatDateForDisplay(selectedDates.checkOut)}
                     </p>
@@ -1628,13 +1635,13 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                   <div className="flex items-center justify-center gap-4 flex-wrap">
                     <div className="flex items-center gap-1.5">
                       <div className="w-3 h-3 bg-red-100 border border-red-200 rounded"></div>
-                      <span>Telah Ditempah</span>
+                      <span>{t.booked}</span>
                     </div>
                     <div className="flex items-center gap-1.5">
                       <div className="w-3 h-3 bg-orange-50 border border-orange-200 rounded relative">
                         <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 bg-orange-400 rounded-full"></span>
                       </div>
-                      <span>Cuti Umum</span>
+                      <span>{t.public_holiday}</span>
                     </div>
                   </div>
                 </div>
@@ -1646,21 +1653,21 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
               <div className="bg-white rounded-2xl p-6 mb-6 border border-slate-200 shadow-sm">
                 <div className="flex items-center justify-between mb-4">
                   <div>
-                    <p className="text-slate-400 text-sm">{calculateNights()} malam</p>
+                    <p className="text-slate-400 text-sm">{calculateNights()} {language === 'ms' ? 'malam' : 'nights'}</p>
                     <p className="text-slate-500 text-sm">
                       {formatDateForDisplay(selectedDates.checkIn)} - {formatDateForDisplay(selectedDates.checkOut)}
                     </p>
                   </div>
                   <div className="bg-slate-100 px-3 py-1 rounded-full">
-                    <p className="text-slate-500 text-sm font-medium">Tiada Kekosongan</p>
+                    <p className="text-slate-500 text-sm font-medium">{t.no_availability}</p>
                   </div>
                 </div>
-                <p className="text-slate-500 text-sm mb-4">Tarikh ini telah ditempah. Pilih tarikh lain atau lihat villa lain.</p>
+                <p className="text-slate-500 text-sm mb-4">{language === 'ms' ? 'Tarikh ini telah ditempah. Pilih tarikh lain atau lihat villa lain.' : 'These dates are booked. Please select other dates or view other villas.'}</p>
                 <button 
                   onClick={() => handleScrollTo('alternatives')}
                   className="w-full py-3 rounded-xl font-semibold text-sm bg-purple-500 text-white hover:bg-purple-600 transition"
                 >
-                  Lihat Villa Lain
+                  {language === 'ms' ? 'Lihat Villa Lain' : 'View Other Villas'}
                 </button>
               </div>
             )}
@@ -1668,7 +1675,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
             {/* Teks Pembantu */}
             {(!selectedDates.checkIn || !selectedDates.checkOut) && (
               <div className="rounded-2xl p-4 mb-6 bg-slate-50 border border-slate-200 text-center">
-                <p className="text-slate-500 text-sm">Pilih tarikh untuk melihat harga</p>
+                <p className="text-slate-500 text-sm">{language === 'ms' ? 'Pilih tarikh untuk melihat harga' : 'Select dates to see pricing'}</p>
               </div>
             )}
 
@@ -1683,7 +1690,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                     : 'bg-gradient-to-r from-purple-400 via-purple-500 to-purple-600 text-white hover:from-purple-500 hover:via-purple-600 hover:to-purple-700 hover:scale-105 shadow-lg hover:shadow-purple-500/50'
                 }`}
               >
-                {!customerName.trim() || !customerPhone.trim() ? 'Isi Nama & No. Telefon' : !selectedDates.checkIn || !selectedDates.checkOut ? 'Pilih Tarikh untuk Book' : 'Book Sekarang'}
+                {!customerName.trim() || !customerPhone.trim() ? t.fill_name_phone : !selectedDates.checkIn || !selectedDates.checkOut ? t.pick_dates : t.book_now}
               </button>
             )}
 
@@ -1691,27 +1698,27 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
             <div className="mt-6 pt-6 border-t border-slate-200">
               <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-3 text-sm">
                 <div className="text-center">
-                  <span className="text-slate-500 text-xs block">Weekday</span>
+                  <span className="text-slate-500 text-xs block">{t.weekday}</span>
                   <span className="font-semibold text-slate-700">RM1,300</span>
                   <span className="text-slate-400 text-xs"> / </span>
                   <span className="font-semibold text-slate-700">RM2,400</span>
                 </div>
                 <span className="text-slate-300">|</span>
                 <div className="text-center">
-                  <span className="text-slate-500 text-xs block">Weekend/PH/SH</span>
+                  <span className="text-slate-500 text-xs block">{t.weekend}</span>
                   <span className="font-semibold text-purple-600">RM1,590</span>
                   <span className="text-slate-400 text-xs"> / </span>
                   <span className="font-semibold text-purple-600">RM2,990</span>
                 </div>
                 <span className="text-slate-300">|</span>
                 <div className="text-center">
-                  <span className="text-slate-500 text-xs block">Festive</span>
+                  <span className="text-slate-500 text-xs block">{t.festive}</span>
                   <span className="font-semibold text-amber-600">RM1,700</span>
                   <span className="text-slate-400 text-xs"> / </span>
                   <span className="font-semibold text-amber-600">RM3,200</span>
                 </div>
               </div>
-              <p className="text-slate-400 text-xs text-center mt-3">2H1M / 3H2M • Weekend & Cuti Sekolah: Min 3H2M • Pengesahan melalui WhatsApp</p>
+              <p className="text-slate-400 text-xs text-center mt-3">{language === 'ms' ? '2H1M / 3H2M • Weekend & Cuti Sekolah: Min 3H2M • Pengesahan melalui WhatsApp' : '2D1N / 3D2N • Weekend & School Holiday: Min 3D2N • Confirmation via WhatsApp'}</p>
             </div>
           </div>
         </div>
@@ -1895,7 +1902,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
                 <img src="/images/logo.jpg" alt="Lavender Villa" className="h-8 w-auto rounded-md border border-purple-300/50" width="32" height="31" />
                 <h3 className="text-lg font-bold text-white">Lavender Villa Melaka</h3>
               </div>
-              <p className="text-slate-400 text-sm">Villa Mewah di Bemban, Melaka</p>
+              <p className="text-slate-400 text-sm">{language === 'ms' ? 'Villa Mewah di Bemban, Melaka' : 'Luxury Villa in Bemban, Melaka'}</p>
             </div>
 
             {/* Contact & Social */}
@@ -1922,12 +1929,12 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
 
           {/* Bottom Bar */}
           <div className="border-t border-slate-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-slate-500 text-sm">© 2026 Lavender Villa Melaka. Hak Cipta Terpelihara.</p>
+            <p className="text-slate-500 text-sm">{t.footer_copyright}</p>
             <div className="flex items-center gap-4 text-sm text-slate-400">
               <a href="/faq" className="hover:text-white transition">FAQ</a>
               <span className="flex items-center gap-1.5">
                 <Moon className="w-4 h-4 text-purple-400" />
-                Penginapan Muslim Sahaja
+                {t.footer_muslim}
               </span>
             </div>
           </div>
