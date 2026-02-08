@@ -752,27 +752,30 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
 
   return (
     <div className="min-h-screen bg-slate-50">
-      {/* Fixed Language Toggle - Top Right */}
-      <div className="fixed top-3 sm:top-4 right-3 sm:right-4 z-[60]">
-        <div className="flex items-center bg-white/90 backdrop-blur-md rounded-full border border-slate-200 shadow-lg overflow-hidden">
-          <button 
-            onClick={() => language !== 'ms' && toggleLanguage()} 
-            className={`px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold transition-all ${language === 'ms' ? 'bg-purple-500 text-white' : 'text-slate-600 hover:text-purple-600 hover:bg-purple-50'}`}
-          >
-            BM
-          </button>
-          <div className="w-px h-5 bg-slate-200"></div>
-          <button 
-            onClick={() => language !== 'en' && toggleLanguage()} 
-            className={`px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold transition-all ${language === 'en' ? 'bg-purple-500 text-white' : 'text-slate-600 hover:text-purple-600 hover:bg-purple-50'}`}
-          >
-            EN
-          </button>
+      {/* Top Bar with Language Toggle */}
+      <div className="bg-slate-900 text-white py-2 px-4">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <span className="text-xs sm:text-sm text-slate-300">Villa Mewah di Bemban, Melaka</span>
+          <div className="flex items-center gap-1 text-xs sm:text-sm">
+            <button 
+              onClick={() => language !== 'ms' && toggleLanguage()} 
+              className={`px-2 py-0.5 rounded transition-all ${language === 'ms' ? 'bg-purple-500 text-white' : 'text-slate-400 hover:text-white'}`}
+            >
+              BM
+            </button>
+            <span className="text-slate-600">|</span>
+            <button 
+              onClick={() => language !== 'en' && toggleLanguage()} 
+              className={`px-2 py-0.5 rounded transition-all ${language === 'en' ? 'bg-purple-500 text-white' : 'text-slate-400 hover:text-white'}`}
+            >
+              EN
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Floating Navigation */}
-      <nav className="fixed top-2 sm:top-4 md:top-6 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-4xl px-2 sm:px-4">
+      <nav className="fixed top-10 sm:top-12 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-4xl px-2 sm:px-4">
         <div className="bg-white/80 backdrop-blur-xl rounded-full px-3 sm:px-6 md:px-8 py-2 sm:py-3 shadow-lg shadow-slate-900/5 border border-white/50 flex items-center justify-between transition-all duration-300">
           <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center gap-1 sm:gap-2 cursor-pointer transition flex-shrink-0 group">
             <div className="w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full overflow-hidden shadow-md shadow-purple-500/30 group-hover:shadow-lg group-hover:shadow-purple-500/40 transition-shadow border-2 border-purple-200">
