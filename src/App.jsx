@@ -752,6 +752,25 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
 
   return (
     <div className="min-h-screen bg-slate-50">
+      {/* Fixed Language Toggle - Top Right */}
+      <div className="fixed top-3 sm:top-4 right-3 sm:right-4 z-[60]">
+        <div className="flex items-center bg-white/90 backdrop-blur-md rounded-full border border-slate-200 shadow-lg overflow-hidden">
+          <button 
+            onClick={() => language !== 'ms' && toggleLanguage()} 
+            className={`px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold transition-all ${language === 'ms' ? 'bg-purple-500 text-white' : 'text-slate-600 hover:text-purple-600 hover:bg-purple-50'}`}
+          >
+            BM
+          </button>
+          <div className="w-px h-5 bg-slate-200"></div>
+          <button 
+            onClick={() => language !== 'en' && toggleLanguage()} 
+            className={`px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold transition-all ${language === 'en' ? 'bg-purple-500 text-white' : 'text-slate-600 hover:text-purple-600 hover:bg-purple-50'}`}
+          >
+            EN
+          </button>
+        </div>
+      </div>
+
       {/* Floating Navigation */}
       <nav className="fixed top-2 sm:top-4 md:top-6 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-4xl px-2 sm:px-4">
         <div className="bg-white/80 backdrop-blur-xl rounded-full px-3 sm:px-6 md:px-8 py-2 sm:py-3 shadow-lg shadow-slate-900/5 border border-white/50 flex items-center justify-between transition-all duration-300">
@@ -765,21 +784,6 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
           <div className="flex gap-0.5 sm:gap-1 md:gap-2 flex-shrink-0 items-center">
             <button onClick={() => handleScrollTo('experience')} className="text-slate-700 hover:text-purple-600 transition-colors font-semibold cursor-pointer text-xs sm:text-sm md:text-base whitespace-nowrap px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-full hover:bg-purple-50 active:bg-purple-100">{t.nav_info}</button>
             <button onClick={() => handleScrollTo('spaces')} className="text-slate-700 hover:text-purple-600 transition-colors font-semibold cursor-pointer text-xs sm:text-sm md:text-base whitespace-nowrap px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-full hover:bg-purple-50 active:bg-purple-100">{t.nav_spaces}</button>
-            <div className="flex items-center bg-white/80 rounded-full border border-slate-200 overflow-hidden">
-              <button 
-                onClick={() => language !== 'ms' && toggleLanguage()} 
-                className={`px-2 sm:px-2.5 py-1 sm:py-1.5 text-xs sm:text-sm font-semibold transition-all ${language === 'ms' ? 'bg-purple-500 text-white' : 'text-slate-500 hover:text-purple-600 hover:bg-purple-50'}`}
-              >
-                BM
-              </button>
-              <div className="w-px h-4 bg-slate-200"></div>
-              <button 
-                onClick={() => language !== 'en' && toggleLanguage()} 
-                className={`px-2 sm:px-2.5 py-1 sm:py-1.5 text-xs sm:text-sm font-semibold transition-all ${language === 'en' ? 'bg-purple-500 text-white' : 'text-slate-500 hover:text-purple-600 hover:bg-purple-50'}`}
-              >
-                EN
-              </button>
-            </div>
             <button onClick={() => handleScrollTo('booking')} className="bg-gradient-to-r from-purple-500 to-purple-600 text-white font-semibold cursor-pointer text-xs sm:text-sm md:text-base whitespace-nowrap px-3 sm:px-4 py-1.5 sm:py-2 rounded-full hover:from-purple-600 hover:to-purple-700 transition-all shadow-md shadow-purple-500/30 active:scale-95">{t.nav_book}</button>
           </div>
         </div>
