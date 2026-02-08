@@ -755,7 +755,7 @@ Saya ingin membuat tempahan untuk Lavender Villa Melaka pada tarikh di atas. Sil
       {/* Top Bar with Language Toggle */}
       <div className="bg-slate-900 text-white py-2 px-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <span className="text-xs sm:text-sm text-slate-300">Villa Mewah di Bemban, Melaka</span>
+          <span className="text-xs sm:text-sm text-slate-300">Lavender Villa Melaka, Bemban Melaka</span>
           <div className="flex items-center gap-1 text-xs sm:text-sm">
             <button 
               onClick={() => language !== 'ms' && toggleLanguage()} 
