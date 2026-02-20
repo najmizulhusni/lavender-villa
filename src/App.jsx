@@ -141,9 +141,9 @@ export default function HomestayExperience() {
   }, []);
 
   const images = [
+    '/images/front_lanscape.jpg',
     '/images/view_from_top_1_lanscape.jpg',
     '/images/view_from_top_2_landscape.jpg',
-    '/images/front_lanscape.jpg',
     '/images/back_landscape.jpg',
     '/images/living_room_1_lanscape.jpg',
   ];
@@ -242,8 +242,8 @@ export default function HomestayExperience() {
       features: [t.space_kitchen_f1, t.space_kitchen_f2, t.space_kitchen_f3],
       images: [
         '/images/kitchen_1_lanscape.jpg',
-        '/images/dining_table_1_lanscape.jpg',
-        '/images/washing_machine_1_lanscape.jpg'
+        '/images/kitchen_2_lanscape.jpg',
+        '/images/kitchen_3_lanscape.jpg'
       ]
     },
     {
