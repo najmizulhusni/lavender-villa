@@ -145,7 +145,6 @@ export default function HomestayExperience() {
     '/images/view_from_top_1_lanscape.jpg',
     '/images/view_from_top_2_landscape.jpg',
     '/images/back_landscape.jpg',
-    '/images/living_room_1_lanscape.jpg',
   ];
 
   const stories = [
@@ -232,7 +231,6 @@ export default function HomestayExperience() {
       features: [t.space_living_f1, t.space_living_f2, t.space_living_f3],
       images: [
         '/images/living_room_1_potrait.jpg',
-        '/images/living_room_1_lanscape.jpg',
         '/images/living_room_2_potrait.jpg',
         '/images/karaoke_lanscape.jpg'
       ]
