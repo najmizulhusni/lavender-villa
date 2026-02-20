@@ -143,7 +143,7 @@ export default function HomestayExperience() {
   const images = [
     '/images/view_from_top_1_lanscape.jpg',
     '/images/view_from_top_2_landscape.jpg',
-    '/images/front_landscape.jpg',
+    '/images/front_lanscape.jpg',
     '/images/back_landscape.jpg',
     '/images/living_room_1_lanscape.jpg',
   ];
