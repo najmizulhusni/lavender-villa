@@ -250,11 +250,11 @@ export default function HomestayExperience() {
       size: t.space_bedroom_size,
       features: [t.space_bedroom_f1, t.space_bedroom_f2, t.space_bedroom_f3],
       images: [
-        '/images/bedroom_1_lanscape.jpg',
-        '/images/bedroom_2_lanscape.jpg',
-        '/images/bedroom_3_lanscape.jpg',
-        '/images/bedroom_4_landscape.jpg',
-        '/images/bedroom_5_potrait.jpg'
+        '/images/bedroom_new_1.jpg',
+        '/images/bedroom_new_2.jpg',
+        '/images/bedroom_new_3.jpg',
+        '/images/bedroom_new_4.jpg',
+        '/images/bedroom_new_5.jpg'
       ]
     },
     {
