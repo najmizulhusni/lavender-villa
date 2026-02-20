@@ -231,9 +231,10 @@ export default function HomestayExperience() {
       size: t.space_living_size,
       features: [t.space_living_f1, t.space_living_f2, t.space_living_f3],
       images: [
-        '/images/living_room_1_lanscape.jpg',
         '/images/living_room_1_potrait.jpg',
-        '/images/living_room_2_potrait.jpg'
+        '/images/living_room_1_lanscape.jpg',
+        '/images/living_room_2_potrait.jpg',
+        '/images/karaoke_lanscape.jpg'
       ]
     },
     {
