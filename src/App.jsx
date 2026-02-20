@@ -141,11 +141,11 @@ export default function HomestayExperience() {
   }, []);
 
   const images = [
-    '/images/front_lanscape.jpg',
+    '/images/view_from_top_1_lanscape.jpg',
+    '/images/view_from_top_2_landscape.jpg',
+    '/images/front_landscape.jpg',
     '/images/back_landscape.jpg',
-    '/images/kitchen_1_lanscape.jpg',
-    '/images/kitchen_2_lanscape.jpg',
-    '/images/kitchen_3_lanscape.jpg',
+    '/images/living_room_1_lanscape.jpg',
   ];
 
   const stories = [
